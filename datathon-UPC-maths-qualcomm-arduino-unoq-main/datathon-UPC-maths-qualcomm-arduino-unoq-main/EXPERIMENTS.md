@@ -123,7 +123,19 @@ On the board, with an earlier version of step 2 only, 30 problems took 10 to 57 
 | Text only, no picture | 34 = 22.7% |
 | Whole image to the vision model | 23 = 15.3% (answers A 99 times) |
 
-The model does read the problem text out of the image, but misdescribes the figures. It also costs about 30 s per problem on the board. We do not use vision in `predict.py`. `experiments/figure_crop.py` and `experiments/vision_figure_eval.py` test cropped figures (in progress).
+The model does read the problem text out of the image, but misdescribes the figures. It also costs about 30 s per problem on the board. We do not use vision in `predict.py`.
+
+We then tried giving the model only the figure. `experiments/figure_crop.py` crops the figure out of the strip (clean on 88 of 100 strips we looked at, figure missed on 3). `experiments/vision_figure_eval.py`, 90 image-dependent problems with options, reasoning prompt, 200 output tokens:
+
+| Variant | Right | No `Answer: X` in 200 tokens |
+| --- | --- | --- |
+| Always D | 23 = 25.6% | |
+| Text and options only | 13 = 14.4% | 31 |
+| Plus the cropped figure | 5 = 5.6% | 66 |
+| Plus the whole strip | 8 = 8.9% | 55 |
+| Plus a text description of the crop (two calls) | 11 = 12.2% | 43 |
+
+Among the answers that did finish, every variant is at 20 to 23%: the figure adds no signal, and an image makes the model ramble. Read against the real figures, its descriptions get printed numbers right about two times in three, and what the numbers belong to almost never (1 of 20). Raising the image budget from 64 to 256 tokens did not change that, so resolution is not the limit.
 
 For teaching, the picture problem solves itself: the tutor shows the image to the student, so nothing has to read it.
 
