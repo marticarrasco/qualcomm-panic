@@ -195,7 +195,7 @@ async function ask() {
       <div class="verdict ${r.correct ? "ok" : "bad"}">The model says ${esc(r.answer)}: ${r.correct ? "correct" : "wrong, the answer is " + esc(r.label)}.</div>
       <table>
         <tr><td>Time</td><td>${r.seconds} s ${over ? `<b style="color:var(--bad)">over the ${limit} s limit</b>` : `(limit ${limit} s)`}</td></tr>
-        <tr><td>Prompt tokens</td><td>${r.prompt_tokens}</td></tr>
+        <tr><td>Prompt tokens</td><td>${r.prompt_tokens ?? "n/a"}</td></tr>
         <tr><td>Status</td><td>${esc(r.status)}</td></tr>
         ${r.examples.length ? `<tr><td>Examples used</td><td>${r.examples.map(e => `${esc(e.id)} (${e.score}, answer ${esc(e.label)})`).join(", ")}</td></tr>` : ""}
       </table>

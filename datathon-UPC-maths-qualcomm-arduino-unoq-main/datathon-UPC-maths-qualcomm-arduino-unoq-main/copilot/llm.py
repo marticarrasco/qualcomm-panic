@@ -20,9 +20,10 @@ ANSWER_RE = re.compile(r"(?:answer|resposta)\s*[:：]\s*([A-E])\b", re.IGNORECAS
 class InvalidAnswerError(ValueError):
     """An unparseable model answer, with any token usage the server reported."""
 
-    def __init__(self, message, timings=None):
+    def __init__(self, message, timings=None, output=None):
         super().__init__(message)
         self.timings = timings or {}
+        self.output = output
 
 
 def format_problem(problem, sees_image=False):
@@ -62,7 +63,8 @@ def answer_letter(problem, examples=(), timeout=60, image_b64=None, url=URL):
         "seed": int(CONFIG["SEED"]),
         "cache_prompt": True,
     }, timeout=timeout)
-    content = response["choices"][0]["message"]["content"].strip()
+    raw_content = response["choices"][0]["message"]["content"]
+    content = raw_content.strip()
     matches = ANSWER_RE.findall(content)
     if matches:
         letter = matches[-1].upper()
@@ -70,5 +72,5 @@ def answer_letter(problem, examples=(), timeout=60, image_b64=None, url=URL):
         letter = content[0].upper()
     else:
         raise InvalidAnswerError("model did not return an answer in the expected format",
-                                 response.get("timings", {}))
-    return letter, response.get("timings", {})
+                                 response.get("timings", {}), raw_content)
+    return letter, response.get("timings", {}), raw_content

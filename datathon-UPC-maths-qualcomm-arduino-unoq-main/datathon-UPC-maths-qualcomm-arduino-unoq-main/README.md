@@ -232,7 +232,7 @@ sudo apt-get install -y build-essential cmake git pkg-config libssl-dev curl wge
 | `git` | Downloads llama.cpp and this repository |
 | `pkg-config`, `libssl-dev` | Let llama.cpp download over HTTPS |
 | `curl`, `wget`, `ca-certificates` | Download files and talk to the model servers |
-| `python3`, `sqlite3` | Run the datathon code and store the retrieval index |
+| `python`, `sqlite3` | Run the datathon code and store the retrieval index |
 | `jq` | Read the JSON answers from the servers |
 
 **If `apt` says a package "is not installable"** (we saw `cmake` failing on `librhash1`, and `libc6-dev` on `rpcsvc-proto`), the package list was downloaded incompletely. Delete it, download it again, and repeat 2.2:
@@ -249,7 +249,7 @@ sudo apt-get install -y build-essential cmake git pkg-config libssl-dev curl wge
 ```bash
 gcc --version | head -1
 cmake --version | head -1
-python3 --version
+python --version
 ```
 
 You should see:
@@ -681,7 +681,7 @@ The code uses only Python's standard library. There's no `pip` on the board, and
 
 ```bash
 mkdir -p results
-python3 predict.py --input data/sample_problems.jsonl --output results/smoke.csv
+python predict.py --input data/sample_problems.jsonl --output results/smoke.csv
 cat results/smoke.csv
 ```
 
@@ -707,7 +707,7 @@ On your laptop:
 ```bash
 git clone https://github.com/mpous/datathon-UPC-maths-qualcomm-arduino-unoq.git
 cd datathon-UPC-maths-qualcomm-arduino-unoq
-python3 -m venv .venv
+python -m venv .venv
 source .venv/bin/activate
 pip install -r laptop/requirements.txt
 ```
@@ -719,7 +719,7 @@ On Windows, activate the environment with `.venv\Scripts\activate`.
 On your laptop:
 
 ```bash
-python3 laptop/prepare_m3kang.py --languages eng,cat
+python laptop/prepare_m3kang.py --languages eng,cat
 ```
 
 It downloads the first `high_quality` file of the dataset (393 MB, once), keeps English and Catalan, reads the options from each image, and splits the problems into training and validation sets. It takes about 15 minutes per language. If you stop it, run it again: it caches the OCR results in `data/ocr/.ocr_cache.jsonl`.
@@ -817,7 +817,7 @@ wc -l data/train.jsonl data/val.jsonl
 `predict.py` is the entry point the jury runs:
 
 ```bash
-python3 predict.py --input data/val.jsonl --output results/predictions.csv
+python predict.py --input data/val.jsonl --output results/predictions.csv
 ```
 
 For each problem, `copilot/pipeline.py`:
@@ -839,7 +839,7 @@ The output is a CSV file with one row per problem: `id`, `language`, `answer`, `
 ### 11.2 Run the evaluation
 
 ```bash
-python3 eval.py --limit 50 --name baseline
+python eval.py --limit 50 --name baseline
 ```
 
 It answers 50 validation problems, chosen the same way each time, and compares them with the labels. It prints:
@@ -849,7 +849,9 @@ It answers 50 validation problems, chosen the same way each time, and compares t
 - Accuracy **by language, by level, and with or without options**
 - **Letter counts**, predicted against true. If the model picks one letter far too often, you'll see it here.
 
-Every run is saved in `results/eval-<time>-<name>.csv`, and gets one line in `results/ablations.csv`, with the Git commit, so you can compare experiments. Use `--limit 0` for the whole validation set (about 45 minutes for 281 problems), and `--languages cat` for one language.
+Every run gets a uniquely named `results/eval-<time>-<name>.csv` plus a JSON manifest beside it. The CSV has one row per problem, identified by ID and language, with the selected and correct answers, correctness, the model's full output (including its reasoning), input/output tokens, measured time, and an Arduino time estimate. The estimate uses the rough read/write rates in `config.env` and the formula `input_tokens / read_rate + output_tokens / write_rate`. The manifest records run settings, progress, and whether the run completed or was interrupted. Each row is flushed as soon as it is written, so stopping with Ctrl+C preserves completed results and records the in-flight problem as interrupted. Every run also adds one line to `results/ablations.csv`, with the Git commit, so you can compare experiments. Use `--limit 0` for the whole validation set (about 45 minutes for 281 problems), and `--languages cat` for one language.
+
+For a detailed walkthrough in Catalan, see [EVALUACIO.md](EVALUACIO.md).
 
 ### 11.3 What we measured
 
@@ -875,7 +877,7 @@ Retrieval-augmented generation (RAG) finds solved problems that look like the ne
 ### 12.1 Build the index
 
 ```bash
-python3 build_index.py --input data/train.jsonl --db data/index.db --only-with-options
+python build_index.py --input data/train.jsonl --db data/index.db --only-with-options
 ```
 
 It embeds every training problem with bge-small and stores the vectors in a SQLite file, `data/index.db`. `--only-with-options` skips problems whose options OCR couldn't read. `--languages eng` keeps one language.
@@ -883,8 +885,8 @@ It embeds every training problem with bge-small and stores the vectors in a SQLi
 ### 12.2 Use it
 
 ```bash
-python3 eval.py --limit 50 --rag 1 --name rag1
-python3 predict.py --input data/val.jsonl --output results/predictions.csv --rag 1
+python eval.py --limit 50 --rag 1 --name rag1
+python predict.py --input data/val.jsonl --output results/predictions.csv --rag 1
 ```
 
 `--rag 1` adds the most similar training problem, with its answer, before the question. `--rag 2` adds two. `eval.py` never retrieves the problem it's answering (`exclude_id`), so the score stays honest.
@@ -908,7 +910,7 @@ It uses only the Python standard library, like the rest of the code on the board
 On your laptop, run the preparation from step 9 again with `--save-images`. The OCR is cached, so it's quick the second time:
 
 ```bash
-python3 laptop/prepare_m3kang.py --languages eng --save-images
+python laptop/prepare_m3kang.py --languages eng --save-images
 ```
 
 It writes one PNG per problem to `data/images/`, such as `lvl-0_2015_14_eng.png`: 1,747 files and 71 MB for English. Copy them to the board:
@@ -935,7 +937,7 @@ On the board, with the services from step 7 running and the index from step 12.1
 
 ```bash
 cd ~/datathon-UPC-maths-qualcomm-arduino-unoq
-python3 explorer/server.py --host 0.0.0.0
+python explorer/server.py --host 0.0.0.0
 ```
 
 You should see:
@@ -1139,13 +1141,13 @@ Claude can help you write code, but you're the ones who decide and measure. Run 
 2. Check that `predict.py` still answers one letter per problem:
 
    ```bash
-   python3 predict.py --input data/sample_problems.jsonl --output results/check.csv
+   python predict.py --input data/sample_problems.jsonl --output results/check.csv
    ```
 
 3. Measure it with a name you'll recognise:
 
    ```bash
-   python3 eval.py --limit 50 --name hint-ladder-v1
+   python eval.py --limit 50 --name hint-ladder-v1
    ```
 
 4. Commit it. `results/ablations.csv` records the commit next to each result, so you can always go back to what worked.
@@ -1243,6 +1245,8 @@ The [`publish-project`](.skills/publish-project/SKILL.md) skill can check your R
 | `TIME_LIMIT_SECONDS` | 60 | Time limit per problem |
 | `SEED` | 42 | Random seed |
 | `FALLBACK_ANSWER` | D | Answer when the model is too slow or fails |
+| `ARDUINO_PROMPT_TOKENS_PER_SECOND` | 11 | Estimated prompt read rate used by `eval.py` |
+| `ARDUINO_OUTPUT_TOKENS_PER_SECOND` | 6 | Estimated answer generation rate used by `eval.py` |
 | `VISION_PORT` | 8083 | Optional server that can see images, for the explorer |
 
 `config.env` is read by the Python code and by the scripts in `board/`. If you change the model or a server option, also change the service files from step 7, then run `sudo systemctl daemon-reload` and `sudo systemctl restart math-llm math-embed`.

@@ -3,11 +3,11 @@
 
 Example:
     .venv\\Scripts\\python.exe laptop\\ocr_review.py \\
-        --parquet data\\textonly_100.parquet
+        --parquet data\\ocr\\source\\textonly_100.parquet
 
 The server binds to 127.0.0.1 by default. Review state and any edits are kept
 in data/ocr_review.json. Use the page's export button to write reviewed copies
-of train.jsonl and val.jsonl without overwriting the originals.
+under data/reviewed/ without overwriting the originals.
 """
 import argparse
 import base64
@@ -163,7 +163,16 @@ class ReviewApp:
     def export(self):
         outputs = []
         for source in self.input_paths:
-            target = source.with_name(f"{source.stem}_reviewed{source.suffix}")
+        data_root = ROOT / "data"
+        try:
+            relative = source.relative_to(data_root)
+        except ValueError:
+            relative = Path(source.name)
+        if relative.parts[0] == "ocr_batches":
+            target = data_root / "reviewed" / "batches" / relative.relative_to("ocr_batches")
+        else:
+            target = data_root / "reviewed" / "initial" / relative.name
+        target.parent.mkdir(parents=True, exist_ok=True)
             count = 0
             with open(source, encoding="utf-8") as src, open(target, "w", encoding="utf-8", newline="\n") as dst:
                 for line in src:
@@ -181,7 +190,7 @@ class ReviewApp:
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--parquet", default="data/textonly_100.parquet",
+    parser.add_argument("--parquet", default="data/ocr/source/textonly_100.parquet",
                         help="Parquet file containing the problem images")
     parser.add_argument("--input", nargs="+", default=["data/train.jsonl", "data/val.jsonl"],
                         help="JSONL files containing the OCR output")
