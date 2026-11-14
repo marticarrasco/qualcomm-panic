@@ -87,3 +87,39 @@ $$x - \frac{1}{10} = \frac{1}{10}x$$
 To solve for $x$, subtract $\frac{1}{10}x$ from both sides:
 $$x - \frac{1}{10}x = \frac{1}{10}$$
 $$\frac{9}{10}x = \frac{",83,128,8.84,28.88,7.55,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-1_2020_9,cat,1,True,D,A,0,"La Clàudia té 10 fulls. Cada full es divideix en 5 parts, per tant, cada full conté 5 peces. Si la Clàudia té 22 peces en total, el nombre de fulls és 22 ÷ 5 = 4.4, que no és un número de fulls. Perquè la resta sigui un número de peces, el total de peces (22) és múltiple de 5. 22 no és múltiple de 5, però 22 + 5 = 27, que sí és",96,128,8.0,30.06,8.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2017_26,eng,5,False,D,E,0,"The sequence is defined by $a_1 = 2$, $a_2 = 3$, and $a_n = (a_{n-1} \times a_{n-2}) \pmod{10}$ for $n \ge 3$.
+Calculating the first few terms:
+$a_1 = 2$
+$a_2 = 3$
+$a_3 = 2 \times 3 = 6$
+$a_4 = 3 \times 6 = 18 \equiv 8 \pmod{10}$
+$a_5 = 6",117,128,8.5,31.97,10.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2020_7,eng,6,True,E,C,0,"Maria starts with 10 pieces. She cuts 3 squares along their diagonals. Each cut creates 2 new vertices, so 3 cuts add $3 \times 2 = 6$ new vertices. The total number of vertices becomes $10 + 6 = 16$. The problem states she ends up with 42 vertices. This implies the remaining 7 pieces are triangles. The number of triangles is $42 - 16 = 26$.
+
+Answer: E",111,105,7.31,27.59,10.09,17.5,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2022_6,fra,6,True,B,B,1,"Sojournons à l'équation : $x^2 + x = 0$. Factorisons : $x(x+1) = 0$. Les solutions sont $x=0$ ou $x=-1$. Comparons avec les options : $x=-1$ correspond à l'option B.
+
+Answer: B",79,70,5.92,18.85,7.18,11.67,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2020_26,eng,6,True,D,C,0,"To find the maximum number of small cubes with exactly one face painted, we first determine the dimensions of the large cube. Since there are 64 identical small cubes, the side length of the large cube is $\sqrt[3]{64} = 4$.
+
+The total number of small cubes is $4 \times 4 \times 4 = 64$.
+The cubes are arranged in a $4 \times 4 \times 4$ grid.
+Let's analyze the number of cubes with exactly one face painted for each dimension:
+- **Top face**: There are 4 rows. Each row",97,128,7.79,30.15,8.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-0_2019_22,eng,0,True,D,D,1,"Let $S$ be the number of sheep and $C$ be the number of cows.
+From the problem, we have:
+1. $S = C + 8$ (Sheep are 8 more than cows)
+2. $C = \frac{1}{2}S$ (Cows are half the number of sheep)
+
+Substitute equation (2) into equation (1):
+$S = \frac{1}{2}S + 8$
+$S - \frac{1}{2}S = 8$
+$\frac{1}{2}S = ",93,128,7.6,29.78,8.45,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-3_2023_28,eng,3,False,D,D,1,"To find the average speed for the entire journey, we use the formula: $\text{Average Speed} = \frac{\text{Total Distance}}{\text{Total Time}}$.
+
+1.  **Calculate Total Distance**: The cyclist travels the same distance up and down.
+    $\text{Distance} = 15 \text{ km/h} \times 2 \text{ hours} = 30 \text{ km}$.
+
+2.  **Calculate Total Time**:
+    *   Time up: $\frac{30 \text{ km}}{15 \text{ km/h}} =",86,128,7.72,29.15,7.82,21.33,11.0,6.0,invalid_response,
