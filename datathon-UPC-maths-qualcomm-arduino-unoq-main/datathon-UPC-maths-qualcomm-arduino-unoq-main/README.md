@@ -722,7 +722,7 @@ On your laptop:
 python3 laptop/prepare_m3kang.py --languages eng,cat
 ```
 
-It downloads the first `high_quality` file of the dataset (393 MB, once), keeps English and Catalan, reads the options from each image, and splits the problems into training and validation sets. It takes about 15 minutes per language. If you stop it, run it again: it caches the OCR results in `data/.ocr_cache.jsonl`.
+It downloads the first `high_quality` file of the dataset (393 MB, once), keeps English and Catalan, reads the options from each image, and splits the problems into training and validation sets. It takes about 15 minutes per language. If you stop it, run it again: it caches the OCR results in `data/ocr/.ocr_cache.jsonl`.
 
 To test it quickly first, add `--limit 20`.
 
@@ -771,6 +771,16 @@ One problem per line in `data/train.jsonl` and `data/val.jsonl`:
 ```
 
 **Don't commit these files, or share them outside the datathon.** M3Kang is licensed for research use only. `.gitignore` already excludes them.
+
+### 9.5 Rebuild the dataset from OCR batches
+
+After OCR batches have been run, rebuild the cumulative `train.jsonl` and `val.jsonl` from the OCR cache:
+
+```powershell
+py -3.12 laptop\export_ocr_dataset.py
+```
+
+Only problems with an OCR cache entry are included. The split is stable by problem `id` (15% validation by default), so translations stay on the same side. `ocr_batch.py` refreshes these files after every batch. `eval.py` reads `data/val.jsonl` by default; use `--limit 0` to evaluate the entire validation split. `build_index.py` reads `data/train.jsonl` by default.
 
 ---
 

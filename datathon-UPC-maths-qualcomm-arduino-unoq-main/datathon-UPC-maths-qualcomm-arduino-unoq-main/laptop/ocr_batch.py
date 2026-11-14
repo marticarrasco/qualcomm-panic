@@ -16,10 +16,11 @@ from pathlib import Path
 import pyarrow.parquet as pq
 
 from prepare_m3kang import parse_options
+from export_ocr_dataset import export_dataset
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-CACHE_PATH = DATA / ".ocr_cache.jsonl"
+CACHE_PATH = DATA / "ocr" / ".ocr_cache.jsonl"
 
 
 def args_parser():
@@ -64,6 +65,29 @@ def read_cache(path):
     return results
 
 
+def read_saved_options(language):
+    """Treat problems already written to JSONL as completed even if the OCR cache is absent."""
+    paths = [
+        DATA / "train.jsonl", DATA / "val.jsonl",
+        DATA / "train_reviewed.jsonl", DATA / "val_reviewed.jsonl",
+    ]
+    batch_dir = DATA / "ocr_batches" / language
+    if batch_dir.exists():
+        paths.extend(sorted(batch_dir.glob("batch_*/*.jsonl")))
+    saved = {}
+    for path in paths:
+        if not path.is_file():
+            continue
+        with path.open(encoding="utf-8") as source:
+            for line in source:
+                if not line.strip():
+                    continue
+                row = json.loads(line)
+                if row.get("language") == language and row.get("id"):
+                    saved[f"{row['id']}|{language}"] = row.get("options") or {}
+    return saved
+
+
 def next_batch_number(folder):
     existing = []
     if folder.exists():
@@ -98,6 +122,9 @@ def main():
     all_rows = pq.read_table(parquet_path)
     unique_ids = {ids[i] for i in eligible}
     cache = read_cache(CACHE_PATH)
+    # The review/preparation JSONL is also a durable record of completed OCR.
+    # This matters if .ocr_cache.jsonl was removed after exporting the files.
+    cache.update(read_saved_options(language))
     done_ids = {problem_id for problem_id in unique_ids if f"{problem_id}|{language}" in cache}
     remaining_indices = [i for i in eligible if f"{ids[i]}|{language}" not in cache]
     total = len(unique_ids)
@@ -108,6 +135,8 @@ def main():
     print(f"Abans del lot: {done_before}/{total} fets ({pct_before:.1f}%) | {total-done_before} pendents")
     if not remaining_indices:
         print("No queden problemes per processar.")
+        print("Actualitzo train/val amb els resultats OCR de la memòria cau:")
+        export_dataset(parquet_path=parquet_path, val_fraction=args.val_fraction, out_dir=DATA)
         return
 
     chosen = remaining_indices[:args.size]
@@ -126,6 +155,7 @@ def main():
     n_train = n_val = 0
     started = time.time()
     DATA.mkdir(parents=True, exist_ok=True)
+    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     with CACHE_PATH.open("a", encoding="utf-8", newline="\n") as cache_file, \
             train_path.open("w", encoding="utf-8", newline="\n") as train_file, \
             val_path.open("w", encoding="utf-8", newline="\n") as val_file:
@@ -174,6 +204,8 @@ def main():
     print(f"\nLot desat a: {batch_dir}")
     print(f"JSONL: train={n_train}, val={n_val}; opcions OCR trobades en {ocr_successes}/{len(chosen)}")
     print(f"Acumulat OCR: {done_after}/{total} fets ({100*done_after/total:.1f}%) | {remaining_after} pendents")
+    print("\nActualitzo data/train.jsonl i data/val.jsonl amb tots els resultats OCR de la memòria cau:")
+    export_dataset(parquet_path=parquet_path, val_fraction=args.val_fraction, out_dir=DATA)
 
 
 if __name__ == "__main__":
