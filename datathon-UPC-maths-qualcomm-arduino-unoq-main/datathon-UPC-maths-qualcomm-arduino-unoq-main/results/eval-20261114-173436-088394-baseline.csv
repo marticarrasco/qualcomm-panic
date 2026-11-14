@@ -1,0 +1,9 @@
+eval_id,evaluated_at,problem_id,language,level,has_options,selected_answer,correct_answer,is_correct,input_tokens,output_tokens,elapsed_seconds,arduino_estimated_seconds,arduino_read_estimated_seconds,arduino_write_estimated_seconds,arduino_read_tokens_per_second,arduino_write_tokens_per_second,status,retrieved
+eval-20261114-173436-088394-baseline,2026-11-14T17:34:36.088394+01:00,lvl-1_2020_9,eng,1,True,D,A,0,84,128,15.83,28.97,7.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-173436-088394-baseline,2026-11-14T17:34:36.088394+01:00,lvl-1_2020_23,eng,1,True,C,C,1,103,112,13.59,28.03,9.36,18.67,11.0,6.0,ok,
+eval-20261114-173436-088394-baseline,2026-11-14T17:34:36.088394+01:00,lvl-0_2019_22,eng,0,True,D,D,1,93,128,14.88,29.78,8.45,21.33,11.0,6.0,invalid_response,
+eval-20261114-173436-088394-baseline,2026-11-14T17:34:36.088394+01:00,lvl-2_2017_17,eng,2,True,E,B,0,91,82,11.12,21.94,8.27,13.67,11.0,6.0,ok,
+eval-20261114-173436-088394-baseline,2026-11-14T17:34:36.088394+01:00,lvl-2_2021_11,eng,2,False,D,B,0,95,128,16.51,29.97,8.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-173436-088394-baseline,2026-11-14T17:34:36.088394+01:00,lvl-1_2018_18,eng,1,False,A,B,0,107,54,6.95,18.73,9.73,9.0,11.0,6.0,ok,
+eval-20261114-173436-088394-baseline,2026-11-14T17:34:36.088394+01:00,lvl-2_2020_7,eng,2,False,A,B,0,74,61,7.78,16.9,6.73,10.17,11.0,6.0,ok,
+eval-20261114-173436-088394-baseline,2026-11-14T17:34:36.088394+01:00,lvl-2_2016_6,eng,2,False,,B,,,,17.86,,,,11.0,6.0,interrupted,
