@@ -195,6 +195,13 @@
   .rung.absent .rname { text-decoration: line-through; }
   .rung.answer.used .dot { background: var(--ink); color: #fff; }
   .note { grid-column: 2; margin-top: 8px; padding: 12px 14px; border-radius: 4px 14px 14px 14px; background: var(--hi-soft); border: 1px solid #F0D766; font-size: 16px; line-height: 1.5; }
+  .note.ai { background: var(--pen-soft); border-color: #C3D2FA; border-radius: 4px 14px 14px 14px; }
+  .note.ai .q { display: block; font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.35; color: var(--ink); margin: 6px 0 2px; }
+  .ai-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--pen-ink); }
+  .ai-tag .chip { display: grid; grid-template-columns: repeat(3, 3px); gap: 1.5px; padding: 3px; border-radius: 4px; background: var(--led-bg); }
+  .ai-tag .chip i { width: 3px; height: 3px; border-radius: 50%; background: var(--led-on); }
+  .note + .note { margin-top: 8px; }
+  .note b.lead { display: block; font-size: 13px; color: var(--hi-ink); margin-bottom: 2px; }
   .note .small { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-2); }
   .note .ex { display: block; width: 100%; margin: 10px 0; padding: 0; border: 1px solid #E8D27A; border-radius: 10px; background: #fff; overflow: hidden; cursor: zoom-in; }
   .note .ex img { display: block; width: 100%; height: auto; }
@@ -411,8 +418,11 @@ const T = {
     needName: "Type your name first, so the tutor can remember your levels.",
     howTitle: "How the hints work", enlarge: "Enlarge", tapCap: "Tap the problem to read it bigger", close: "Close", viewerTip: "Pinch to zoom. Tap Close or press Esc to go back.",
     hint: "Give me a hint", hintMore: "Another hint", showAnswer: "Show me the answer", next: "Next problem", skip: "Skip this one",
-    rungs: ["Method", "A similar problem", "Rule two out", "A first step", "The answer"],
-    rungHow: ["How to think about this kind of problem", "An easier one that uses the same idea", "Two options that are wrong", "One sentence from the small on-board model", "Only if you ask, and it counts as not solved"],
+    rungs: ["A question to start", "A similar problem", "Rule two out", "A first step", "The answer"],
+    aiFrom: m => "Question from the AI" + (m ? " (" + m + ", runs on the board)" : ""),
+    aiNote: "Written by the AI for this problem. It may not always fit: use it to start thinking.",
+    methodFor: t => "Method for " + t,
+    rungHow: ["A question about your problem from the AI, and a method tip", "An easier one that uses the same idea", "Two options that are wrong", "One sentence from the small on-board model", "Only if you ask, and it counts as not solved"],
     ladderTitle: "Hint ladder", ladderIntro: "Climb only as far as you need.",
     exEasier: "Solve this easier one first; the same idea works in your problem.",
     exSame: "Solve this similar one first; the same idea works in your problem.",
@@ -451,8 +461,11 @@ const T = {
     needName: "Escriu primer el teu nom, perquè el tutor recordi els teus nivells.",
     howTitle: "Com funcionen les pistes", enlarge: "Amplia", tapCap: "Toca el problema per llegir-lo en gran", close: "Tanca", viewerTip: "Pessiga per ampliar. Toca Tanca o prem Esc per tornar.",
     hint: "Dona'm una pista", hintMore: "Una altra pista", showAnswer: "Ensenya'm la resposta", next: "Problema següent", skip: "Salta aquest",
-    rungs: ["Mètode", "Un problema semblant", "Descarta'n dues", "Un primer pas", "La resposta"],
-    rungHow: ["Com pensar aquest tipus de problema", "Un de més fàcil que fa servir la mateixa idea", "Dues opcions que són incorrectes", "Una frase del petit model de la placa", "Només si la demanes, i compta com a no resolt"],
+    rungs: ["Una pregunta per començar", "Un problema semblant", "Descarta'n dues", "Un primer pas", "La resposta"],
+    aiFrom: m => "Pregunta de la IA" + (m ? " (" + m + ", funciona a la placa)" : ""),
+    aiNote: "Escrita per la IA per a aquest problema. Pot no encaixar sempre: fes-la servir per començar a pensar.",
+    methodFor: t => "Mètode per a " + t,
+    rungHow: ["Una pregunta de la IA sobre el teu problema, i un consell de mètode", "Un de més fàcil que fa servir la mateixa idea", "Dues opcions que són incorrectes", "Una frase del petit model de la placa", "Només si la demanes, i compta com a no resolt"],
     ladderTitle: "Escala de pistes", ladderIntro: "Puja només fins on et calgui.",
     exEasier: "Resol primer aquest, que és més fàcil; la mateixa idea serveix per al teu problema.",
     exSame: "Resol primer aquest, que és semblant; la mateixa idea serveix per al teu problema.",
@@ -628,7 +641,9 @@ function drawLetters(p) {
 }
 function drawNote(h, fresh) {
   const cls = "note" + (fresh ? " fresh" : "");
-  if (h.kind === "tip") return `<div class="${cls}">${esc(h.text)}</div>`;
+  if (h.kind === "tip") return (h.question ? `<div class="${cls} ai"><span class="ai-tag"><span class="chip" aria-hidden="true">${"<i></i>".repeat(9)}</span>${esc(t().aiFrom(h.question_model))}</span>` +
+      `<span class="q">${esc(h.question)}</span><span class="small">${esc(t().aiNote)}</span></div>` : "") +
+    `<div class="${cls}"><b class="lead">${esc(t().methodFor(h.topic_name))}</b>${esc(h.text)}</div>`;
   if (h.kind === "example") return `<div class="${cls}">${esc(h.easier ? t().exEasier : t().exSame)}<span class="small">${esc(t().exWhere)}</span></div>`;
   if (h.kind === "eliminate") return `<div class="${cls}"><span class="letters-out">${h.letters.map(l => `<b>${esc(l)}</b>`).join("")}</span> ${esc(t().elText)}</div>`;
   if (h.kind === "nudge") return `<div class="${cls}">${esc(h.text)}<span class="small">${esc(t().nuNote)}</span></div>`;

@@ -15,6 +15,8 @@ From the project folder:
 
 ```bash
 python3 tutor/build_bank.py            # once: builds data/tutor.db (needs the embedding server on 8082)
+python3 tutor/write_questions.py --llm http://127.0.0.1:8083/v1/chat/completions
+                                       # once: the AI's rung-1 questions, data/tutor_questions.db (about 2 h on a laptop)
 python3 tutor/server.py                # http://127.0.0.1:8000
 python3 tutor/server.py --host 0.0.0.0 # reachable from phones and from the LED app
 python3 tutor/simulate.py              # simulated students and safety checks
@@ -63,6 +65,7 @@ targets) and Anthropic's `frontend-design` skill (one bold idea, no template loo
 | File | What it does |
 | --- | --- |
 | `build_bank.py` | Builds `data/tutor.db`: problems, topic, texts, vectors, neighbours, near-duplicates. |
+| `write_questions.py` | Asks the language model for one guiding question per problem and language, checks each one, writes `data/tutor_questions.db`. |
 | `topics.py` | The keyword topic classifier, topic names and the method tips (English and Catalan). |
 | `tutor.py` | The logic: student profile, next problem, hint ladder, summary. No web code. |
 | `server.py` | `http.server` JSON API, the page and the images. |
@@ -91,7 +94,15 @@ Each student has one level (0–7) per topic. No model is involved.
 
 Each rung reveals more than the one before. Only the last one shows the answer.
 
-1. **Method.** The topic and a short tip for that topic, written by hand in both languages. It never mentions the problem.
+1. **A question to start.** A guiding question about this problem, written by the AI
+   (Qwen3.5 2B, the model file that also runs on the board), followed by a method tip for
+   the topic, written by hand. The questions are written ahead of time by
+   `write_questions.py`, because the board writes about 2.5 tokens a second with the 2B model,
+   too slow to wait for. Each one must pass `check_question()`: one short question, no answer
+   words, no option letter, not the correct option's value, no number that is not in the
+   problem, not a copy of the problem's own question, nothing borrowed from the prompt's
+   examples. Up to three tries per problem; if none passes, the rung shows the tip alone.
+   The page labels the question as written by the AI and says it may not always fit.
 2. **A similar problem.** The closest easier problem of the same topic from the bank, shown as an image, with "solve this one first; the same idea works". Its answer appears only on a click. (At level 0 there is no easier one, so it is a similar problem of the same level.)
 3. **Rule two out.** Two letters that are not correct, chosen from the label by a fixed rule. Never the right letter, never one already tried, and at least two letters always stay open.
 4. **A first step (optional).** One sentence from the small model about how to start. It is written in a background thread when the student takes the first hint, stored in the student database, and shown only if it passes a code check: one short sentence, no "answer", no option letter ("A)", "option C"), not the correct option's value when the OCR options are known, and no number that is not already in the problem. For picture problems the model cannot see the figure, so this rung does not exist. If the model is off, slow or fails the check, the rung is simply absent; the page never waits.
@@ -165,9 +176,27 @@ On the development Mac (Python 3.14), 14 November 2026. Not yet measured on the 
 - API: one simulated student walked through 1,221 different problems over HTTP (the others were used as rung-2 examples or are near-duplicates), 8,245 replies, none contained the answer letter before the problem was solved or the answer was asked for.
 - Rung 4 on six text problems with the real model: five sentences passed the filter and one was rejected (it stated a result); about 1 s each on the Mac.
 
+**Rung-1 questions, checked by hand** (30 random problems, both languages, seed 7):
+
+| Model | Passed the check | Useful (English) | Repeats the question | Points the wrong way |
+| --- | --- | --- | --- | --- |
+| Qwen3.5 0.8B | 52 / 60 | about 8 / 30 | about 14 | about 6; Catalan mostly broken |
+| Qwen3.5 2B (used) | 59 / 60 | about 17 / 30 (11 good, 6 fair) | about 6 | about 6; Catalan readable |
+
+Good examples: "Which of the points A, B, C, D, or E has the same y-coordinate as another
+point?", "If you call the length of the shortest piece x, how can you express the length of
+the second piece in terms of x?". A misleading one: for an equilateral triangle overlapping
+a circle, "If you add the side length of the triangle and the diameter of the circle, what is
+the total length around the outside?".
+
 ## Limitations
 
 - **Not run on the board yet.** The timings above are from a laptop. The model sentence will take roughly 20–30 s on the board; it is generated in the background and skipped if it is not ready.
+- **About one AI question in five points the wrong way**, and some only repeat the problem.
+  The filter stops leaks, not bad advice. The page says so next to every question, and the
+  hand-written method tip is always shown below it.
+- **The questions are written on a laptop**, with the same model file as the board
+  (`Qwen_Qwen3.5-2B-Q4_K_M.gguf`), because doing all 3,494 on the board would take about a day.
 - **Topics are keyword guesses**, about 70% right on a hand check. A wrong topic means the method tip may not fit and the "similar problem" stays within the wrong topic.
 - **Small topics run dry.** Patterns (34 problems), Algebra (49, none below level 4) and Fractions (74) cannot fill a long session at one level; the tutor then serves another topic.
 - **The similar problem is similar in wording**, found with text embeddings. For picture problems with a short question ("Which piece is missing?") it may share little with the figure.

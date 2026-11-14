@@ -51,6 +51,7 @@ def parse_args(argv=None):
     p.add_argument("--bank", default="data/tutor.db", help="problem bank from build_bank.py")
     p.add_argument("--students", default="data/tutor_students.db", help="student profiles (created if missing)")
     p.add_argument("--images", default="data/full_noocr/images", help="folder with <id>_<language>.png")
+    p.add_argument("--questions", default="data/tutor_questions.db", help="rung-1 questions from write_questions.py (optional)")
     p.add_argument("--llm", default="http://127.0.0.1:8081/v1/chat/completions", help="language model for the optional rung 4")
     p.add_argument("--no-llm", action="store_true", help="never call the language model")
     p.add_argument("--host", default="127.0.0.1", help="use 0.0.0.0 to open it to your network")
@@ -160,7 +161,7 @@ def make_handler(tutor, images, quiet=False):
 
 def make_server(args):
     """Build the server without starting it (simulate.py uses this too)."""
-    tutor = Tutor(args.bank, args.students, llm_url=None if args.no_llm else args.llm)
+    tutor = Tutor(args.bank, args.students, llm_url=None if args.no_llm else args.llm, questions=args.questions)
     server = ThreadingHTTPServer((args.host, args.port), make_handler(tutor, args.images, args.quiet))
     return server, tutor
 
@@ -174,6 +175,7 @@ def main():
     found = sum(os.path.exists(os.path.join(args.images, f"{pid}_eng.png")) for pid in tutor.problems)
     print(f"{len(tutor.problems)} problems in the bank, {found} with an English image in {args.images}")
     print(f"Optional model sentence (rung 4): {'off' if args.no_llm else args.llm}")
+    print(f"Rung-1 questions from the model: {args.questions if os.path.exists(args.questions) else 'none (topic tips only)'}")
     print(f"Open http://{args.host}:{args.port} (Ctrl+C to stop)", flush=True)
     matrix.show("idle")
     try:

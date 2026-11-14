@@ -25,6 +25,7 @@ Standard library only.
 import hashlib
 import json
 import math
+import os
 import random
 import re
 import sqlite3
@@ -40,6 +41,8 @@ MAX_LEVEL = 7
 # In mixed mode the student stays this many problems on a topic before moving on
 BLOCK = 4
 RUNGS = ["tip", "example", "eliminate", "nudge", "reveal"]  # rung 1..5
+# How the model that wrote the rung-1 questions is named on the page
+MODEL_NAMES = {"qwen3.5-2b": "Qwen3.5 2B", "qwen3.5-0.8b": "Qwen3.5 0.8B"}
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS students (
@@ -111,6 +114,34 @@ def check_nudge(sentence, problem_text, correct_value=None):
     return sentence
 
 
+def check_question(text, problem_text, correct_value=None):
+    """Return the model's guiding question if it is safe to show, else None.
+
+    The same rules as check_nudge (short, no answer words, no option letter, no
+    correct value, no number that is not in the problem), and it must be one
+    question: it ends with "?" and asks only once."""
+    text = re.sub(r"\$([^$]{1,20})\$", r"\1", text or "")  # "$x$" -> "x": the page shows plain text
+    sentence = check_nudge(text, problem_text, correct_value)
+    if not sentence or not sentence.endswith("?") or sentence.count("?") > 2:
+        return None
+    if re.search(r"\b(solve|resol|calculate the answer|the result|el resultat|cannot see|can't see|no puc veure)\b|¿",
+                 sentence, re.IGNORECASE):
+        return None
+    # A question that only repeats the problem's own question does not help
+    words = lambda s: {w for w in re.findall(r"\w+", s.lower()) if len(w) > 3}
+    asked = [part for part in re.split(r"(?<=[.?!])\s+", problem_text) if part.strip().endswith("?")]
+    mine = words(sentence)
+    for part in asked or [problem_text.split(".")[-1]]:
+        theirs = words(part)
+        if mine and theirs and len(mine & theirs) / len(mine | theirs) >= 0.6:
+            return None
+    # Words from the made-up examples in the prompt must not leak into a real problem
+    for borrowed in ("frog", "granota", "well", "pou", "consecutive", "consecutius"):
+        if re.search(rf"\b{borrowed}\b", sentence, re.IGNORECASE) and not re.search(rf"\b{borrowed}\b", problem_text, re.IGNORECASE):
+            return None
+    return sentence
+
+
 def _locked(method):
     def wrapper(self, *args, **kwargs):
         with self.lock:
@@ -120,9 +151,14 @@ def _locked(method):
 
 
 class Tutor:
-    def __init__(self, bank="data/tutor.db", students="data/tutor_students.db", llm_url=None, seed=0):
-        """llm_url: the chat completions URL for the optional rung 4, or None to leave that rung out."""
+    def __init__(self, bank="data/tutor.db", students="data/tutor_students.db", llm_url=None, seed=0,
+                 questions="data/tutor_questions.db"):
+        """llm_url: the chat completions URL for the optional rung 4, or None to leave that rung out.
+        questions: the guiding questions written ahead of time by tutor/write_questions.py
+        (shown on rung 1); if the file is missing, rung 1 is the topic tip alone."""
         self.llm_url = llm_url
+        self.questions_path = questions
+        self._questions = None
         self.seed = seed
         self.lock = threading.RLock()
         self._load_bank(bank)
@@ -159,6 +195,20 @@ class Tutor:
         self.options = {(pid, lang): json.loads(options)
                         for pid, lang, options in db.execute("SELECT id, language, options FROM options")}
         db.close()
+
+    def _question(self, problem_id, language):
+        """The model's guiding question for this problem, or None. Read from the file on
+        each request, so questions written while the server runs appear at once."""
+        if self._questions is None:
+            if not self.questions_path or not os.path.exists(self.questions_path):
+                return None
+            self._questions = sqlite3.connect(f"file:{self.questions_path}?mode=ro", uri=True, check_same_thread=False)
+        try:
+            row = self._questions.execute("SELECT text, model FROM questions WHERE id = ? AND language = ? AND status = 'ok'",
+                                          (problem_id, language)).fetchone()
+        except sqlite3.Error:
+            return None
+        return (row[0], MODEL_NAMES.get(row[1], row[1] or "")) if row else None
 
     def info(self):
         counts = {topic: [len(self.pool.get((topic, level), ())) for level in range(MAX_LEVEL + 1)] for topic in TOPICS}
@@ -315,6 +365,9 @@ class Tutor:
             if kind == "tip":
                 hint["topic_name"] = NAMES[row["topic"]][language]
                 hint["text"] = TIPS[row["topic"]][language]
+                question = self._question(row["problem_id"], language)
+                if question:
+                    hint["question"], hint["question_model"] = question
             elif kind == "example":
                 other = self.problems[row["example_id"]]
                 hint.update(image=f"/image/{other['id']}_{language}.png", level=other["level"],
