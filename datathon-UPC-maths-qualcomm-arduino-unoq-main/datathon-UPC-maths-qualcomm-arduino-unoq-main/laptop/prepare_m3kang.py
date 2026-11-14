@@ -149,7 +149,8 @@ def main():
         from rapidocr_onnxruntime import RapidOCR
         ocr = RapidOCR()
 
-    cache_path = os.path.join(args.out, ".ocr_cache.jsonl")
+    cache_path = os.path.join(args.out, "ocr", ".ocr_cache.jsonl")
+    os.makedirs(os.path.dirname(cache_path), exist_ok=True)
     cache = {}
     if os.path.exists(cache_path):
         with open(cache_path) as f:
