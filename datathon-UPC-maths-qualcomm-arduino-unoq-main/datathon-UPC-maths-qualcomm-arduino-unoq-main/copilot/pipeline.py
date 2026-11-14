@@ -7,7 +7,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from . import reasoner, text_solver
-from .arithmetic import complete_options
+from .arithmetic import complete_options, numeric_options
 from .config import CONFIG, ROOT
 from .llm import URL, answer_letter
 from .priors import guess, median_choice
@@ -27,6 +27,9 @@ TEXT_RAG_SAME_LANGUAGE = CONFIG.get("TEXT_RAG_SAME_LANGUAGE", "1") == "1"
 TEXT_RAG_MIN_SCORE = float(CONFIG.get("TEXT_RAG_MIN_SCORE", "0"))
 TEXT_RAG_MAX_CHARS = int(CONFIG.get("TEXT_RAG_MAX_CHARS", "320"))
 TEXT_ROUTE = CONFIG.get("TEXT_ROUTE", "all")
+# Numeric options are a weak spot for the letter model and a strong spot for
+# the train-fitted ranker, so they can be routed without a model call.
+TEXT_NUMERIC_ROUTE = CONFIG.get("TEXT_NUMERIC_ROUTE", "model")
 UNCERTAIN_THRESHOLD = 0.29
 TEXT_BOARD_BUDGET = (float(CONFIG["ARDUINO_PROMPT_TOKENS_PER_SECOND"]),
                      float(CONFIG["ARDUINO_OUTPUT_TOKENS_PER_SECOND"]),
@@ -73,7 +76,7 @@ def _text_rag_index():
     return None
 
 
-def _solve_text(problem, deadline, url, exclude_id, retrieve):
+def _solve_text(problem, deadline, url, exclude_id, retrieve, text_rag=False):
     flag = problem.get("text_only")
     if flag is not None and str(flag).strip().casefold() in {"false", "0", "no"}:
         return reasoner.answer(problem, deadline, url)
@@ -86,6 +89,10 @@ def _solve_text(problem, deadline, url, exclude_id, retrieve):
     index = _train_index() if TEXT_TRAIN else None
     if index and (letter := index.answer(problem, exclude_id)):
         return letter, "train_match", "", {}
+    if TEXT_NUMERIC_ROUTE == "ranker" and numeric_options(problem) is not None:
+        from .option_ranker import probabilities
+        choices = probabilities(problem)
+        return max(choices, key=choices.get), "ranker", "", {}
     median = median_choice(problem)
     if TEXT_MEDIAN_BYPASS and median is not None:
         return median, "prior", "", {}
@@ -100,7 +107,7 @@ def _solve_text(problem, deadline, url, exclude_id, retrieve):
     answer, status, text, timings = text_solver.infer(
         problem, deadline, url, TEXT_PROFILE, TEXT_MAX_TOKENS, retrieve(),
         board_budget=TEXT_BOARD_BUDGET,
-        example_max_chars=TEXT_RAG_MAX_CHARS if use_text_rag else 0)
+        example_max_chars=TEXT_RAG_MAX_CHARS if text_rag else 0)
     return answer or prior, status, text, timings
 
 
@@ -147,7 +154,8 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
     try:
         if text_mode:
             letter, result["status"], model_output, timings = _solve_text(
-                problem, start + time_limit - MARGIN, llm_url, exclude_id, retrieve)
+                problem, start + time_limit - MARGIN, llm_url, exclude_id, retrieve,
+                text_rag=use_text_rag)
         elif budget_mode:
             letter, result["status"], model_output, timings = reasoner.answer(
                 problem, deadline=start + time_limit - MARGIN, url=llm_url)

@@ -83,6 +83,19 @@ class TextSolverTest(unittest.TestCase):
             result = pipeline.solve(row, time_limit=60)
         self.assertEqual((result["answer"], result["status"]), ("D", "prior"))
 
+    def test_numeric_route_uses_ranker_without_model(self):
+        row = problem("A numeric question", ("5", "1", "4", "3", "2"),
+                      id="numeric-route", text_only=True)
+        with patch.object(pipeline, "TEXT_TRAIN", ""), \
+                patch.object(pipeline, "TEXT_NUMERIC_ROUTE", "ranker"), \
+                patch.object(pipeline, "TEXT_MEDIAN_BYPASS", True), \
+                patch.object(pipeline, "ANSWER_MODE", "text"), \
+                patch.object(pipeline, "_text_rag_index", return_value=None), \
+                patch("copilot.text_solver.infer", side_effect=AssertionError("model called")):
+            result = pipeline.solve(row, time_limit=60)
+        self.assertEqual(result["status"], "ranker")
+        self.assertIn(result["answer"], "ABCDE")
+
     def test_budget_mode_uses_median_rule_even_when_it_returns_d(self):
         row = problem("A question", ("5", "1", "4", "3", "2"))
         with patch.object(reasoner, "stream_reasoning",

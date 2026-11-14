@@ -45,8 +45,8 @@ model routing and fallback. Incomplete OCR options are excluded from train
 indices and fitting. At inference an incomplete problem still gets an A–E
 answer to satisfy the contest interface.
 
-The model keeps the original three worked examples as a stable cacheable prefix.
-It generates at most **192 tokens**. The client uses actual prefill misses and
+The `shots` profile, used when the model is enabled, keeps the original three
+worked examples as a stable cacheable prefix. It generates at most **192 tokens**. The client uses actual prefill misses and
 generated tokens to stop around a **54 s estimate** (11 read tokens/s, 5.6
 write tokens/s, both based on prior board measurements) and has an independent
 **57 s wall-clock deadline**. Model timeouts and incomplete answers return the
@@ -66,9 +66,9 @@ The 100-row cohort contains 100 different problems. The 300-, 1,000- and
 are not independent test sets. Compare the row score and the mean over IDs,
 which weights each problem equally across its available translations.
 
-The default is based on the pinned 100-row comparison. The selective and
-batch modes are independently selectable because their gains depend on model
-runtime and how many translations the input contains.
+The ranker-first default is based on the 300-row cohort. The model profiles and
+the selective and batch modes are independently selectable because their gains
+depend on model runtime and how many translations the input contains.
 
 | Policy | Cohort | Correct | Mean over IDs |
 |---|---:|---:|---:|
@@ -88,8 +88,9 @@ runtime and how many translations the input contains.
 | Fast with translation reuse | 2,961 | 1,098/2,961 | 33.1% |
 | Qwen only on uncertain items, with translation reuse (Vulkan) | 2,961 | 1,176/2,961 | 34.4% |
 
-Four regression tests cover exact arithmetic, avoiding ambiguous choices,
-training retrieval, translation reuse, and cancellation. The default predictor
+Eight regression tests cover exact arithmetic, avoiding ambiguous choices,
+lexical and semantic retrieval, the median and numeric rules, translation reuse,
+and cancellation. The default predictor
 also passed its five-row smoke test with the real local model in Linux and
 returned valid CSV rows when the model was unavailable under Windows.
 
@@ -117,6 +118,49 @@ for batches with repeats; independent questions cannot share a solve.
 As a sanity check on Python overhead, the fast process in WSL loaded the
 1,000 inputs and train index in 1.23 s, used about 43 MiB peak RSS, and then
 answered the entire cohort in 0.39 s before CSV I/O. This is a laptop measure.
+
+## Retrieved few-shot experiment
+
+`TEXT_PROFILE=retrieved` replaces the fixed examples with up to three same-language
+examples found by BGE in the text-only, complete-option train set. The search runs
+locally, but retrieved question text is sent to Qwen and costs input tokens. Build
+the index with `python build_index.py --text-only --db data/index-text.db`; the
+profile defaults to `TEXT_RAG_K=3` and `TEXT_RAG_INDEX=data/index-text.db`.
+`build_index.py --batch` can increase the embedding batch size on a laptop.
+
+On the same 100 distinct validation problems, retrieved few-shot scored **31/100**
+against **40/100** for `shots`. It won 4 rows, lost 13 and tied 83. Its mean projected
+UNO Q time was **34.7 s**, p95 **54.3 s**, and worst **65.6 s**; 53 rows exceeded the
+54-second target and one exceeded the 60-second contest limit. The prompt budget
+was hit on 55 rows. Retrieved prompting used 29,666 input tokens across the cohort,
+compared with 8,046 for `shots`. The default therefore remains `shots`; the retrieved
+profile stays available for further prompt and retrieval experiments.
+
+## Ranker-first default
+
+The default now routes complete multiple-choice problems to the train-fitted
+option ranker (`TEXT_ROUTE=ranker`, `TEXT_MEDIAN_BYPASS=0`) and does not call
+Qwen. This is the measured best policy on the 300-row cohort:
+
+| Policy | Correct | Mean over IDs | Time |
+|---|---:|---:|---:|
+| Always D | 78/300 (26.0%) | 26.0% | 0 s |
+| Model-free prior (`priors.guess`) | 98/300 (32.7%) | — | 0 s |
+| Ranker, median bypass on | 104/300 (34.7%) | 31.0% | 0 s |
+| **Ranker, median bypass off (default)** | **113/300 (37.7%)** | **32.6%** | **0 s** |
+| Previous text hybrid (`shots`, model, bypass on) | 97/300 (32.3%) | — | — |
+
+The median rule is worse than the ranker exactly where it fires: **25/85
+(29.4%)** against **35/85 (41.2%)**. That is why `TEXT_MEDIAN_BYPASS=0` is now the
+default; the bypass remains available for comparison.
+
+On the same 50 English text-only problems, every model variant was at or below
+the ranker: `shots` 14/50, `retrieved` without grammar 15/50, retrieved with the
+one-line grammar 11/50, retrieved plus RAG k=3 11/50, `calc` 13/50, ranker 16/50.
+A 50-row hybrid (ranker for numeric options, model for text options) scored 18/50,
+but on the 300-row cohort it was 25/105 (23.8%) when stopped, so the 50-row gain
+did not transfer. The model remains available for `TEXT_ROUTE=all`/`uncertain`
+and for the tutor; the predictor defaults to the ranker.
 
 ## What was tried
 

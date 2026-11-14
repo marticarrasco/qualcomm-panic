@@ -254,6 +254,18 @@ def main():
         "text_max_tokens": int(CONFIG["TEXT_MAX_TOKENS"])
         if CONFIG.get("ANSWER_MODE") == "text" else None,
         "text_route": CONFIG.get("TEXT_ROUTE") if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_numeric_route": CONFIG.get("TEXT_NUMERIC_ROUTE")
+        if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_rag_k": int(CONFIG.get("TEXT_RAG_K", "0"))
+        if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_rag_same_language": CONFIG.get("TEXT_RAG_SAME_LANGUAGE") == "1"
+        if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_rag_min_score": float(CONFIG.get("TEXT_RAG_MIN_SCORE", "0"))
+        if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_rag_max_chars": int(CONFIG.get("TEXT_RAG_MAX_CHARS", "0"))
+        if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_rag_grammar": CONFIG.get("TEXT_RAG_GRAMMAR") == "1"
+        if CONFIG.get("ANSWER_MODE") == "text" else None,
         "text_translations": CONFIG.get("TEXT_TRANSLATIONS") == "1",
         "text_fallback": CONFIG.get("TEXT_FALLBACK") if CONFIG.get("ANSWER_MODE") == "text" else None,
         "text_median_bypass": CONFIG.get("TEXT_MEDIAN_BYPASS") == "1"

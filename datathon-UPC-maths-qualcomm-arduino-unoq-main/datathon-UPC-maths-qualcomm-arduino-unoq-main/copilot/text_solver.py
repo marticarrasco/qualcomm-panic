@@ -46,16 +46,18 @@ THINK = ("Solve the math problem. Work it out using as few tokens as possible. "
 THINK_PICK = ("Solve this math contest problem. Reason briefly, then output the letter "
               "of the correct option with no other visible text.")
 RETRIEVED = ("You solve multiple-choice math competition problems for school students. "
-             "Examples show a question and its correct answer value, without options or working. "
-             "Use a similar example only when its mathematical method applies. Work out the "
-             "new problem briefly. Never reply with a bare letter: first write one short "
-             "calculation or deduction, then finish with exactly 'Answer: X' using the correct "
-             "option letter A–E.")
+             "If solved examples are shown, use one only when its mathematical method applies; "
+             "never copy its letter. Solve the new problem: write one short calculation or "
+             "deduction, then finish with exactly 'Answer: X' using the correct option letter A–E.")
 CALC_FIRST = """Solve the math problem. Reply with Calc: followed by one arithmetic expression that gives the answer in the units of the options. Use + - * / **, parentheses and optionally gcd, lcm, comb, perm or factorial. For problems that cannot be expressed that way, reply Answer: followed by the correct choice.
 Equal split of 87 sweets among 3 children: Calc: 87/3
 Maximum area of a rectangle with perimeter 24: Calc: (24/4)**2
 Ways to select a team of 3 from 7: Calc: comb(7,3)
 Which option is a square? A) triangle B) circle C) square: Answer: C"""
+RETRIEVED_GRAMMAR = r'''
+root ::= work "Answer: " [A-E]
+work ::= [^\n]{0,240} "\n"
+'''
 CALC_GRAMMAR = r'''
 root ::= "Calc: " expr | "Answer: " [A-E]
 expr ::= term (space ("**" | [-+*/]) space term){0,20}
@@ -126,14 +128,19 @@ def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=
     if examples:
         if profile == "retrieved":
             for example in examples:
-                value = (example.get("options") or {}).get(example.get("label"),
-                                                             example.get("label", ""))
+                options = example.get("options") or {}
+                value = options.get(example.get("label"), example.get("label", ""))
                 question = " ".join(str(example.get("text") or "").split())
                 if example_max_chars and len(question) > example_max_chars:
                     question = question[:example_max_chars].rsplit(" ", 1)[0].rstrip() + " …"
+                choices = " ".join(f"{letter}) {options[letter]}"
+                                    for letter in "ABCDE" if letter in options)
+                content = "Question: " + question
+                if choices:
+                    content += "\nOptions: " + choices
                 messages.extend([
-                    {"role": "user", "content": "Question: " + question},
-                    {"role": "assistant", "content": "Answer value: " + str(value)},
+                    {"role": "user", "content": content},
+                    {"role": "assistant", "content": f"Work: {value}\nAnswer: {example['label']}"},
                 ])
         else:
             # Keep the fixed system prefix cached; examples are charged on each question.
@@ -158,6 +165,8 @@ def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=
     if profile == "calc":
         payload["grammar"] = CALC_GRAMMAR
         payload["max_tokens"] = min(max_tokens, 48)
+    if profile == "retrieved" and CONFIG.get("TEXT_RAG_GRAMMAR", "1") == "1":
+        payload["grammar"] = RETRIEVED_GRAMMAR
     output, timings, finish = "", {}, None
     options = numeric_options(problem) if profile in {"formula", "value", "calc"} else None
     try:
