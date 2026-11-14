@@ -7,12 +7,16 @@ import socket
 import time
 import urllib.error
 
+from . import reasoner
 from .config import CONFIG
 from .llm import URL, answer_letter
 
 TIME_LIMIT = float(CONFIG["TIME_LIMIT_SECONDS"])
 FALLBACK = CONFIG["FALLBACK_ANSWER"]
 MARGIN = 3.0  # seconds kept free for Python and for writing the answer
+# "budget": reason until a deadline, then salvage or fall back (copilot/reasoner.py).
+# "direct": one request to copilot/llm.py, as before.
+ANSWER_MODE = CONFIG.get("ANSWER_MODE", "direct")
 
 
 def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL,
@@ -23,6 +27,9 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
     added to the prompt as examples. Each example costs reading time.
     image_b64 and llm_url send the problem image to a vision server.
     """
+    budget_mode = ANSWER_MODE == "budget" and image_b64 is None
+    if budget_mode:
+        reasoner.warm_up(llm_url)  # once per run: the server caches the system prompt
     start = time.perf_counter()
     result = {"answer": FALLBACK, "status": "ok", "prompt_tokens": None,
               "completion_tokens": None, "model_output": None, "retrieved": "", "examples": []}
@@ -34,8 +41,12 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
             result["examples"] = hits
             result["retrieved"] = ";".join(f"{p['id']}:{s:.2f}" for s, p in hits)
         remaining = time_limit - (time.perf_counter() - start) - MARGIN
-        letter, timings, model_output = answer_letter(
-            problem, examples, timeout=max(remaining, 1.0), image_b64=image_b64, url=llm_url)
+        if budget_mode:
+            letter, result["status"], model_output, timings = reasoner.answer(
+                problem, deadline=start + time_limit - MARGIN, url=llm_url)
+        else:
+            letter, timings, model_output = answer_letter(
+                problem, examples, timeout=max(remaining, 1.0), image_b64=image_b64, url=llm_url)
         result["answer"] = letter
         result["model_output"] = model_output
         result["prompt_tokens"] = timings.get("prompt_n")
