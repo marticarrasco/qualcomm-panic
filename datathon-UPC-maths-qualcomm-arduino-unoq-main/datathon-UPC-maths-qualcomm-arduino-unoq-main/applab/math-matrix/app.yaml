@@ -1,0 +1,5 @@
+name: Math matrix
+icon: 🧮
+description: Shows the tutor's feedback on the LED matrix (tick, cross, hint, level)
+ports: []
+bricks: []
