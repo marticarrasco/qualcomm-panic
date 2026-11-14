@@ -1,0 +1,349 @@
+eval_id,evaluated_at,problem_id,language,level,has_options,selected_answer,correct_answer,is_correct,model_output,input_tokens,output_tokens,elapsed_seconds,arduino_estimated_seconds,arduino_read_estimated_seconds,arduino_write_estimated_seconds,arduino_read_tokens_per_second,arduino_write_tokens_per_second,status,retrieved
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-7_2013_3,eng,7,False,A,E,0,"A prism has 2 faces on each of its two bases. Therefore, the total number of faces is $2 \times 2013 = 4026$. The number of edges is equal to the number of faces, which is 4026. Answer: A",53,61,3.41,14.99,4.82,10.17,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2007_2,eng,5,True,E,A,0,"To find the number of rose bushes, we first determine the length of the path in meters. The path is 20 meters long, and the distance between consecutive bushes is 2 meters. The total length of the path is the sum of the distances between all consecutive bushes. Therefore, the number of bushes is $20 \div 2 = 10$.
+
+Answer: E",113,80,4.99,23.6,10.27,13.33,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2017_26,eng,4,True,D,E,0,"To solve this, we first determine the total length of the string. Simó cuts 12 times to get 12 equal parts, and Bàrbara cuts 8 times to get 8 equal parts. Since the string is the same length, the total length is $12 \times L = 8 \times L$, where $L$ is the length of one part. This means the total number of cuts made by Simó and Bàrbara is $12 + 8 = 20$.
+
+Carla cuts the string at all the marked points she sees. Since Simó and Bàrbara",141,128,7.31,34.15,12.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-3_2022_21,eng,3,True,D,E,0,"Let the ages of the three sisters be $x$, $y$, and $z$ with $x < y < z$.
+The average age of the three sisters is 10, so $x + y + z = 30$.
+The average age of one pair is 11, so the sum of the ages in that pair is $2 \times 11 = 22$.
+The average age of another pair is 12, so the sum of the ages in that pair is $2 \times 12 = 24$.
+
+Since the sisters have different ages, the",107,128,7.42,31.06,9.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2022_6,esp,6,True,B,B,1,"El enunciado contiene una contradicción matemática: si soy mayor que mi doble, mi doble debe ser menor que yo, lo cual es imposible. Por lo tanto, la pregunta es un error de redacción y la respuesta correcta es la única que no contradice la lógica de la pregunta original.
+
+Answer: B",72,65,3.89,17.38,6.55,10.83,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2017_11,eng,5,True,D,A,0,"To find the fraction of the total audience that are girls, we first determine the total number of people.
+1.  **Adults**: One-sixth of the audience are adults. Let the total audience be $T$. Then adults = $\frac{1}{6}T$.
+2.  **Children**: Two-fifths of the children are boys. Let the number of children be $C$. Then boys = $\frac{2}{5}C$.
+3.  **Total Audience**: The total audience is the sum of adults and children.
+    $T = \text{Adults} + \",85,128,7.24,29.06,7.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2012_1,eng,6,True,D,E,0,"To determine which expression does not have the property of replacing 8 with another positive number without changing the result, we evaluate each option:
+
+1.  **A) $(8+8+8):8$**:
+    *   Left side: $8+8+8 = 24$.
+    *   Right side: $24:8 = 3$.
+    *   Result: $3$.
+
+2.  **B) $8+(8:8)-8$**:
+    *   Left side: $8:8 = 1$.
+    *   Right side: $8",118,128,7.38,32.06,10.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-7_2018_19,eng,7,False,D,B,0,"Let the numbers on the balls be $n_1, n_2, n_3, n_4, n_5$ in increasing order: $3, 4, 5, 6, 7$.
+Natalia takes 3 balls. Let the numbers she picks be $a, b, c$.
+Ricard takes the remaining 2 balls. Let the numbers he picks be $d, e$.
+The condition is that the sum of the products $a \cdot b \cdot c$ and $d \cdot e$ is a prime number.
+We need to find the sum",140,128,7.39,34.06,12.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-2_2020_7,esp,2,True,E,B,0,"Si María tiene 10 hojas y las corta en 5 partes, cada corte divide la hoja en 2 piezas. Si hubiera solo 5 cortes, tendría 10 ÷ 5 = 2 hojas. Pero tiene 22 piezas, lo que significa que hay más de 5 cortes. Calculando: 22 - 2 = 20 piezas restantes. Si hay 20 piezas, la cantidad de hojas cortadas es 20 ÷ 2 = 10. Por lo tanto, cortó todas las hojas.
+
+Answer: E",85,120,7.2,27.73,7.73,20.0,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2023_3,eng,6,True,D,D,1,"To determine which number is odd, let's analyze the properties of odd integers $m$ and $n$.
+1.  **Product of Odd Integers**: The product of two odd integers is always odd.
+2.  **Sum of Odd Integers**: The sum of two odd integers is always even.
+3.  **Sum of Even and Odd Integers**: The sum of an even and an odd integer is always odd.
+
+Let's evaluate each option:
+*   A) $m \cdot (n+1)$: Since $m$ and $n+1$ are both odd, their product",80,128,8.05,28.6,7.27,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2011_14,esp,6,True,D,E,0,"El volumen del cubo más grande es $a^3$ y el del más pequeño es $(a+1)^3$. El agua vertida es la diferencia entre sus volúmenes: $a^3 - (a+1)^3 = a^3 - (a^3 + 3a^2 + 3a + 1) = -3a^2 - 3a - 1$. Como el volumen debe ser positivo, la diferencia de volumen es $3a^2 + 3a + 1$. Usando la fórmula de la diferencia de cubos $x^3 - y",147,128,9.62,34.69,13.36,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2011_27,eng,4,True,D,D,1,"To find the maximum number of points belonging to more than one circle, we need to consider the geometric arrangement of four circles.
+
+1.  **Two Circles**: Two circles intersect at exactly one point. This point is shared by both circles.
+2.  **Three Circles**: If we have three circles, the third circle must intersect the first two at two points each. However, the problem states that two of the circles have exactly one point in common. This implies that the third circle must intersect the first two at two points each.
+    *   Circle 1 intersects Circle 2 at 1 point.
+",83,128,8.96,28.88,7.55,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2012_4,eng,6,True,D,C,0,"Let $h$ be the height of the table.
+Let $A$ be Albert's height and $M$ be Miquel's height.
+From the first condition: $A = h + 80$.
+From the second condition: $M = h + 100$.
+Since Albert is standing on the table, his height is the table height plus his own height: $A = h + 80$.
+Since Miquel is standing on the ground, his height is just the table height: $M = h$.
+The problem states Albert is 80 cm taller than M",118,128,9.36,32.06,10.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-3_2021_15,eng,3,False,D,C,0,"Let $C$ be the number of coins and $D$ be the number of diamonds.
+Pirate 1 says: $C_1 = 8$, $D_1 = 6$. Since he told the truth, $C_1 = C$ and $D_1 = D$. So, $C = 8$ and $D = 6$.
+Pirate 2 says: $C_2 = 7$, $D_2 = 4$. Since he lied, $C_2 \neq C$ and $D_2 \neq D$.
+Pirate ",138,128,9.19,33.88,12.55,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2015_17,eng,6,True,D,A,0,"To find the minimum height $h$, we need to ensure the cube is completely submerged. This occurs when the top of the cube is at or below the water surface.
+
+1.  **Calculate the volume of the cube**:
+    The edge length of the cube is $2$ cm.
+    $$V_{\text{cube}} = 2^3 = 8 \text{ cm}^3$$
+
+2.  **Calculate the volume of the water**:
+    The container has a square base of $10$ cm $\times$ $10$ cm.
+    $$V_{\text",131,128,8.34,33.24,11.91,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2011_12,deu,4,True,D,B,0,"Die Zahl 2011 enthält 2, 0, 1, 1. Die Zahlen zwischen 1000 und 10000, die mit diesen Ziffern geschrieben werden können, sind: 2011, 2012, ..., 2019, 2100, ..., 2109, 2200, ..., 2209, 2210, ..., 2219.
+Die größte Zahl ist 2219.
+Die kleinste Zahl ist 2011",139,128,8.38,33.97,12.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-0_2016_8,eng,0,True,D,C,0,"To ensure we have at least one black ball, we need to consider the worst-case scenario where we take out as many non-black balls as possible. We have 10 red balls, 8 blue balls, and 11 black balls. The total number of balls is 29.
+
+The worst-case scenario is that we take out all the non-black balls first.
+- Number of non-black balls = 10 (red) + 8 (blue) = 18.
+- We take out 18 balls.
+- The number of black balls remaining is 11.
+- Since",101,128,7.62,30.51,9.18,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2021_10,eng,6,False,D,E,0,"Let the number be $x$. The problem states that subtracting $1/10$ from $x$ yields the same result as multiplying $x$ by $1/10$. This translates to the equation:
+$$x - \frac{1}{10} = \frac{1}{10}x$$
+To solve for $x$, subtract $\frac{1}{10}x$ from both sides:
+$$x - \frac{1}{10}x = \frac{1}{10}$$
+$$\frac{9}{10}x = \frac{",83,128,8.84,28.88,7.55,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-1_2020_9,cat,1,True,D,A,0,"La Clàudia té 10 fulls. Cada full es divideix en 5 parts, per tant, cada full conté 5 peces. Si la Clàudia té 22 peces en total, el nombre de fulls és 22 ÷ 5 = 4.4, que no és un número de fulls. Perquè la resta sigui un número de peces, el total de peces (22) és múltiple de 5. 22 no és múltiple de 5, però 22 + 5 = 27, que sí és",96,128,8.0,30.06,8.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2017_26,eng,5,False,D,E,0,"The sequence is defined by $a_1 = 2$, $a_2 = 3$, and $a_n = (a_{n-1} \times a_{n-2}) \pmod{10}$ for $n \ge 3$.
+Calculating the first few terms:
+$a_1 = 2$
+$a_2 = 3$
+$a_3 = 2 \times 3 = 6$
+$a_4 = 3 \times 6 = 18 \equiv 8 \pmod{10}$
+$a_5 = 6",117,128,8.5,31.97,10.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2020_7,eng,6,True,E,C,0,"Maria starts with 10 pieces. She cuts 3 squares along their diagonals. Each cut creates 2 new vertices, so 3 cuts add $3 \times 2 = 6$ new vertices. The total number of vertices becomes $10 + 6 = 16$. The problem states she ends up with 42 vertices. This implies the remaining 7 pieces are triangles. The number of triangles is $42 - 16 = 26$.
+
+Answer: E",111,105,7.31,27.59,10.09,17.5,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2022_6,fra,6,True,B,B,1,"Sojournons à l'équation : $x^2 + x = 0$. Factorisons : $x(x+1) = 0$. Les solutions sont $x=0$ ou $x=-1$. Comparons avec les options : $x=-1$ correspond à l'option B.
+
+Answer: B",79,70,5.92,18.85,7.18,11.67,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2020_26,eng,6,True,D,C,0,"To find the maximum number of small cubes with exactly one face painted, we first determine the dimensions of the large cube. Since there are 64 identical small cubes, the side length of the large cube is $\sqrt[3]{64} = 4$.
+
+The total number of small cubes is $4 \times 4 \times 4 = 64$.
+The cubes are arranged in a $4 \times 4 \times 4$ grid.
+Let's analyze the number of cubes with exactly one face painted for each dimension:
+- **Top face**: There are 4 rows. Each row",97,128,7.79,30.15,8.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-0_2019_22,eng,0,True,D,D,1,"Let $S$ be the number of sheep and $C$ be the number of cows.
+From the problem, we have:
+1. $S = C + 8$ (Sheep are 8 more than cows)
+2. $C = \frac{1}{2}S$ (Cows are half the number of sheep)
+
+Substitute equation (2) into equation (1):
+$S = \frac{1}{2}S + 8$
+$S - \frac{1}{2}S = 8$
+$\frac{1}{2}S = ",93,128,7.6,29.78,8.45,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-3_2023_28,eng,3,False,D,D,1,"To find the average speed for the entire journey, we use the formula: $\text{Average Speed} = \frac{\text{Total Distance}}{\text{Total Time}}$.
+
+1.  **Calculate Total Distance**: The cyclist travels the same distance up and down.
+    $\text{Distance} = 15 \text{ km/h} \times 2 \text{ hours} = 30 \text{ km}$.
+
+2.  **Calculate Total Time**:
+    *   Time up: $\frac{30 \text{ km}}{15 \text{ km/h}} =",86,128,7.72,29.15,7.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-3_2020_8,fra,3,False,E,E,1,"The question asks which operation results in an odd number. Without the specific options provided in the image, I cannot determine the exact answer. However, based on common arithmetic operations:
+- Addition of two odd numbers results in an even number.
+- Subtraction of two odd numbers results in an even number.
+- Multiplication of two odd numbers results in an odd number.
+- Division of two odd numbers results in either an odd or even number (not always odd).
+
+Since the options are not visible, I cannot select a specific letter.
+
+Answer: E",46,116,6.22,23.51,4.18,19.33,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2024_30,eng,5,True,E,D,0,"Anna rolled a normal die (1-6) 24 times. Since all numbers appeared at least once and 1 appeared more times than any other number, the counts must be $1, 1, 1, 1, 1, 24$. The sum is $1+1+1+1+1+24 = 30$. The maximum possible sum is $6 \times 24 = 144$.
+
+Answer: E",102,100,5.77,25.94,9.27,16.67,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2013_27,cat,5,False,D,B,0,"La successió és $a_n = a_{n-1} \times a_{n-2}$.
+Per a $n=1$: $a_1 = 1$.
+Per a $n=2$: $a_2 = 1 \times (-1) = -1$.
+Per a $n=3$: $a_3 = (-1) \times (-1) = 1$.
+Per a $n=4$: $a_4 = 1 \times (-1) = -1$.
+Per a $n=5$: $a_5 = (-1)",101,128,7.07,30.51,9.18,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2011_12,esp,4,True,D,B,0,"El número 2011 tiene 3 dígitos: 2, 0, 1. El número 2011 se puede escribir como $2 \times 10^3 + 0 \times 10^2 + 1 \times 10^1$. Los dígitos disponibles son 0, 1, 2. Para formar un número de 4 dígitos usando todos estos dígitos, se puede elegir el orden de los dígitos. El número más grande es $2010$ (orden: 2, 0, ",136,128,7.1,33.69,12.36,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2015_13,eng,5,True,D,A,0,"To solve this problem, we need to determine the signs for each asterisk in the equation $2015 - 2015 - 2015 = 0$ such that the equation holds true. Let the signs be $s_1, s_2, s_3$ where $s_i \in \{+, -\}$. The equation becomes:
+$$2015 + s_1 \cdot 2015 - 2015 - 2015 = 0$$
+Simplifying the expression:
+$$2015(1",102,128,6.76,30.6,9.27,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2013_27,deu,5,False,D,B,0,"Die Folge beginnt mit $a_1 = 1$, $a_2 = -1$, $a_3 = -1$, $a_4 = 1$.
+Die Regel lautet: $a_{n+2} = a_{n+1} \cdot a_n$.
+Die Summe der ersten 2013 Zahlen ist $S_{2013} = \sum_{n=1}^{2013} a_n$.
+Da die Folge periodisch ist (Periodenlänge 3), gilt $a_{n+3} = a_n$.
+Die Summe",97,128,6.64,30.15,8.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2023_27,eng,5,True,D,C,0,"The sequence is defined by the rule: $a_n$ is the smallest non-negative integer different from $a_1, a_2, a_3, a_4$.
+- $a_1 = 2$
+- $a_2 = 0$
+- $a_3 = 2$
+- $a_4 = 3$
+
+The next number $a_5$ must be different from 2, 0, and 3. The smallest non-negative integer not in $\{0, 2, 3\}$ is 1. So, $a_5",106,128,6.68,30.97,9.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-0_2024_17,eng,0,True,C,D,0,"The penguin catches 9 fish in total. She gives 5 to the first young and 4 to the second, meaning she ate 9 - 5 - 4 = 0 fish. The problem states that one young has eaten 26 fish. Since the total amount eaten is 0, the other young must have eaten 26 - 0 = 26 fish.
+
+Answer: C",117,86,4.82,24.97,10.64,14.33,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2016_29,eng,6,False,D,C,0,"To find the probability, we first determine the total number of possible outcomes when rolling two dice. Each die has 6 faces, so there are $6 \times 6 = 36$ possible outcomes.
+
+Next, we identify the outcomes where the product of the points is smaller than the sum of the points. Let the points on the dice be $x$ and $y$, where $x, y \in \{1, 2, 3, 4, 5, 6\}$.
+The condition is $xy < x + y$.
+
+Let's test the possible values for $x",64,128,6.4,27.15,5.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2011_8,eng,5,True,D,A,0,"Felix catches 12 fish in 3 days. Since he catches more each day, the number of fish caught on day 1 is the smallest, day 2 is the middle, and day 3 is the largest. The total is 12. The problem states that on day 3, he catches fewer fish than on the first two days combined. This means the sum of day 1 and day 2 must be greater than day 3. Since day 3 is the largest, it must be the smallest of the three values. Therefore, the number of fish on day 3 is 5.
+
+",96,128,6.76,30.06,8.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2012_7,eng,4,False,A,E,0,"The operation involves adding 6 to 3, then multiplying that sum by 2, and finally adding 1 to the result. This corresponds to the expression: $3 + 6 \times 2 + 1$.
+
+Answer: A",68,51,2.87,14.68,6.18,8.5,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2009_30,eng,6,False,D,D,1,"To find the number of peculiar primes, we first define the set of prime numbers:
+- Single-digit primes: 2, 3, 5, 7.
+- Multi-digit primes: 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97.
+
+A number",103,128,6.7,30.69,9.36,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-3_2016_12,eng,3,True,D,A,0,"To find the number of two-digit numbers where the tens digit is greater than the units digit, we consider the possible values for the tens digit. Since the number must be a two-digit number, the tens digit can range from 1 to 9.
+
+For each possible value of the tens digit ($t$), the units digit ($u$) must be a digit from 0 to 9 such that $t > u$.
+- If $t = 1$, then $u$ can be 0 (1 number: 10).
+- If $t = 2$, then $u$ can be",63,128,6.82,27.06,5.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2011_12,fra,4,True,D,B,0,"Pour écrire le nombre 2011 en utilisant les chiffres 0, 1, et 2, on doit former les trois chiffres 2, 0, et 1. La permutation des ces trois chiffres est $3! = 6$. Les combinaisons possibles sont : 201, 210, 200, 120, 102, 101. En comparant ces nombres avec 2011, on observe que 2011 est le plus grand. La différence entre le plus grand et le plus petit est donc $2",140,128,6.96,34.06,12.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2010_19,eng,5,False,D,E,0,"To determine which number is the largest, let's analyze the given equations:
+1. $a - 1 = b + 2$
+2. $b + 2 = c - 3$
+3. $c - 3 = d + 4$
+4. $d + 4 = e - 5$
+
+First, simplify the equations by moving the constants to the right side:
+1. $a = b + 3$
+2. $b = c + 5$
+3. $c = d + 7$
+4. $d = e + ",81,128,6.68,28.69,7.36,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2020_25,eng,4,True,D,C,0,"Let the four numbers on the sides of the square be $a, b, c, d$. The sum of the numbers on the sides is $a + b + c + d = 15$.
+The product of the numbers on the two sides meeting at a vertex is the product of the two adjacent numbers.
+Let the vertices be $V_1, V_2, V_3, V_4$.
+The products at the vertices are:
+- $P_1 = a \cdot b$
+- $P_2 = b \cdot c$
+- $P_3 = c \",109,128,6.78,31.24,9.91,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2011_12,cat,4,True,D,B,0,"El número 2011 es divideix en dos parts: 20 i 11. Els números que es poden escriure són els números enteros entre 1000 i 10000 que contenen les xifres 2, 0, i 1. Per a cada part de 20, els números possibles són 2000, 2010, 2020, 2030, 2040, 2050, 2060, 2070, 2",144,128,6.94,34.42,13.09,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-7_2011_20,eng,7,True,D,B,0,"Let $n$ be the total number of members in the chess club.
+Andreu's statement: ""All the members of our club, except five, are men.""
+This means the number of women is $n - 5$.
+Since the total number of members is $n$, the number of men is $n - (n - 5) = 5$.
+So, Andreu implies there are 5 men and $n-5$ women.
+
+Bru's statement: ""In every team of six members, there are at least four women.""
+This means the number of women in any group of",110,128,6.81,31.33,10.0,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2021_29,eng,5,False,D,B,0,"Let $L$ be the length of the bridge.
+Let $v_L$ be Llúís's walking speed and $v_A$ be Andreu's running speed.
+Let $t_1$ be the time it takes for them to meet.
+Let $t_2$ be the time it takes for them to reach the end of the bridge.
+
+**Step 1: Analyze the meeting point**
+If Llúís walked 150 meters toward Andreu, they would meet at the midpoint.
+Distance from midpoint to bridge end = $L/2$.
+So, $v_L",182,128,7.12,37.88,16.55,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2017_1,eng,5,False,A,E,0,"To find the time, we start with 8:17 PM and add 20 hours and 17 minutes. Since 20 hours is equivalent to 1 day, we add 1 day to the current time.
+
+1.  **Add 1 day**: 8:17 PM + 1 day = 8:17 PM on the next day.
+2.  **Add 17 minutes**: 8:17 PM + 17 minutes = 8:33 PM.
+
+Answer: A",60,115,5.8,24.62,5.45,19.17,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2013_3,eng,6,True,B,C,0,"Mrs. Margalida bought 4 packs of stickers. Since the offer is ""every sixth pack is free,"" she paid for 4 packs. The first 5 packs cost $1.00 each, and the 6th pack is free. Therefore, the total cost is $1.00.
+
+Answer: B",116,69,4.08,22.05,10.55,11.5,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-7_2013_8,eng,7,True,D,B,0,"Let $n$ be the number of villains captured by the fourth superhero.
+The total number of villains is 20.
+The first superhero captured 1 villain.
+The second superhero captured 2 villains.
+The third superhero captured 3 villains.
+The sum of the first three superheroes' captures is $1 + 2 + 3 = 6$.
+Therefore, the fourth superhero captured $20 - 6 = 14$ villains.
+The problem states that the fourth superhero captured ""more than any of the other five"" superheroes.
+This means the number of villains captured by the fourth superhero",98,128,6.58,30.24,8.91,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-2_2020_7,cat,2,False,A,B,0,"La Maria té 10 fulls. Cada full es divideix en 5 parts, per tant, cada full conté 5 peces. Si la Maria té 22 peces en total, el nombre de fulls és 22 ÷ 5 = 4 fulls. Answer: A",86,66,3.96,18.82,7.82,11.0,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-3_2021_13,eng,3,True,D,A,0,"Let $n$ be the number of students in the fourth class.
+The total number of students in the first three classes is $3 \times 28 = 84$.
+The total number of students in all four classes is $3 \times 28 + n = 84 + n$.
+The average number of students in all four classes is 26.
+So, the total number of students is $4 \times 26 = 104$.
+
+Equating the two totals:
+$84 + n = 104$
+$n = 104",106,128,7.19,30.97,9.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2021_26,eng,6,True,D,E,0,"We are given that $a$ and $b$ are perfect squares, so $a = x^2$ and $b = y^2$ for some non-negative integers $x, y$. The difference $a - b = x^2 - y^2 = (x - y)(x + y)$ is a prime number.
+
+Since the product of two integers is a prime number, both integers must be 1 and 1 (in the case of positive primes). Thus, we must have:
+1. $x - y = 1$
+2. $x + y = 1$
+
+",84,128,8.02,28.97,7.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2018_20,eng,5,True,D,E,0,"The dragon grows a new head every time a head is cut off. Therefore, the total number of heads is always one greater than the number of cuts made.
+- If 3 heads are cut, the total number of heads is $3 + 1 = 4$.
+- If 6 heads are cut, the total number of heads is $6 + 1 = 7$.
+- If 9 heads are cut, the total number of heads is $9 + 1 = 10$.
+- If 12 heads are cut, the total number of heads is $12 + 1 =",117,128,7.19,31.97,10.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2012_11,eng,5,True,D,A,0,"To find the smallest possible sum of two four-digit numbers formed using the digits 1, 2, 3, 4, 5, 6, 7, 8 exactly once, we should arrange the digits in descending order to minimize the sum.
+
+The sum of the two numbers will be:
+$S = (87654) + (76543)$
+$S = 164197$
+
+Comparing this result with the given options:
+A) 3825
+B) 3333
+C) 246",114,128,7.07,31.69,10.36,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2008_5,eng,4,True,D,A,0,"Let the four-digit number be represented as $d_1 d_2 d_3 d_4$.
+The problem states that each digit except the last one ($d_4$) is two units greater than the digit immediately to its right ($d_3$).
+This gives us the following constraints:
+1.  $d_2 = d_3 + 2$
+2.  $d_3 = d_4 + 2$
+3.  $d_1 = d_4 + 2$ (since $d_1$ is the first digit, it cannot be ",76,128,7.21,28.24,6.91,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2022_27,eng,5,True,D,A,0,"The track is circular with a circumference of 550 meters.
+The rabbit runs at $v_r = 10$ m/s in the positive direction.
+The hedgehog runs at $v_h = 1$ m/s in the negative direction initially.
+The hedgehog turns around and runs in the positive direction.
+Let $t$ be the time the hedgehog runs in the negative direction.
+The distance the hedgehog covers in the negative direction is $d_1 = 1 \times t = t$.
+The distance the rabbit covers in the positive direction is $d_2 = 1",162,128,7.99,36.06,14.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2019_15,eng,5,True,D,A,0,"Let the original fraction be $\frac{a}{b}$.
+The new fraction is $\frac{a + 0.4a}{b} = \frac{1.4a}{b}$.
+We want the new fraction to be double the original, so $\frac{1.4a}{b} = 2 \times \frac{a}{b}$.
+This simplifies to $1.4 = 2$, which is false.
+Let the new fraction be $\frac{a'}{b'}$.
+The problem states the new fraction is double the original.
+So, $\frac",85,128,7.1,29.06,7.73,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2016_19,eng,5,True,D,A,0,"A pyramid has $n$ vertices, $n-1$ edges, and $n-2$ faces. The sum is $n + (n-1) + (n-2) = 3n - 3$. For $n \ge 3$, the possible values are $3(3)-3=6$, $3(4)-3=9$, $3(5)-3=12$, $3(6)-3=15$, $3(7)-3=18$, $3(8)-3=21$, $3(9)-3=24$.",84,128,7.09,28.97,7.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2022_23,eng,5,False,A,D,0,"The total number of matches played is $20 \times 19 = 380$. Since each match results in a win (3 points), a loss (0 points), or a draw (1 point), the sum of points is always an integer. The maximum possible sum is $380 \times 3 = 1140$. The minimum possible sum is $380 \times 0 = 0$. The difference between the maximum and minimum is $1140 - 0 = 1140$.
+
+Answer: A",137,119,6.84,32.28,12.45,19.83,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2009_28,eng,6,True,D,A,0,"The Kangaroo starts at the origin $(0,0)$. It makes 10 successive jumps, each of which can be East, West, North, or South. Since there are 4 possible directions for each jump, the total number of possible outcomes for 10 jumps is $4^{10}$. Calculating this: $4^{10} = (2^2)^{10} = 2^{20} = 1,048,576$. This value is not among the options provided.
+
+Let's re-read the problem carefully. ""marked coordinate axes, one",128,128,7.12,32.97,11.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2013_27,esp,5,False,D,B,0,"La secuencia se genera con una regla de producto: $a_n = a_{n-1} \times a_{n-2}$.
+- $a_1 = 1$
+- $a_2 = -1$
+- $a_3 = (-1) \times 1 = -1$
+- $a_4 = (-1) \times (-1) = 1$
+- $a_5 = 1 \times (-1) = -1$
+- $a_6 = (-1) \times 1 = -1$
+- $a_",97,128,7.14,30.15,8.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-4_2015_4,eng,4,True,D,D,1,"Let $H$ be the weight of the heavier sack and $L$ be the weight of the lighter sack.
+When both sacks are placed together on one side, the total weight is $H + L$. This balances with 80 kg on the other side, so $H + L = 80$.
+When one sack is on each side, the difference in weights is $|H - L|$. The problem states that adding 20 kg to one side balances the scale, meaning the difference is 20 kg. So, $|H - L| = 20$.
+From the first",119,128,7.29,32.15,10.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-1_2020_9,deu,1,True,E,A,0,"Clàudia hat 10 Blätter. Sie schneidet sie in 5 Teile, also 2 Blätter pro Teil. Mit 22 Stück ergibt sich $22 \div 2 = 11$ Teile. Da sie 10 Blätter hat, hat sie $11 - 10 = 1$ extra Teil. Das bedeutet sie hat geschnitten $10 + 1 = 11$ Blätter.
+
+Answer: E",84,100,5.7,24.31,7.64,16.67,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-3_2020_8,cat,3,False,D,E,0,"The question asks for the operation that results in an odd number. In standard arithmetic, the sum of two numbers is odd if and only if one of them is odd and the other is even. The product of two numbers is odd if and only if both are odd. Without the specific options provided in the image, I cannot determine which one is correct. However, based on typical multiple-choice patterns for this specific question (often found in Spanish math competitions), the correct answer is usually the **sum** of two odd numbers (e.g., 3 + 5 = 8) or the **product** of two odd numbers (e",55,128,7.12,26.33,5.0,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2017_4,eng,5,True,D,B,0,"Let $C$ be the capacity of the tank in tons.
+When the tank is filled up to 25%, the amount of gasoline is $0.25C$.
+When 25% of the tank has been emptied, the remaining amount is $0.75C$.
+The problem states that the amount of gasoline in the remaining tank is 25 tons more than the amount in the full tank.
+So, we can set up the equation:
+$0.75C = 0.25C + 25$
+Subtract $0.25C$ from",102,128,6.91,30.6,9.27,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2014_9,cat,5,False,E,B,0,"The question asks for the result of the calculation that yields the largest value. Without the specific options provided in the image, I cannot determine which calculation is the largest. However, based on typical math competition patterns, the correct answer is usually the one that results in the highest number among the given choices.
+
+Answer: E",54,65,3.34,15.74,4.91,10.83,11.0,6.0,ok,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-5_2008_28,eng,5,True,D,B,0,"To find the minimum number of straight lines required to form angles of 10°, 20°, 30°, 40°, 50°, 60°, 70°, 80°, and 90° between each other, we can model this as a geometric arrangement.
+
+Let the angles between adjacent lines be denoted by $\theta_1, \theta_2, \dots, \theta_n$. The total angle around a point is $360^\circ$.
+The sum of the angles between adjacent lines is $360^\circ$.
+The given angles are $",112,128,7.02,31.51,10.18,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-1_2020_9,esp,1,True,D,A,0,"Clàudia inicia con 10 hojas y corta cada una en 5 partes, lo que le da 50 piezas iniciales. Con un total de 22 piezas restantes, las que ha cortado son $50 - 22 = 28$. Dividiendo entre 5, obtiene $28 \div 5 = 5.6$, lo cual no es un número entero, por lo que la pregunta contiene un error matemático. Sin embargo, si asumimos que la operación es $50 - 22 = 28$ y que la respuesta esperada es un",88,128,7.68,29.33,8.0,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-1_2016_14,eng,1,True,D,B,0,"Let the two numbers be $x$ and $y$. We are given:
+1. $x + y = 15$
+2. $x - y = 3$
+
+Adding the two equations:
+$x + y + x - y = 15 + 3$
+$2x = 18$
+$x = 9$
+
+Substituting $x = 9$ into the first equation:
+$9 + y = 15$
+$y = 6$
+
+The two numbers are 9 and 6.
+The product is $9 \times ",75,128,7.53,28.15,6.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-181756-419122-baseline-text-only,2026-11-14T18:17:56.419122+01:00,lvl-6_2015_13,eng,6,True,A,A,1,"Trimi claims he sees five ears. Since he is the only one claiming to see fewer than the others, and the others claim to see more, Trimi must be the one with the minimum number of visible ears. The others (Imi and Dimi) claim to see more than five, so they must have at least six ears. Therefore, Trimi has the minimum number of ears, which is 5.
+
+Answer: A",137,90,5.23,27.45,12.45,15.0,11.0,6.0,ok,

@@ -1,0 +1,6 @@
+id,language,answer,seconds,status
+sample-1,eng,C,14.82,ok
+sample-2,eng,B,11.85,ok
+sample-3,eng,C,16.58,ok
+sample-4,cat,C,12.1,ok
+sample-5,cat,D,18.36,invalid_response
