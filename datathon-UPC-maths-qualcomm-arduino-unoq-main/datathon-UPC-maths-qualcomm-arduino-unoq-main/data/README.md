@@ -1,46 +1,25 @@
-# Dades i OCR
+# M3Kang data (local, research use)
 
-Els fitxers de M3Kang tenen llicència d’ús per a recerca. No publiques els JSONL, les imatges, la memòria cau OCR ni l’índex de preguntes. Consulta la [fitxa del conjunt de dades](https://huggingface.co/datasets/qualcomm/M3Kang).
+`train.jsonl` and `val.jsonl` contain the `high_quality` M3Kang split across all four Parquet shards: 40,617 rows for 1,747 problems in 108 languages. Each problem is available in 2–100 languages; not every problem has all 108 translations. There is one row per `(id, language)`. Train has 33,843 rows / 1,466 problems; validation has 6,774 rows / 281 problems. The train/validation assignment is inherited by problem ID from the previous company set, so translations of the same problem stay in one split.
 
-## Estructura
+OCR options are shared across translations only when the English/Catalan option sets agree after whitespace normalization. This applies to 1,115 problem IDs; it fills 24,963 new-language rows and 60 previously blank English/Catalan rows. Where the source languages disagree (207 IDs), the original English/Catalan options are preserved and new-language rows are left empty; those cases are listed in `ocr_option_conflicts.jsonl`. Another 425 IDs have no recognized source options. In total, 27,607 rows have all five options. No OCR was run on the added-language images.
 
-```text
-data/
-├── README.md
-├── sample_problems.jsonl       # cinc preguntes inventades per a proves ràpides
-├── train.jsonl                 # conjunt inicial: 87 preguntes
-├── val.jsonl                   # conjunt inicial: 13 preguntes
-├── ocr_review.json             # estat del visor OCR; queda ací mentre el visor està obert
-├── ocr/
-│   ├── .ocr_cache.jsonl        # memòria cau OCR
-│   └── source/
-│       └── textonly_100.parquet # imatges originals del conjunt inicial
-├── ocr_batches/eng/            # lots OCR originals, separats per partició
-├── reviewed/
-│   ├── initial/                # exportació revisada del conjunt inicial
-│   ├── batches/eng/             # exportacions revisades, amb l’estructura dels lots
-│   └── all/                     # agregació per entrenament i validació
-└── diagnostics/lang_check/     # scripts i resultats de comprovacions exploratòries
+`m3kang_expansion_manifest.json` records the source revision and aggregate row counts. The source Parquet shards are cached by Hugging Face outside this directory. The `images/` folder contains the company source images already present before expansion (English and Catalan only).
+
+To create fixed, nested evaluation cohorts containing only `text_only=true` rows with complete A–E options, run from the project root:
+
+```powershell
+python laptop\create_val_cohorts.py
+python eval.py --input data/eval_sets/val_100.jsonl --name val100
+python eval.py --input data/eval_sets/val_text_only_all.jsonl --name val-text-only-all
 ```
 
-Els fitxers `train.jsonl` i `val.jsonl` a l’arrel continuen sent les entrades per defecte del pipeline. Els fitxers originals de cada lot es queden a `ocr_batches/`; les seues còpies exportades van a `reviewed/batches/`.
+The generator writes 100, 300, 500, and 1,000-row cohorts, the full 2,961-row text-only subset with options, and a manifest with the source hash and subgroup counts. It balances language and level, selects each problem ID once before adding its other language rows, and uses a fixed seed. The 100-row cohort has 100 distinct problems; the larger cohorts cover every problem ID and language available in this filtered subset. If `val.jsonl` changes, the generator stops unless `--force` is passed to replace the cohorts. This filter applies to `eval_sets`; the full `train.jsonl` and `val.jsonl` remain unchanged.
 
-## Fitxers agregats actuals
+To rebuild from the pinned M3Kang revision, run from the project root:
 
-`reviewed/all/train.jsonl` i `reviewed/all/val.jsonl` ajunten el conjunt inicial i els lots anglesos disponibles. Es regeneren a partir dels originals i no tenen IDs repetits ni solapament entre particions. Recompte actual: **1.184 preguntes d’entrenament i 227 de validació**.
-
-Per avaluar totes les preguntes angleses de validació agregades, des de la carpeta arrel del projecte executa:
-
-```bash
-python eval.py --input data/reviewed/all/val.jsonl --languages eng --limit 0 --name current-eng-all
+```powershell
+.\.venv\Scripts\python.exe laptop\expand_m3kang_languages.py
 ```
 
-## Què vol dir «revisat»
-
-Els registres poden tindre l’estat `reviewed` a `ocr_review.json` i aparéixer a les exportacions. **Aquesta marca no certifica que una persona haja comparat el text amb la imatge.** Les lectures OCR es conserven tal com s’han extret, llevat de correccions fetes al visor. `options` pot ser `{}` si l’OCR no ha detectat opcions textuals.
-
-Per revisar visualment el lot inicial, segueix [OCR_REVIEW.md](../laptop/OCR_REVIEW.md). El visor usa `train.jsonl` i `val.jsonl` per defecte i exporta a `reviewed/initial/`. Els lots addicionals requereixen passar també les seues imatges i JSONL al visor.
-
-## Proves exploratòries
-
-`diagnostics/lang_check/` conté materials auxiliars per a comprovacions entre idiomes; no forma part del pipeline d’entrenament ni d’avaluació.
+M3Kang is licensed for research use. This repository includes derived train/validation JSONL data, evaluation cohorts, and the OCR conflict report for research evaluation. Source images, the local OCR cache, and the embedding index remain local. See the [dataset card](https://huggingface.co/datasets/qualcomm/M3Kang) for the source terms.

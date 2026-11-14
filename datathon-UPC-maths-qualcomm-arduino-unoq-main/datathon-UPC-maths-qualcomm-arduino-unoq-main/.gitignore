@@ -1,3 +1,9 @@
 .venv/
 .venv-py313-backup/
 __pycache__/
+
+# Keep M3Kang images and local OCR caches out of Git; text datasets/cohorts are shared deliberately.
+data/*
+!data/README.md
+!data/sample_problems.jsonl
+data_backup_before_company/
