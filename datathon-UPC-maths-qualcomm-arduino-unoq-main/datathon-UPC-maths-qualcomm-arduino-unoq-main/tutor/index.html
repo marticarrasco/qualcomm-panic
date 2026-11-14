@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maths tutor</title>
+<style>
+  :root { --ink: #1d2433; --muted: #5c667a; --line: #dfe3ea; --bg: #f4f6f9; --card: #fff;
+          --ok: #1b7f3b; --ok-bg: #e6f4ea; --bad: #b3261e; --bad-bg: #fce8e6; --accent: #1f5fbf; --accent-bg: #e8f0fe;
+          --warm: #8a5a00; --warm-bg: #fff4d6; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 17px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--ink); background: var(--bg); }
+  header { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 16px; background: var(--card); border-bottom: 1px solid var(--line); }
+  header h1 { font-size: 19px; margin: 0 auto 0 0; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+  section { min-width: 0; max-width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+  h2 { font-size: 17px; margin: 0 0 10px; }
+  button, select, input { font: inherit; color: inherit; }
+  button { cursor: pointer; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 9px 16px; min-height: 44px; }
+  button:hover:not(:disabled) { border-color: var(--accent); }
+  button:disabled { cursor: default; opacity: .45; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  button.link { border: 0; background: none; color: var(--accent); padding: 6px 8px; min-height: 0; text-decoration: underline; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 3px solid #9dbcf0; outline-offset: 2px; }
+  input[type=text], select { border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; min-height: 44px; background: #fff; width: 100%; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; min-height: 38px; padding: 6px 12px; }
+  .seg button.on { background: var(--accent-bg); color: var(--accent); font-weight: 600; }
+  .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 16px; }
+  .form label { display: flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--muted); }
+  .muted { color: var(--muted); font-size: 14px; }
+  .strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .chip { font-size: 14px; padding: 4px 12px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); white-space: nowrap; }
+  .chip.on { background: var(--accent-bg); border-color: transparent; color: var(--accent); font-weight: 600; }
+  .chip.streak { background: var(--warm-bg); border-color: transparent; color: var(--warm); font-weight: 600; margin-left: auto; }
+  .bar { display: inline-block; width: 56px; height: 6px; border-radius: 3px; background: var(--line); vertical-align: middle; margin-left: 6px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--accent); }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .frame { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: #fff; }
+  .frame img { display: block; width: 100%; min-width: 760px; height: auto; }
+  .frame.zoom img { min-width: 1500px; }
+  .letters { display: flex; gap: 10px; margin: 16px 0 8px; }
+  .letters button { flex: 1; max-width: 120px; height: 62px; font-size: 26px; font-weight: 700; border-width: 2px; border-radius: 12px; }
+  .letters button.right { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); opacity: 1; }
+  .letters button.wrong { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); text-decoration: line-through; }
+  .letters button.out { background: var(--bg); color: var(--muted); text-decoration: line-through; }
+  .feedback { min-height: 30px; margin: 8px 0; padding: 8px 12px; border-radius: 8px; font-weight: 600; }
+  .feedback:empty { padding: 0; }
+  .feedback.ok { background: var(--ok-bg); color: var(--ok); }
+  .feedback.bad { background: var(--bad-bg); color: var(--bad); }
+  .feedback.info { background: var(--accent-bg); color: var(--accent); }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .ladder { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; padding: 0; list-style: none; }
+  .ladder li { font-size: 13px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); background: #fff; }
+  .ladder li.used { background: var(--warm-bg); border-color: transparent; color: var(--warm); font-weight: 600; }
+  .ladder li.absent { text-decoration: line-through; opacity: .5; }
+  .hint { border-left: 4px solid #e2b93b; background: #fffaf0; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 10px; }
+  .hint b.tag { display: block; font-size: 13px; color: var(--warm); text-transform: uppercase; letter-spacing: .04em; }
+  .hint .frame { margin: 8px 0; }
+  .confirm { background: var(--warm-bg); border-radius: 8px; padding: 10px 14px; margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+  th { font-size: 13px; color: var(--muted); font-weight: 600; }
+  td.num, th.num { text-align: right; }
+  .advice { background: var(--accent-bg); border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+  .keys { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  kbd { border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: #fff; font: inherit; font-size: 12px; }
+  .hidden { display: none !important; }
+  @media (max-width: 600px) {
+    body { font-size: 16px; } main { padding: 10px; } section { padding: 12px; }
+    .letters { gap: 6px; } .letters button { height: 56px; font-size: 22px; }
+    .keys { display: none; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1 data-t="title"></h1>
+  <span id="who" class="chip hidden"></span>
+  <span class="seg" id="lang"><button data-lang="eng">English</button><button data-lang="cat">Català</button></span>
+  <button class="link" id="teacherLink" data-t="teacher"></button>
+  <button class="link hidden" id="changeLink" data-t="change"></button>
+</header>
+<main>
+  <section id="setup">
+    <h2 data-t="welcome"></h2>
+    <p class="muted" data-t="intro"></p>
+    <div class="form">
+      <label><span data-t="name"></span><input type="text" id="name" maxlength="40" autocomplete="off"></label>
+      <label><span data-t="topic"></span><select id="topic"></select></label>
+      <label><span data-t="startLevel"></span><select id="level"></select></label>
+    </div>
+    <button class="primary" id="startBtn" data-t="start"></button>
+    <span class="muted" id="setupError"></span>
+  </section>
+
+  <section id="progress" class="hidden"><div class="strip" id="strip"></div></section>
+
+  <section id="play" class="hidden">
+    <div class="meta" id="meta"></div>
+    <div class="frame" id="frame"><img id="image" alt=""></div>
+    <div class="muted" data-t="zoom"></div>
+    <div class="letters" id="letters"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div class="actions">
+      <button id="hintBtn"></button>
+      <button class="primary" id="nextBtn"></button>
+      <span class="muted" id="hintCount"></span>
+    </div>
+    <ol class="ladder" id="ladder"></ol>
+    <div id="confirm" class="confirm hidden">
+      <span data-t="sure"></span>
+      <button id="revealYes" data-t="yesShow"></button>
+      <button id="revealNo" data-t="noTry"></button>
+    </div>
+    <div id="hints"></div>
+    <div class="keys" data-t="keys"></div>
+  </section>
+
+  <section id="teacher" class="hidden">
+    <h2 data-t="teacherTitle"></h2>
+    <div class="form"><label><span data-t="student"></span><select id="studentPick"></select></label></div>
+    <div id="summary"></div>
+    <button id="teacherClose" data-t="back"></button>
+  </section>
+</main>
+
+<script>
+"use strict";
+const T = {
+  eng: {
+    title: "Maths tutor", teacher: "Teacher view", change: "Change student or topic", welcome: "Let's practise",
+    intro: "Read the problem, think, and choose A to E. If you are stuck, ask for a hint: each hint helps a bit more, and none of them gives the answer away.",
+    name: "Your name", topic: "Topic", startLevel: "Starting level", start: "Start", mixed: "Mixed (a bit of everything)",
+    levelN: n => "Level " + n, levelHelp: n => "Level " + n + (n === 0 ? " (easiest)" : n === 7 ? " (hardest)" : ""),
+    needName: "Please type your name first.", zoom: "Tap the picture to make it bigger. On a phone you can slide it sideways.",
+    hint: "Hint", hintMore: "Another hint", showAnswer: "Show me the answer", next: "Next problem", skip: "Skip this one",
+    hintsUsed: n => n ? n + (n === 1 ? " hint used" : " hints used") : "",
+    rungs: ["Method", "A similar problem", "Rule two out", "A first step", "The answer"],
+    tipTag: t => "Hint 1 · Method for " + t, exTag: "Hint 2 · A similar problem", elTag: "Hint 3 · Rule two out", nuTag: "Hint 4 · A first step",
+    exEasier: "Solve this easier one first; the same idea works in your problem.",
+    exSame: "Solve this similar one first; the same idea works in your problem.",
+    exShow: "Show the answer of this example", exAnswer: a => "The answer of this example is " + a + ". Why? Now use the same idea above.",
+    elText: l => "These are not correct: " + l.join(" and ") + ". Why can they not be right? Check the others.",
+    nuNote: "A suggestion from the small on-board model. It may be imperfect: use it only as a way to start.",
+    noMore: "No more hints. Try once more, or ask to see the answer.",
+    sure: "Seeing the answer counts as not solved. Sure?", yesShow: "Yes, show it", noTry: "No, I'll try again",
+    right: "Correct! Well done.", up: n => "First try: the next one is harder (level " + n + ").",
+    stay: n => "You got there with help: one more at level " + n + ".", downSolved: n => "Solved after several tries: next one at level " + n + ".",
+    wrong: ["Not yet. Look again: what exactly is being asked?", "Not that one. Take a hint, or check your working step by step.", "Still not right. A hint will help."],
+    failed: "Not this time. Let's leave it and try a similar, easier one. (You can still ask to see the answer.)",
+    revealed: a => "The answer is " + a + ". Next comes a similar, easier problem to build up the idea.",
+    tries: n => n ? n + (n === 1 ? " wrong try" : " wrong tries") : "", streak: n => "Streak: " + n,
+    picture: "needs the picture", finished: "You have done every problem in the bank. Amazing!",
+    keys: "Keyboard: <kbd>A</kbd>–<kbd>E</kbd> answer · <kbd>H</kbd> hint · <kbd>N</kbd> next",
+    teacherTitle: "Teacher view: session summary", student: "Student", back: "Back", noStudents: "No students yet.",
+    thTopic: "Topic", thLevel: "Next level", thMastered: "Solved cleanly up to", thAttempts: "Problems", thAcc: "Solved", thHints: "Hints",
+    totals: t => t.attempts + " problems, " + t.correct + " solved" + (t.accuracy === null ? "" : " (" + Math.round(100 * t.accuracy) + "%)") + ", " + t.hints + " hints, best streak " + t.best_streak + ".",
+    practise: "What to practise next", recent: "Latest problems", thProblem: "Problem", thResult: "Result", thTries: "Wrong tries", thTime: "Time",
+    status: { solved: "solved", failed: "not solved", revealed: "answer shown", skipped: "skipped" },
+    error: "Could not reach the tutor. Is the server running?"
+  },
+  cat: {
+    title: "Tutor de matemàtiques", teacher: "Vista del professor", change: "Canvia d'alumne o de tema", welcome: "Practiquem",
+    intro: "Llegeix el problema, pensa i tria d'A a E. Si t'encalles, demana una pista: cada pista ajuda una mica més, i cap no et dona la resposta.",
+    name: "El teu nom", topic: "Tema", startLevel: "Nivell inicial", start: "Comença", mixed: "Barrejat (una mica de tot)",
+    levelN: n => "Nivell " + n, levelHelp: n => "Nivell " + n + (n === 0 ? " (el més fàcil)" : n === 7 ? " (el més difícil)" : ""),
+    needName: "Escriu primer el teu nom.", zoom: "Toca la imatge per fer-la més gran. Al mòbil la pots fer lliscar de costat.",
+    hint: "Pista", hintMore: "Una altra pista", showAnswer: "Ensenya'm la resposta", next: "Problema següent", skip: "Salta aquest",
+    hintsUsed: n => n ? n + (n === 1 ? " pista usada" : " pistes usades") : "",
+    rungs: ["Mètode", "Un problema semblant", "Descarta'n dues", "Un primer pas", "La resposta"],
+    tipTag: t => "Pista 1 · Mètode per a " + t, exTag: "Pista 2 · Un problema semblant", elTag: "Pista 3 · Descarta'n dues", nuTag: "Pista 4 · Un primer pas",
+    exEasier: "Resol primer aquest, que és més fàcil; la mateixa idea serveix per al teu problema.",
+    exSame: "Resol primer aquest, que és semblant; la mateixa idea serveix per al teu problema.",
+    exShow: "Ensenya la resposta d'aquest exemple", exAnswer: a => "La resposta d'aquest exemple és " + a + ". Per què? Ara fes servir la mateixa idea a dalt.",
+    elText: l => "Aquestes no són correctes: " + l.join(" i ") + ". Per què no poden ser-ho? Comprova les altres.",
+    nuNote: "Un suggeriment del petit model de la placa. Pot no ser perfecte: fes-lo servir només per començar.",
+    noMore: "No hi ha més pistes. Torna-ho a provar, o demana veure la resposta.",
+    sure: "Veure la resposta compta com a no resolt. Segur?", yesShow: "Sí, ensenya-la", noTry: "No, ho torno a provar",
+    right: "Correcte! Molt bé.", up: n => "A la primera: el següent és més difícil (nivell " + n + ").",
+    stay: n => "Ho has aconseguit amb ajuda: un altre al nivell " + n + ".", downSolved: n => "Resolt després d'uns quants intents: el següent al nivell " + n + ".",
+    wrong: ["Encara no. Torna-ho a mirar: què es demana exactament?", "Aquesta no. Demana una pista, o repassa els passos un per un.", "Encara no és correcte. Una pista t'ajudarà."],
+    failed: "Aquesta vegada no. Deixem-lo i provem-ne un de semblant i més fàcil. (Encara pots demanar veure la resposta.)",
+    revealed: a => "La resposta és " + a + ". Ara ve un problema semblant i més fàcil per treballar la idea.",
+    tries: n => n ? n + (n === 1 ? " intent fallat" : " intents fallats") : "", streak: n => "Ratxa: " + n,
+    picture: "cal mirar la figura", finished: "Has fet tots els problemes del banc. Increïble!",
+    keys: "Teclat: <kbd>A</kbd>–<kbd>E</kbd> resposta · <kbd>H</kbd> pista · <kbd>N</kbd> següent",
+    teacherTitle: "Vista del professor: resum de la sessió", student: "Alumne", back: "Torna", noStudents: "Encara no hi ha alumnes.",
+    thTopic: "Tema", thLevel: "Nivell següent", thMastered: "Resolt net fins al", thAttempts: "Problemes", thAcc: "Resolts", thHints: "Pistes",
+    totals: t => t.attempts + " problemes, " + t.correct + " resolts" + (t.accuracy === null ? "" : " (" + Math.round(100 * t.accuracy) + "%)") + ", " + t.hints + " pistes, millor ratxa " + t.best_streak + ".",
+    practise: "Què practicar ara", recent: "Últims problemes", thProblem: "Problema", thResult: "Resultat", thTries: "Intents fallats", thTime: "Temps",
+    status: { solved: "resolt", failed: "no resolt", revealed: "resposta mostrada", skipped: "saltat" },
+    error: "No s'ha pogut contactar amb el tutor. El servidor està engegat?"
+  }
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+let lang = store.get("tutor.lang") === "cat" ? "cat" : "eng";
+let info = null, state = null, name = "", busy = false, noMoreHints = false, feedback = { text: "", kind: "" };
+const t = () => T[lang];
+
+async function api(path, body) {
+  const options = body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {};
+  const response = await fetch(path, options);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || response.status);
+  return data;
+}
+
+function setFeedback(text, kind) { feedback = { text, kind }; $("feedback").textContent = text; $("feedback").className = "feedback " + (text ? kind : ""); }
+
+function drawStatic() {
+  document.documentElement.lang = lang === "cat" ? "ca" : "en";
+  document.title = t().title;
+  document.querySelectorAll("[data-t]").forEach(el => { el.innerHTML = t()[el.dataset.t]; });
+  document.querySelectorAll("#lang button").forEach(b => b.classList.toggle("on", b.dataset.lang === lang));
+  if (info) {
+    const topic = $("topic").value, level = $("level").value || "1";
+    $("topic").innerHTML = `<option value="">${esc(t().mixed)}</option>` +
+      info.topics.map(x => `<option value="${x.key}">${esc(x.names[lang])} (${x.count})</option>`).join("");
+    $("topic").value = topic;
+    $("level").innerHTML = info.levels.map(n => `<option value="${n}">${esc(t().levelHelp(n))}</option>`).join("");
+    $("level").value = level;
+  }
+}
+
+function drawStrip() {
+  const current = state.problem ? state.problem.topic : null;
+  const chips = state.profile.map(p =>
+    `<span class="chip ${p.topic === current ? "on" : ""}">${esc(p.topic_name)} · ${esc(t().levelN(p.level))}` +
+    `<span class="bar"><i style="width:${Math.round(100 * (p.level + 1) / 8)}%"></i></span></span>`);
+  if (state.problem && !state.profile.some(p => p.topic === current))
+    chips.push(`<span class="chip on">${esc(state.problem.topic_name)} · ${esc(t().levelN(state.problem.level))}</span>`);
+  chips.push(`<span class="chip streak">${esc(t().streak(state.student.streak))}</span>`);
+  $("strip").innerHTML = chips.join("");
+}
+
+function drawHint(h) {
+  if (h.kind === "tip") return `<div class="hint"><b class="tag">${esc(t().tipTag(h.topic_name))}</b>${esc(h.text)}</div>`;
+  if (h.kind === "example") return `<div class="hint"><b class="tag">${esc(t().exTag)} · ${esc(t().levelN(h.level))}</b>` +
+    `${esc(h.easier ? t().exEasier : t().exSame)}<div class="frame"><img src="${esc(h.image)}" alt=""></div>` +
+    (h.answer ? `<b>${esc(t().exAnswer(h.answer))}</b>` : `<button id="exampleBtn">${esc(t().exShow)}</button>`) + `</div>`;
+  if (h.kind === "eliminate") return `<div class="hint"><b class="tag">${esc(t().elTag)}</b>${esc(t().elText(h.letters))}</div>`;
+  if (h.kind === "nudge") return `<div class="hint"><b class="tag">${esc(t().nuTag)}</b>${esc(h.text)}<div class="muted">${esc(t().nuNote)}</div></div>`;
+  return "";
+}
+
+function drawProblem() {
+  const p = state.problem;
+  $("who").textContent = state.student.name;
+  drawStrip();
+  if (!p) { $("play").classList.add("hidden"); return; }
+  $("play").classList.remove("hidden");
+  $("meta").innerHTML = `<span class="chip on">${esc(p.topic_name)}</span><span class="chip">${esc(t().levelN(p.level))}</span>` +
+    (p.text_only ? "" : `<span class="chip">${esc(t().picture)}</span>`) +
+    (p.tries ? `<span class="chip">${esc(t().tries(p.tries))}</span>` : "");
+  const src = p.image.replace(/_(eng|cat)\.png$/, "_" + lang + ".png");
+  if ($("image").getAttribute("src") !== src) { $("image").src = src; $("frame").classList.remove("zoom"); $("frame").scrollLeft = 0; }
+  $("letters").innerHTML = "ABCDE".split("").map(letter => {
+    let cls = "", off = p.closed;
+    if (p.label === letter) cls = "right";
+    else if (p.tried.includes(letter)) { cls = "wrong"; off = true; }
+    else if (p.eliminated.includes(letter)) { cls = "out"; off = true; }
+    return `<button data-letter="${letter}" class="${cls}" ${off ? "disabled" : ""}>${letter}</button>`;
+  }).join("");
+  const used = p.hints.map(h => h.kind), kinds = ["tip", "example", "eliminate", "nudge", "reveal"];
+  $("ladder").innerHTML = kinds.map((kind, i) => {
+    const cls = used.includes(kind) || (kind === "reveal" && p.status === "revealed") ? "used" : (kind === "nudge" && !p.nudge_possible ? "absent" : "");
+    return `<li class="${cls}">${i + 1}. ${esc(t().rungs[i])}</li>`;
+  }).join("");
+  $("hints").innerHTML = p.hints.slice().reverse().map(drawHint).join("");
+  const canReveal = p.status === "failed" || p.status === "skipped" || (!p.closed && noMoreHints);
+  $("hintBtn").textContent = canReveal ? t().showAnswer : (p.hints.length ? t().hintMore : t().hint);
+  $("hintBtn").disabled = p.status === "solved" || p.status === "revealed";
+  $("nextBtn").textContent = p.closed ? t().next : t().skip;
+  $("nextBtn").className = p.closed ? "primary" : "";
+  $("hintCount").textContent = t().hintsUsed(p.hints.length);
+  $("feedback").textContent = feedback.text;
+}
+
+function show(view) {
+  for (const id of ["setup", "progress", "play", "teacher"]) $(id).classList.add("hidden");
+  if (view === "setup") $("setup").classList.remove("hidden");
+  if (view === "play") { $("progress").classList.remove("hidden"); $("play").classList.remove("hidden"); }
+  if (view === "teacher") $("teacher").classList.remove("hidden");
+  $("who").classList.toggle("hidden", view !== "play");
+  $("changeLink").classList.toggle("hidden", view !== "play");
+}
+
+async function step(path, body, after) {
+  if (busy) return;
+  busy = true;
+  try {
+    const data = await api(path, body);
+    state = { student: data.student, problem: data.problem, profile: data.profile };
+    if (after) after(data);
+    drawProblem();
+  } catch (error) {
+    setFeedback(error instanceof TypeError ? t().error : String(error.message), "bad");
+  } finally { busy = false; }
+}
+
+function start() {
+  name = $("name").value.trim();
+  if (!name) { $("setupError").textContent = t().needName; $("name").focus(); return; }
+  $("setupError").textContent = "";
+  store.set("tutor.name", name);
+  noMoreHints = false; setFeedback("", "");
+  step("/api/start", { name, language: lang, topic: $("topic").value, level: Number($("level").value) }, () => show("play"));
+}
+
+function answer(letter) {
+  const p = state && state.problem;
+  if (!p || p.closed || p.tried.includes(letter) || p.eliminated.includes(letter)) return;
+  $("confirm").classList.add("hidden");
+  step("/api/answer", { name, choice: letter }, data => {
+    if (data.correct) {
+      const line = data.outcome === "up" ? t().up(data.level_after) : data.outcome === "stay" ? t().stay(data.level_after) : t().downSolved(data.level_after);
+      setFeedback(t().right + " " + line, "ok");
+    } else if (data.closed) setFeedback(t().failed, "bad");
+    else setFeedback(t().wrong[Math.min(data.problem.tries, t().wrong.length) - 1], "bad");
+  });
+}
+
+function hint() {
+  const p = state && state.problem;
+  if (!p || p.status === "solved" || p.status === "revealed") return;
+  if (p.closed || noMoreHints) { $("confirm").classList.remove("hidden"); return; }
+  step("/api/hint", { name }, data => {
+    if (!data.hint) { noMoreHints = true; setFeedback(t().noMore, "info"); }
+  });
+}
+
+function reveal() {
+  $("confirm").classList.add("hidden");
+  step("/api/reveal", { name }, data => setFeedback(t().revealed(data.label), "info"));
+}
+
+function next() {
+  if (!state || !state.problem) return;
+  noMoreHints = false; setFeedback("", ""); $("confirm").classList.add("hidden");
+  step("/api/next", { name }, data => { if (data.finished) setFeedback(t().finished, "ok"); window.scrollTo(0, 0); });
+}
+
+async function teacher(pick) {
+  show("teacher");
+  try {
+    const students = await api("/api/students");
+    if (!students.length) { $("studentPick").innerHTML = ""; $("summary").innerHTML = `<p class="muted">${esc(t().noStudents)}</p>`; return; }
+    const chosen = pick || $("studentPick").value || name || students[0].name;
+    $("studentPick").innerHTML = students.map(s => `<option value="${esc(s.name)}">${esc(s.name)} (${s.solved}/${s.problems})</option>`).join("");
+    $("studentPick").value = students.some(s => s.name === chosen) ? chosen : students[0].name;
+    const s = await api("/api/summary?name=" + encodeURIComponent($("studentPick").value) + "&language=" + lang);
+    const dash = v => v === null || v === undefined || v < 0 ? "–" : v;
+    $("summary").innerHTML = `<p>${esc(t().totals(s.totals))}</p>` +
+      `<div class="advice"><b>${esc(t().practise)}:</b> ${esc(s.practise_next)}</div>` +
+      `<div class="frame" style="border:0"><table><tr><th>${esc(t().thTopic)}</th><th class="num">${esc(t().thLevel)}</th><th class="num">${esc(t().thMastered)}</th>` +
+      `<th class="num">${esc(t().thAttempts)}</th><th class="num">${esc(t().thAcc)}</th><th class="num">${esc(t().thHints)}</th></tr>` +
+      s.profile.map(p => `<tr><td>${esc(p.topic_name)}</td><td class="num">${p.level}</td><td class="num">${dash(p.mastered)}</td>` +
+        `<td class="num">${p.attempts}</td><td class="num">${p.correct} (${Math.round(100 * p.accuracy)}%)</td><td class="num">${p.hints}</td></tr>`).join("") +
+      `</table></div><h2 style="margin-top:16px">${esc(t().recent)}</h2>` +
+      `<div class="frame" style="border:0"><table><tr><th>${esc(t().thProblem)}</th><th>${esc(t().thTopic)}</th><th class="num">${esc(t().levelN(""))}</th>` +
+      `<th>${esc(t().thResult)}</th><th class="num">${esc(t().thTries)}</th><th class="num">${esc(t().thHints)}</th><th class="num">${esc(t().thTime)}</th></tr>` +
+      s.recent.map(r => `<tr><td>${esc(r.id)}</td><td>${esc(r.topic_name)}</td><td class="num">${r.level}</td><td>${esc(t().status[r.status] || r.status)}</td>` +
+        `<td class="num">${r.wrong_tries}</td><td class="num">${r.hints}</td><td class="num">${r.seconds === null ? "–" : Math.round(r.seconds) + " s"}</td></tr>`).join("") +
+      `</table></div>`;
+  } catch (error) { $("summary").innerHTML = `<p class="muted">${esc(t().error)}</p>`; }
+}
+
+$("lang").addEventListener("click", e => {
+  if (!e.target.dataset.lang) return;
+  lang = e.target.dataset.lang; store.set("tutor.lang", lang); drawStatic();
+  if (!$("teacher").classList.contains("hidden")) teacher();
+  else if (state && !$("play").classList.contains("hidden")) { feedback = { text: "", kind: "" }; step("/api/start", { name, language: lang, topic: state.student.topic_choice || "" }); }
+});
+$("startBtn").addEventListener("click", start);
+$("name").addEventListener("keydown", e => { if (e.key === "Enter") start(); });
+$("letters").addEventListener("click", e => { if (e.target.dataset.letter) answer(e.target.dataset.letter); });
+$("hintBtn").addEventListener("click", hint);
+$("nextBtn").addEventListener("click", next);
+$("revealYes").addEventListener("click", reveal);
+$("revealNo").addEventListener("click", () => $("confirm").classList.add("hidden"));
+$("frame").addEventListener("click", () => $("frame").classList.toggle("zoom"));
+$("hints").addEventListener("click", e => { if (e.target.id === "exampleBtn") step("/api/example", { name }); });
+$("teacherLink").addEventListener("click", () => teacher());
+$("studentPick").addEventListener("change", () => teacher($("studentPick").value));
+$("teacherClose").addEventListener("click", () => show(state ? "play" : "setup"));
+$("changeLink").addEventListener("click", () => show("setup"));
+document.addEventListener("keydown", e => {
+  if (e.ctrlKey || e.metaKey || e.altKey || /^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if ($("play").classList.contains("hidden") || !$("teacher").classList.contains("hidden")) return;
+  const key = e.key.toUpperCase();
+  if ("ABCDE".includes(key) && key.length === 1) answer(key);
+  else if (key === "H") hint();
+  else if (key === "N" && state && state.problem && state.problem.closed) next();
+});
+
+(async function init() {
+  $("name").value = store.get("tutor.name") || "";
+  drawStatic();
+  try { info = await api("/api/info"); drawStatic(); } catch (error) { $("setupError").textContent = t().error; }
+  show("setup");
+  // A link like /?name=Aina&lang=cat&topic=counting&level=2 starts straight away
+  const q = new URLSearchParams(location.search);
+  if (q.get("lang") === "cat" || q.get("lang") === "eng") { lang = q.get("lang"); drawStatic(); }
+  if (q.get("topic")) $("topic").value = q.get("topic");
+  if (q.get("level")) $("level").value = q.get("level");
+  if (q.get("name")) { $("name").value = q.get("name"); start(); }
+})();
+</script>
+</body>
+</html>
