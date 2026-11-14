@@ -1,0 +1,150 @@
+# Maths tutor (Teaching)
+
+A tutor that runs entirely on the Arduino UNO Q and guides a student through
+M3Kang (Kangaroo) problems **without giving the answer away**. Python standard
+library only, offline, English and Catalan.
+
+The small on-board language model cannot solve these problems (about chance), so
+it is never the source of truth. The right answer comes from the dataset label,
+similar problems come from an embedding search done once when the bank is built,
+and every teaching decision is a plain rule you can read in `tutor.py`.
+
+## Run it
+
+From the project folder:
+
+```bash
+python3 tutor/build_bank.py            # once: builds data/tutor.db (needs the embedding server on 8082)
+python3 tutor/server.py                # http://127.0.0.1:8000
+python3 tutor/server.py --host 0.0.0.0 # reachable from phones and from the LED app
+python3 tutor/simulate.py              # simulated students and safety checks
+```
+
+- `build_bank.py --check 30` also prints 30 random problems with their topic and the keywords that fired.
+- `server.py --no-llm` leaves out the optional model sentence (rung 4). Everything else works without any model server.
+- `server.py --students PATH` chooses where student profiles are kept (default `data/tutor_students.db`).
+- A link such as `/?name=Aina&lang=cat&topic=counting&level=2` starts a session directly.
+- Keyboard: `A`–`E` answer, `H` hint, `N` next problem.
+
+The page shows the problem image (which already contains the question, the five
+options and any figure) and five A–E buttons, so picture problems work too and no
+OCR or vision model is needed.
+
+## Files
+
+| File | What it does |
+| --- | --- |
+| `build_bank.py` | Builds `data/tutor.db`: problems, topic, texts, vectors, neighbours, near-duplicates. |
+| `topics.py` | The keyword topic classifier, topic names and the method tips (English and Catalan). |
+| `tutor.py` | The logic: student profile, next problem, hint ladder, summary. No web code. |
+| `server.py` | `http.server` JSON API, the page and the images. |
+| `index.html` | The whole page in one file. No CDN, no external fonts or scripts. |
+| `matrix.py` | The hook for the 8x13 LED matrix. |
+| `simulate.py` | Simulated students and the safety checks. |
+
+## How the next problem is chosen
+
+Each student has one level (0–7) per topic. No model is involved.
+
+| What happened | Next problem |
+| --- | --- |
+| Solved on the first try with at most one hint | Same topic, one level up, the most similar problem there |
+| Solved after one wrong try, or with two or more hints | Same topic, same level |
+| Not solved, answer shown, or two or more wrong tries | Same topic, one level down, the most similar problem to the one missed |
+
+- A problem is never repeated to the same student. Problems shown as a rung-2 example and near-duplicates (cosine ≥ 0.97; the same problem is reused at neighbouring levels) count as seen.
+- If the topic has no unseen problem within one level of the target, the next problem comes from another topic at the student's level, rather than a repeat or a problem that is far too hard.
+- "Mixed" practice stays four problems on a topic and then moves to the least practised one.
+- A topic never tried starts at the student's average level in the topics already tried.
+- A problem closes without showing the answer once only two letters are left (for example after three wrong tries), because one more guess would give it away.
+
+## The hint ladder
+
+Each rung reveals more than the one before. Only the last one shows the answer.
+
+1. **Method.** The topic and a short tip for that topic, written by hand in both languages. It never mentions the problem.
+2. **A similar problem.** The closest easier problem of the same topic from the bank, shown as an image, with "solve this one first; the same idea works". Its answer appears only on a click. (At level 0 there is no easier one, so it is a similar problem of the same level.)
+3. **Rule two out.** Two letters that are not correct, chosen from the label by a fixed rule. Never the right letter, never one already tried, and at least two letters always stay open.
+4. **A first step (optional).** One sentence from the small model about how to start. It is written in a background thread when the student takes the first hint, stored in the student database, and shown only if it passes a code check: one short sentence, no "answer", no option letter ("A)", "option C"), not the correct option's value when the OCR options are known, and no number that is not already in the problem. For picture problems the model cannot see the figure, so this rung does not exist. If the model is off, slow or fails the check, the rung is simply absent; the page never waits.
+5. **The answer.** Only after "Show me the answer" and a confirmation. Counted as not solved, and the next problem is easier.
+
+After a wrong answer the page says it is not right, crosses out that letter and offers the next hint. It never shows the answer.
+
+## API and the LED matrix
+
+`server.py` lists every route in its docstring. The label of the current problem
+is only sent after the student solved it or asked for it.
+
+After each step the server calls `tutor.matrix.show(event, **info)`. Events:
+`thinking`, `correct`, `wrong`, `hint`, `level`, `idle`. The LED app can poll
+
+```
+GET /api/matrix  ->  {"event": "correct", "level": 3, "seq": 17, "time": 1794680000.0}
+```
+
+`seq` goes up by one on every new event and `level` is the last level seen (0–7).
+A hint adds `"rung": 1..5`. In-process code can use `matrix.on_event(function)` instead.
+
+## Measured
+
+On the development Mac (Python 3.14), 14 November 2026. Not yet measured on the board.
+
+**Bank.** 1,747 problems, 3,494 images. Build time 54 s, of which about 43 s is embedding. 52 near-duplicate pairs. 14,427 neighbour links, 37 (0.3%) filled from another topic.
+
+| Topic | Problems |
+| --- | --- |
+| Geometry: area, perimeter, angles | 447 |
+| Shapes, solids & spatial puzzles | 320 |
+| Arithmetic & word problems | 302 |
+| Number properties | 192 |
+| Time, money & measures | 119 |
+| Counting & probability | 108 |
+| Logic & strategy | 102 |
+| Fractions & percentages | 74 |
+| Algebra & functions | 49 |
+| Patterns & sequences | 34 |
+
+**Topic classifier, checked by hand.** 30 random problems (`--check 30`, seed 42): 21 clearly right (70%), 3 debatable, 6 wrong. Typical mistakes: a logic problem with no logic keyword falls back to another topic, and one word decides too much ("area" in a doubling story, "circles" in a number puzzle). Two rules were adjusted after that check and the sample was not re-drawn, so treat 70% as the figure.
+
+**Simulation** (`python3 tutor/simulate.py`, 30 problems per student, starting level 2):
+
+| Student | Topic | Target | Estimate | Mean level, last 10 | Settled at | On topic | Repeats | ms/step |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| exact L=1 | geometry: measure | 1 | 1 | 1.0 | step 1 | 100% | 0 | 0.25 |
+| exact L=3 | geometry: measure | 3 | 3 | 3.5 | step 1 | 100% | 0 | 0.56 |
+| exact L=5 | geometry: measure | 5 | 5 | 5.5 | step 3 | 100% | 0 | 0.73 |
+| exact L=1 | arithmetic | 1 | 1 | 1.5 | step 1 | 100% | 0 | 0.28 |
+| exact L=3 | arithmetic | 3 | 3 | 3.5 | step 1 | 100% | 0 | 0.43 |
+| exact L=5 | arithmetic | 5 | 5 | 5.5 | step 3 | 100% | 0 | 0.48 |
+| exact L=1 | counting | 1 | 1 | 0.0 | step 1 | 83% | 0 | 0.17 |
+| exact L=3 | counting | 3 | 3 | 3.0 | step 1 | 100% | 0 | 0.17 |
+| exact L=5 | counting | 5 | 5 | 5.5 | step 3 | 100% | 0 | 0.22 |
+| exact L=1 | numbers | 1 | 1 | 1.0 | step 1 | 77% | 0 | 0.17 |
+| exact L=3 | numbers | 3 | 3 | 3.0 | step 1 | 100% | 0 | 0.30 |
+| exact L=5 | numbers | 5 | 5 | 5.5 | step 3 | 100% | 0 | 0.38 |
+| noisy L=2 | geometry: measure | 2 | 2 | 2.7 | – | 100% | 0 | 0.36 |
+| noisy L=4 | geometry: measure | 4 | 4 | 4.7 | – | 100% | 0 | 0.65 |
+| noisy L=2 | arithmetic | 2 | 3 | 3.1 | – | 100% | 0 | 0.33 |
+| noisy L=4 | arithmetic | 4 | 5 | 4.5 | – | 100% | 0 | 0.54 |
+| always 2 hints, right | geometry: measure | 2 | – | 2.6 | step 1 | 100% | 0 | 0.35 |
+
+- "Exact" students are always right at or below the target level and always wrong above. "Estimate" is the highest level solved cleanly and not failed since. "Settled at" is the first step from which every problem served is within one level of the target (the staircase keeps testing one level above, so the mean sits about half a level above the target).
+- "Noisy" students are right with a probability that falls with the level (50% half a level above the target). Their estimate lands within one level of the target; the mean of the last ten is the steadier number.
+- The slowest single step was 2.5 ms, against a target of 50 ms. The board is slower, but there is a wide margin.
+- "On topic" below 100% is the bank running dry: Counting has 25 problems at levels 0–2 and Number properties 24, fewer than a 30-problem session.
+- Rung 3: 19,217 cases over all 1,747 problems, the right letter was never crossed out.
+- API: one simulated student walked through 1,221 different problems over HTTP (the others were used as rung-2 examples or are near-duplicates), 8,245 replies, none contained the answer letter before the problem was solved or the answer was asked for.
+- Rung 4 on six text problems with the real model: five sentences passed the filter and one was rejected (it stated a result); about 1 s each on the Mac.
+
+## Limitations
+
+- **Not run on the board yet.** The timings above are from a laptop. The model sentence will take roughly 20–30 s on the board; it is generated in the background and skipped if it is not ready.
+- **Topics are keyword guesses**, about 70% right on a hand check. A wrong topic means the method tip may not fit and the "similar problem" stays within the wrong topic.
+- **Small topics run dry.** Patterns (34 problems), Algebra (49, none below level 4) and Fractions (74) cannot fill a long session at one level; the tutor then serves another topic.
+- **The similar problem is similar in wording**, found with text embeddings. For picture problems with a short question ("Which piece is missing?") it may share little with the figure.
+- **The model sentence can be unhelpful or wrong.** The filter stops it from giving away an answer; it cannot check that the advice is good. The page labels it as a suggestion from the small model. Use `--no-llm` to switch it off.
+- **Rung 3 does not explain why** the two letters are wrong; it only names them.
+- **The level estimate is a simple staircase**: one lucky or unlucky answer moves it by one level.
+- **Students are identified by name only**, with no password. Two students who type the same name share a profile.
+- **The OCR options are used only inside the rung-4 filter**, never shown, because they are missing for about 40% of problems and may contain errors.
+- **Licence.** M3Kang is for research use only. Problem text exists only in `data/tutor.db`, never in the source files.
