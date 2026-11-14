@@ -6,22 +6,22 @@ letter bias. When it reasons and reaches its own 'Answer: X' it is right far mor
 often, but free reasoning rarely finishes in the tokens the UNO Q can write in 60 s.
 
 So this module:
-1. keeps the worked examples in the system prompt, which llama-server caches, so
-   the board reads them once (warm_up) and not once per problem;
-2. streams the answer and stops at a wall-clock deadline, never at a guess of it;
+1. keeps the worked examples in the system prompt so llama-server can cache
+   them across problems;
+2. streams the answer and stops at a wall-clock deadline;
 3. answers without the model where a model-free prior is better (copilot/priors.py),
    and falls back to that prior when the reasoning does not reach 'Answer: X'.
 """
-import json
 import re
 import socket
 import time
 import urllib.error
-import urllib.request
+from contextlib import closing
 
 from .config import CONFIG
 from .llm import URL, format_problem
 from .priors import DEFAULT as PRIOR_DEFAULT, guess
+from .stream import chat
 
 ANSWER_RE = re.compile(r"(?:answer|resposta|respuesta|réponse|antwort)\s*[:：]\s*\**\s*\(?([A-E])\b",
                        re.IGNORECASE)
@@ -67,29 +67,6 @@ E) 10
 count = 5
 Answer: B"""
 
-_warm = set()
-
-
-def _request(url, payload, timeout):
-    return urllib.request.urlopen(urllib.request.Request(
-        url, data=json.dumps(payload).encode(), headers={"Content-Type": "application/json"}),
-        timeout=timeout)
-
-
-def warm_up(url=URL, timeout=180):
-    """Make the server read the system prompt once, so later problems reuse its cache."""
-    if url in _warm:
-        return
-    try:
-        with _request(url, {"messages": [{"role": "system", "content": SYSTEM},
-                                         {"role": "user", "content": "1 + 1 = ?\nA) 1\nB) 2\nC) 3\nD) 4\nE) 5"}],
-                            "max_tokens": 1, "temperature": 0, "cache_prompt": True}, timeout) as response:
-            response.read()
-    except (OSError, urllib.error.URLError):
-        pass  # the real request reports the problem
-    _warm.add(url)
-
-
 def stream_reasoning(problem, deadline, url=URL):
     """Return (text, timings, hit_deadline). deadline is a time.perf_counter() value."""
     payload = {"messages": [{"role": "system", "content": SYSTEM},
@@ -98,14 +75,11 @@ def stream_reasoning(problem, deadline, url=URL):
                "cache_prompt": True, "stream": True, "timings_per_token": True}
     text, timings, hit_deadline = "", {}, False
     try:
-        with _request(url, payload, max(deadline - time.perf_counter(), 1.0)) as response:
-            for raw in response:
-                line = raw.decode("utf-8", "replace").strip()
-                if line.startswith("data:") and line != "data: [DONE]":
-                    chunk = json.loads(line[5:])
-                    timings = chunk.get("timings") or timings
-                    for choice in chunk.get("choices", []):
-                        text += (choice.get("delta") or {}).get("content") or ""
+        with closing(chat(url, payload, deadline)) as events:
+            for chunk in events:
+                timings = chunk.get("timings") or timings
+                for choice in chunk.get("choices", []):
+                    text += (choice.get("delta") or {}).get("content") or ""
                 if ANSWER_RE.search(text):
                     break  # closing the connection stops the generation
                 if time.perf_counter() >= deadline:

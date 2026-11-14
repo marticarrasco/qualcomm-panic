@@ -2,6 +2,7 @@
 import json
 import sqlite3
 from array import array
+from contextlib import closing
 
 from .embed import embed
 from .llm import format_problem
@@ -15,17 +16,18 @@ CREATE TABLE IF NOT EXISTS problems (
 
 
 def build(db_path, problems, batch=16):
-    db = sqlite3.connect(db_path)
-    db.execute(SCHEMA)
-    for i in range(0, len(problems), batch):
-        chunk = problems[i:i + batch]
-        vectors = embed([format_problem(p) for p in chunk])
-        db.executemany("INSERT OR REPLACE INTO problems VALUES (?, ?, ?)", [
-            (f"{p['id']}|{p['language']}", json.dumps(p, ensure_ascii=False), array("f", v).tobytes())
-            for p, v in zip(chunk, vectors)])
-        db.commit()
-        yield min(i + batch, len(problems))
-    db.close()
+    with closing(sqlite3.connect(db_path)) as db:
+        db.execute(SCHEMA)
+        for i in range(0, len(problems), batch):
+            chunk = problems[i:i + batch]
+            vectors = embed([format_problem(p) for p in chunk])
+            if len(vectors) != len(chunk):
+                raise ValueError("embedding server returned the wrong number of vectors")
+            db.executemany("INSERT OR REPLACE INTO problems VALUES (?, ?, ?)", [
+                (f"{p['id']}|{p['language']}", json.dumps(p, ensure_ascii=False), array("f", v).tobytes())
+                for p, v in zip(chunk, vectors)])
+            db.commit()
+            yield min(i + batch, len(problems))
 
 
 class Index:
@@ -40,17 +42,27 @@ class Index:
             self.rows.append((key, json.loads(problem), vec))
         db.close()
 
-    def search(self, problem, k=1, exclude_id=None):
+    def search(self, problem, k=1, exclude_id=None, timeout=60):
         """Return up to k (score, problem) pairs, most similar first.
 
         exclude_id skips the same problem in other languages, so validation
         never retrieves its own translation.
         """
-        query = embed([format_problem(problem)], query=True)[0]
+        if k <= 0:
+            return []
+        query = embed([format_problem(problem)], query=True, timeout=timeout)[0]
         scored = []
         for _key, stored, vec in self.rows:
-            if exclude_id and stored["id"] == exclude_id:
+            if stored["id"] in {exclude_id, problem.get("id")}:
                 continue
             scored.append((sum(a * b for a, b in zip(query, vec)), stored))
         scored.sort(key=lambda pair: pair[0], reverse=True)
-        return scored[:k]
+        seen, hits = set(), []
+        for score, stored in scored:
+            if stored["id"] in seen:
+                continue
+            seen.add(stored["id"])
+            hits.append((score, stored))
+            if len(hits) >= k:
+                break
+        return hits

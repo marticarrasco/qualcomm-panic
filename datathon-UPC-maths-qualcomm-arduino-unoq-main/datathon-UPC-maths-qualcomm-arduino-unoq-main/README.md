@@ -836,6 +836,9 @@ The output is a CSV file with one row per problem: `id`, `language`, `answer`, `
 - No network: everything runs on the board
 - The same answers every time: temperature 0 and a fixed seed
 
+For the text-only solver, alternate modes and paired accuracy and timing
+measurements, see [TEXT_ONLY.md](TEXT_ONLY.md).
+
 ### 11.2 Run the evaluation
 
 ```bash
@@ -880,7 +883,7 @@ Retrieval-augmented generation (RAG) finds solved problems that look like the ne
 python build_index.py --input data/train.jsonl --db data/index.db --only-with-options
 ```
 
-It embeds every training problem with bge-small and stores the vectors in a SQLite file, `data/index.db`. `--only-with-options` skips problems whose options OCR couldn't read. `--languages eng` keeps one language.
+It embeds training problems with all five OCR options and stores the vectors in a SQLite file, `data/index.db`. `--languages eng` keeps one language, and `--text-only` excludes problems that need a figure.
 
 ### 12.2 Use it
 

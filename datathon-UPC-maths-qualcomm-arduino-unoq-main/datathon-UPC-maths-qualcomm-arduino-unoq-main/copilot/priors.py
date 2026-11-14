@@ -41,18 +41,23 @@ def _number(text) -> float | None:
     return value
 
 
-def guess(problem) -> str:
-    """Return one letter A-E for a problem dict; never raises."""
+def median_choice(problem) -> str | None:
+    """Return the median letter only when the unsorted numeric rule applies."""
     try:
         options = problem.get("options") or {}
         if sorted(options) != list(LETTERS):
-            return DEFAULT
+            return None
         values = [_number(options[letter]) for letter in LETTERS]
         if any(value is None for value in values) or len(set(values)) != 5:
-            return DEFAULT
+            return None
         ordered = sorted(values)
         if values == ordered or values == ordered[::-1]:
-            return DEFAULT
+            return None
         return LETTERS[values.index(ordered[2])]
     except Exception:
-        return DEFAULT
+        return None
+
+
+def guess(problem) -> str:
+    """Return one letter A-E for a problem dict; never raises."""
+    return median_choice(problem) or DEFAULT

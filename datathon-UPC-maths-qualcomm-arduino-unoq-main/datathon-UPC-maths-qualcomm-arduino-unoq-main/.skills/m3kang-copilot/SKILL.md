@@ -30,12 +30,13 @@ After every change, run `python3 predict.py --input data/sample_problems.jsonl -
 | File | What it does |
 | --- | --- |
 | `copilot/pipeline.py` | `solve(problem, index, k, exclude_id, image_b64)`: one problem in, `{"answer", "seconds", "status", "prompt_tokens", "examples"}` out. Change this first. |
-| `copilot/llm.py` | `format_problem`, `build_messages`, `answer_letter`. The grammar `root ::= [A-E]` with `max_tokens: 1` forces one letter. Keep `SYSTEM` stable: `cache_prompt` reuses the start of the prompt. |
+| `copilot/text_solver.py` | Default text inference. Cacheable worked examples, a 192-token cap and an absolute deadline. See [TEXT_ONLY.md](../../TEXT_ONLY.md) for alternate routes and results. |
+| `copilot/llm.py` | `format_problem`, `build_messages`, `answer_letter` for the direct and image paths. |
 | `copilot/rag.py` | `build(db, problems)` and `Index(db).search(problem, k, exclude_id)`, returning `(score, problem)` pairs, best first |
 | `copilot/embed.py` | `embed(texts, query=False)`. Queries get the bge prefix from `config.env`; stored documents don't. |
 | `copilot/client.py` | `post(url, payload, timeout)` and `get(url)`, JSON over `urllib` |
 | `copilot/config.py` | `CONFIG`, parsed from `config.env` |
-| `build_index.py` | Embeds `data/train.jsonl` into `data/index.db`. `--only-with-options`, `--languages eng` |
+| `build_index.py` | Embeds complete-option train rows into `data/index.db`. `--text-only`, `--languages eng` |
 | `eval.py` | Scores against the labels, and logs each run |
 | `explorer/server.py` | A web page to try problems one by one, with RAG and the image |
 

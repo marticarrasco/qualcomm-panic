@@ -21,7 +21,7 @@ from collections import Counter, defaultdict
 from datetime import datetime
 
 from copilot.config import CONFIG
-from copilot.pipeline import TIME_LIMIT, solve
+from copilot.pipeline import TIME_LIMIT, batch_solver
 
 
 PROMPT_RATE = float(CONFIG.get("ARDUINO_PROMPT_TOKENS_PER_SECOND", 11))
@@ -30,7 +30,7 @@ OUTPUT_RATE = float(CONFIG.get("ARDUINO_OUTPUT_TOKENS_PER_SECOND", 6))
 DETAIL_FIELDS = [
     "eval_id", "evaluated_at", "problem_id", "language", "level", "has_options",
     "selected_answer", "correct_answer", "is_correct", "model_output", "input_tokens", "output_tokens",
-    "elapsed_seconds", "arduino_estimated_seconds", "arduino_read_estimated_seconds",
+    "full_input_tokens", "cached_input_tokens", "elapsed_seconds", "arduino_estimated_seconds", "arduino_read_estimated_seconds",
     "arduino_write_estimated_seconds", "arduino_read_tokens_per_second",
     "arduino_write_tokens_per_second", "status", "retrieved",
 ]
@@ -88,6 +88,8 @@ def detail_row(problem, result, eval_id, evaluated_at):
         "is_correct": int(is_correct) if is_correct is not None else None,
         "model_output": result.get("model_output"),
         "input_tokens": input_tokens,
+        "full_input_tokens": token_count(result.get("full_prompt_tokens")),
+        "cached_input_tokens": token_count(result.get("cached_prompt_tokens")),
         "output_tokens": output_tokens,
         "elapsed_seconds": result.get("seconds", ""),
         "arduino_estimated_seconds": estimated_seconds,
@@ -114,7 +116,15 @@ def save_manifest(path, manifest):
         out.write("\n")
         out.flush()
         os.fsync(out.fileno())
-    os.replace(temporary_path, path)
+    # A concurrent viewer can briefly hold the destination open on Windows.
+    for attempt in range(8):
+        try:
+            os.replace(temporary_path, path)
+            break
+        except PermissionError:
+            if attempt == 7:
+                raise
+            time.sleep(0.02 * (attempt + 1))
 
 
 def unique_paths(results_dir, file_stamp, name_slug):
@@ -150,6 +160,12 @@ def update_progress(manifest, rows, written_rows):
     manifest["mean_arduino_estimated_seconds"] = (
         round(statistics.mean(estimates), 2) if estimates else None
     )
+    manifest["estimated_count"] = len(estimates)
+    manifest["p95_arduino_estimated_seconds"] = (
+        sorted(estimates)[int(0.95 * (len(estimates) - 1))] if estimates else None
+    )
+    manifest["worst_arduino_estimated_seconds"] = max(estimates) if estimates else None
+    manifest["over_time_limit"] = sum(row["elapsed_seconds"] > TIME_LIMIT for row in rows)
 
 
 def append_ablation(log_path, stamp, name, commit, args, rows, status):
@@ -189,9 +205,10 @@ def main():
     p.add_argument("--rag", type=int, default=0, metavar="K")
     p.add_argument("--index", default="data/index.db")
     p.add_argument("--name", default="", help="a label for this experiment")
+    p.add_argument("--results-dir", default="results", help="directory for this run and ablation log")
     args = p.parse_args()
 
-    with open(args.input, encoding="utf-8") as source:
+    with open(args.input, encoding="utf-8-sig") as source:
         problems = [json.loads(line) for line in source if line.strip()]
     if args.text_only:
         problems = [problem for problem in problems if is_text_only(problem)]
@@ -206,8 +223,9 @@ def main():
     if args.rag:
         from copilot.rag import Index
         index = Index(args.index)
+    solve = batch_solver(problems)
 
-    results_dir = "results"
+    results_dir = args.results_dir
     os.makedirs(results_dir, exist_ok=True)
     now = datetime.now().astimezone()
     evaluated_at = now.isoformat(timespec="microseconds")
@@ -230,6 +248,17 @@ def main():
         "text_only": args.text_only,
         "limit": args.limit,
         "rag_k": args.rag,
+        "answer_mode": CONFIG.get("ANSWER_MODE", "direct"),
+        "llm_alias": CONFIG.get("LLM_ALIAS"),
+        "text_profile": CONFIG.get("TEXT_PROFILE") if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_max_tokens": int(CONFIG["TEXT_MAX_TOKENS"])
+        if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_route": CONFIG.get("TEXT_ROUTE") if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_translations": CONFIG.get("TEXT_TRANSLATIONS") == "1",
+        "text_fallback": CONFIG.get("TEXT_FALLBACK") if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "text_median_bypass": CONFIG.get("TEXT_MEDIAN_BYPASS") == "1"
+        if CONFIG.get("ANSWER_MODE") == "text" else None,
+        "llm_port": int(CONFIG["LLM_PORT"]),
         "planned_problems": len(problems),
         "written_rows": 0,
         "completed_problems": 0,
@@ -312,6 +341,17 @@ def main():
         print(f"Latency: mean {statistics.mean(seconds):.1f} s, median {statistics.median(seconds):.1f} s, "
               f"worst {max(seconds):.1f} s, over {TIME_LIMIT:.0f} s: {over}")
         print(f"Status: {dict(Counter(row['status'] for row in rows))}")
+        by_id = defaultdict(list)
+        for row in rows:
+            by_id[row["problem_id"]].append(bool(row["is_correct"]))
+        macro = statistics.mean(statistics.mean(values) for values in by_id.values())
+        print(f"Mean accuracy per problem ID: {100 * macro:.1f}% ({len(by_id)} IDs)")
+        estimates = sorted(row["arduino_estimated_seconds"] for row in rows
+                           if row["arduino_estimated_seconds"] is not None)
+        if estimates:
+            p95 = estimates[int(0.95 * (len(estimates) - 1))]
+            print(f"UNO Q estimate: mean {statistics.mean(estimates):.1f} s, p95 {p95:.1f} s, "
+                  f"worst {estimates[-1]:.1f} s ({len(estimates)}/{len(rows)} rows with timing)")
 
         for field, title in (("language", "By language"), ("level", "By level"),
                              ("has_options", "By whether OCR found the options")):

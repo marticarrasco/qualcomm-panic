@@ -1,0 +1,40 @@
+{
+  "rows": 300,
+  "planned": 300,
+  "distinct_problem_ids": 121,
+  "right": {
+    "candidate": 118,
+    "prior": 98,
+    "option_ranker": 111,
+    "always_d": 78
+  },
+  "status": {
+    "ranker": 173,
+    "ok": 58,
+    "fallback": 57,
+    "train_match": 9,
+    "token_budget": 3
+  },
+  "accuracy_per_id_pct": {
+    "candidate": 33.51,
+    "prior": 28.1,
+    "option_ranker": 31.4,
+    "always_d": 19.83
+  },
+  "paired_delta_baseline_id_pct_95_interval": null,
+  "elapsed_laptop_s": {
+    "mean": 5.81,
+    "max": 30.34,
+    "p95": 21.76,
+    "over_60": 0,
+    "covered": 300
+  },
+  "uno_q_estimate_s": {
+    "mean": 14.84,
+    "max": 54.09,
+    "p95": 48.02,
+    "over_60": 0,
+    "covered": 300
+  },
+  "baseline_uno_q_estimate_s": null
+}

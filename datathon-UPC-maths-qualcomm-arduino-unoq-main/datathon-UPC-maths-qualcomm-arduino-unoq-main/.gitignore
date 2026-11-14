@@ -7,3 +7,5 @@ data/*
 !data/README.md
 !data/sample_problems.jsonl
 data_backup_before_company/
+results/text-only/*
+!results/text-only/*-summary.json

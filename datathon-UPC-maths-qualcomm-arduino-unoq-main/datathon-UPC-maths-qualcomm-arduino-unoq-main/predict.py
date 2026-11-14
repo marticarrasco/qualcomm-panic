@@ -16,7 +16,7 @@ import json
 import os
 import sys
 
-from copilot.pipeline import solve
+from copilot.pipeline import batch_solver
 
 
 def main():
@@ -34,8 +34,9 @@ def main():
         from copilot.rag import Index
         index = Index(args.index)
 
-    with open(args.input) as f:
+    with open(args.input, encoding="utf-8-sig") as f:
         problems = [json.loads(line) for line in f if line.strip()]
+    solve = batch_solver(problems)
 
     with open(args.output, "w", newline="") as out:
         writer = csv.writer(out)
