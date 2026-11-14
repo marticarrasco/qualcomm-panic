@@ -24,11 +24,39 @@ python3 tutor/simulate.py              # simulated students and safety checks
 - `server.py --no-llm` leaves out the optional model sentence (rung 4). Everything else works without any model server.
 - `server.py --students PATH` chooses where student profiles are kept (default `data/tutor_students.db`).
 - A link such as `/?name=Aina&lang=cat&topic=counting&level=2` starts a session directly.
-- Keyboard: `A`–`E` answer, `H` hint, `N` next problem.
+- Keyboard: `A`–`E` answer, `H` hint, `N` next problem, `Esc` closes the enlarged picture.
 
 The page shows the problem image (which already contains the question, the five
 options and any figure) and five A–E buttons, so picture problems work too and no
 OCR or vision model is needed.
+
+## The page
+
+The look is a squared exercise book: blue pen for actions, a yellow highlighter for
+hints, the teacher's green tick when a problem is solved. Fonts are Bricolage
+Grotesque (headings) and Instrument Sans (text), both under the SIL Open Font
+Licence, shipped in `static/fonts` so the page works offline on the board.
+
+- **Problem first.** The problem picture spans the full width so its text stays
+  readable. On a phone, tapping it opens it full screen, turned sideways so the
+  wide strip uses the long side of the screen.
+- **The hint ladder** is drawn as a ladder: each rung unlocks in order and its hint
+  appears on the rung, so the student sees how much help they have used. Rung 4 is
+  crossed out when it cannot exist (picture problem, or the model is off).
+- **The warm-up problem** (rung 2) appears full width under the student's problem,
+  not squeezed into the ladder.
+- **The board's LED matrix, mirrored.** A live 8x13 copy of what the LED app draws
+  (same pictures and level staircase as `applab/math-matrix/python/main.py`), read
+  from `/api/matrix`. It shows "board not connected" when the server is unreachable.
+- **Your levels**: one 8-step bar per topic practised.
+- **Teacher view**: totals, what to practise next, levels by topic, latest problems.
+- Light only, on purpose (paper). Works from 320 px wide; keyboard focus is visible
+  and animations stop when the device asks for reduced motion.
+
+Design references: the education rows of
+[UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) (playful
+but clear hierarchy, progress always visible, soft press feedback, 44 px touch
+targets) and Anthropic's `frontend-design` skill (one bold idea, no template look).
 
 ## Files
 
@@ -38,7 +66,8 @@ OCR or vision model is needed.
 | `topics.py` | The keyword topic classifier, topic names and the method tips (English and Catalan). |
 | `tutor.py` | The logic: student profile, next problem, hint ladder, summary. No web code. |
 | `server.py` | `http.server` JSON API, the page and the images. |
-| `index.html` | The whole page in one file. No CDN, no external fonts or scripts. |
+| `index.html` | The whole page in one file. No CDN, no external scripts. |
+| `static/fonts/` | The two page fonts and their OFL licences, served at `/static/`. |
 | `matrix.py` | The hook for the 8x13 LED matrix. |
 | `simulate.py` | Simulated students and the safety checks. |
 

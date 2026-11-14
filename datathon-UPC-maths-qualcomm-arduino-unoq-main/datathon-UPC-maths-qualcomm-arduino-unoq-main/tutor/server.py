@@ -21,6 +21,7 @@ the student has solved it or asked for it with /api/reveal.
     GET  /api/students                      everyone who has a profile
     GET  /api/matrix                        last event for the LED matrix (see matrix.py)
     GET  /image/<id>_<language>.png         the problem picture
+    GET  /static/<file>                     fonts and other page assets from tutor/static
 """
 import argparse
 import json
@@ -38,6 +39,11 @@ from tutor.tutor import Tutor, TutorError  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 IMAGE_KEY = re.compile(r"^(.+)_(eng|cat)\.png$")
+# Fonts and other page assets in tutor/static. Only plain file names in known folders are served.
+STATIC_KEY = re.compile(r"^(fonts/)?[A-Za-z0-9_-]+\.(ttf|woff2|svg|css|js|txt)$")
+STATIC_TYPES = {"ttf": "font/ttf", "woff2": "font/woff2", "svg": "image/svg+xml",
+                "css": "text/css; charset=utf-8", "js": "text/javascript; charset=utf-8",
+                "txt": "text/plain; charset=utf-8"}
 
 
 def parse_args(argv=None):
@@ -94,6 +100,12 @@ def make_handler(tutor, images, quiet=False):
                 if path == "/":
                     with open(os.path.join(HERE, "index.html"), "rb") as f:
                         return self.send(200, f.read(), "text/html; charset=utf-8")
+                if path.startswith("/static/"):
+                    key = urllib.parse.unquote(path[len("/static/"):])
+                    file = os.path.join(HERE, "static", key)
+                    if STATIC_KEY.match(key) and os.path.isfile(file):
+                        with open(file, "rb") as f:
+                            return self.send(200, f.read(), STATIC_TYPES[key.rsplit(".", 1)[1]], cache="max-age=86400")
                 if path == "/api/info":
                     return self.send(200, tutor.info())
                 if path == "/api/matrix":
