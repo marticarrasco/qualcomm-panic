@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Revisió OCR · M3Kang</title>
+  <style>
+    :root { color-scheme: light; --ink:#192b3a; --muted:#637486; --line:#dbe3e8; --paper:#f4f7f8; --blue:#176b87; --green:#176b4b; --amber:#8a5b11; }
+    * { box-sizing:border-box; }
+    html, body { width:100%; height:100%; overflow:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    header { height:68px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:9px 18px; background:#fff; border-bottom:1px solid var(--line); }
+    h1 { font-size:18px; margin:0 0 1px; } .sub { color:var(--muted); font-size:12px; }
+    .headright { display:flex; align-items:center; justify-content:flex-end; gap:9px; min-width:0; }
+    progress { width:120px; height:10px; accent-color:var(--green); }
+    button, select { font:inherit; }
+    button { border:1px solid var(--line); border-radius:8px; padding:10px 14px; background:#fff; color:var(--ink); cursor:pointer; }
+    button:hover { border-color:#92a7b4; } button:disabled { opacity:.5; cursor:default; }
+    button.primary { background:var(--blue); color:#fff; border-color:var(--blue); font-weight:650; }
+    button.good { background:var(--green); color:#fff; border-color:var(--green); font-weight:650; }
+    button.warn { color:#7b3a24; }
+    select { border:1px solid var(--line); border-radius:8px; padding:8px 10px; background:#fff; color:var(--ink); }
+    #problemSelect { width:min(290px,26vw); }
+    #filter { width:115px; }
+    .layout { height:calc(100dvh - 68px); min-height:0; }
+    main { height:100%; padding:10px 14px 8px; min-width:0; max-width:1700px; width:100%; margin:0 auto; overflow:hidden; }
+    #review { height:100%; min-height:0; display:grid; grid-template-rows:auto minmax(0,1fr) auto 17px; gap:5px; }
+    .problem-head { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:42px; }
+    .problem-head h2 { font-size:17px; margin:0; overflow-wrap:anywhere; }
+    .meta { color:var(--muted); font-size:12px; margin-top:2px; }
+    .badge { display:inline-block; padding:4px 9px; border-radius:20px; background:#e9eef1; color:#536674; font-size:12px; white-space:nowrap; }
+    .badge.reviewed { background:#e5f3eb; color:#176b4b; } .badge.corrected { background:#fff2d8; color:#80540e; }
+    .columns { display:grid; min-height:0; height:100%; grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr); gap:12px; align-items:stretch; }
+    .left-column { min-height:0; display:grid; grid-template-rows:minmax(0,1fr) auto; gap:9px; }
+    .card { background:#fff; border:1px solid var(--line); border-radius:11px; overflow:hidden; min-height:0; }
+    .card h3 { font-size:13px; margin:0; padding:8px 12px; border-bottom:1px solid var(--line); }
+    .image-card { display:flex; flex-direction:column; }
+    .image-wrap { flex:1; min-height:0; padding:7px; display:grid; place-items:center; background:#eef2f4; overflow:hidden; }
+    #image { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; box-shadow:0 2px 10px #20374822; background:#fff; }
+    .text-card { display:flex; flex-direction:column; }
+    .text { flex:1; min-height:0; padding:12px 14px; white-space:pre-wrap; overflow-wrap:anywhere; overflow:hidden; font-size:clamp(13px,1.15vw,16px); line-height:1.42; }
+    .options { padding:8px 11px 10px; }
+    .hint { color:var(--muted); font-size:11px; margin:0 0 7px; }
+    #optionFields { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:7px; }
+    .option { display:flex; min-width:0; flex-direction:column; gap:4px; }
+    .letter { width:100%; border-radius:6px; display:grid; place-items:center; background:#edf3f5; font-size:14px; font-weight:750; padding:3px; }
+    .option input { width:100%; min-width:0; height:40px; border:1px solid var(--line); border-radius:7px; padding:6px 8px; font:600 15px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); }
+    .actions { height:66px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .actions .group { display:flex; gap:9px; }
+    .actions button { min-height:54px; padding:12px 20px; font-size:16px; font-weight:650; }
+    #save, #pending { min-width:175px; min-height:58px; font-size:18px; }
+    #message { min-width:0; overflow:hidden; color:var(--muted); font-size:11px; pointer-events:none; text-align:center; white-space:nowrap; text-overflow:ellipsis; }
+    #empty { padding:50px 20px; color:var(--muted); text-align:center; }
+    @media(max-width:900px) { header { height:60px; padding:7px 10px; } header .sub { display:none; } .headright { gap:5px; } #problemSelect { width:31vw; } #filter { width:90px; } progress { width:70px; } .layout { height:calc(100dvh - 60px); } main { padding:7px; } #review { gap:5px; } .columns { grid-template-columns:minmax(0,1fr) minmax(250px,.9fr); gap:7px; } .left-column { gap:6px; } .actions { height:56px; } .actions button { min-height:46px; padding:8px 11px; font-size:14px; } #save, #pending { min-width:125px; min-height:48px; font-size:15px; } }
+    @media(max-width:650px) { #problemSelect { width:28vw; } #filter { display:none; } .headright #export { padding:7px; font-size:11px; } progress { width:50px; } .columns { grid-template-columns:minmax(0,1fr); grid-template-rows:minmax(0,1fr) minmax(0,.7fr); } .left-column { grid-template-rows:minmax(0,1fr) auto; } .text { font-size:12px; line-height:1.25; padding:7px; } .actions .group { gap:4px; } .actions button { padding:7px; } #save, #pending { min-width:0; padding:7px 9px; font-size:13px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div><h1>Revisió visual de l’OCR</h1><div class="sub">Compara les opcions extretes amb la imatge i desa la revisió.</div></div>
+    <div class="headright"><select id="problemSelect" aria-label="Selecciona un problema"></select><select id="filter" aria-label="Filtra problemes"><option value="all">Tots</option><option value="pending">Pendents</option><option value="reviewed">Revisats</option></select><span id="progressText" class="sub">Carregant…</span><progress id="progress" value="0" max="1"></progress><button id="export">Exporta JSONL</button></div>
+  </header>
+  <div class="layout"><main>
+      <div id="empty" hidden>No hi ha problemes en aquest filtre.</div>
+      <div id="review" hidden>
+        <div class="problem-head">
+          <div><h2 id="title"></h2><div id="meta" class="meta"></div></div>
+          <span id="status" class="badge">Pendent</span>
+        </div>
+        <div class="columns">
+          <div class="left-column">
+            <section class="card image-card"><h3>Imatge original</h3><div class="image-wrap"><img id="image" alt="Imatge original del problema"></div></section>
+            <section class="card"><h3>Opcions OCR · edita les que calgui</h3><div class="options"><p class="hint">Compara-les amb la imatge; deixa buida qualsevol opció que no hi aparegui.</p><div id="optionFields"></div></div></section>
+          </div>
+          <section class="card text-card"><h3>Enunciat</h3><div id="text" class="text"></div></section>
+        </div>
+        <div class="actions">
+          <div class="group"><button id="prev">← Anterior</button><button id="next">Següent →</button></div>
+          <div class="group"><button id="pending" class="warn">Deixa pendent</button><button id="save" class="good">Desa revisió</button></div>
+        </div>
+        <div id="message" role="status"></div>
+      </div>
+    </main></div>
+<script>
+const $ = (id) => document.getElementById(id);
+let items = [], visible = [], currentKey = null, currentProblem = null, dirty = false;
+
+async function request(url, options) {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.error || `Error ${response.status}`);
+  return data;
+}
+function labelFor(item) { return item.corrected ? 'Corregit' : item.reviewed ? 'Revisat' : 'Pendent'; }
+function updateProgress() {
+  const done = items.filter(x => x.reviewed).length;
+  $('progress').max = Math.max(items.length, 1); $('progress').value = done;
+  $('progressText').textContent = `${done} de ${items.length} revisats`;
+}
+function renderList() {
+  const filter = $('filter').value;
+  visible = items.filter(x => filter === 'all' || (filter === 'reviewed' ? x.reviewed : !x.reviewed));
+  const choices = [...visible];
+  const current = items.find(x => x.key === currentKey);
+  if (current && !choices.some(x => x.key === currentKey)) choices.unshift(current);
+  const select = $('problemSelect'); select.replaceChildren();
+  for (const item of choices) {
+    const option = document.createElement('option'); option.value = item.key;
+    option.textContent = `${item.number}. ${item.id} · ${labelFor(item)}`; select.append(option);
+  }
+  if (currentKey && choices.some(x => x.key === currentKey)) select.value = currentKey;
+  $('empty').hidden = visible.length !== 0; $('review').hidden = visible.length === 0;
+  updateProgress();
+}
+function showStatus(problem) {
+  const badge = $('status');
+  const state = items.find(x => x.key === problem.key);
+  badge.textContent = labelFor(state); badge.className = `badge${state.corrected ? ' corrected' : state.reviewed ? ' reviewed' : ''}`;
+}
+function getOptions() {
+  const options = {};
+  for (const letter of 'ABCDE') {
+    const value = $(`opt-${letter}`).value.trim();
+    if (value) options[letter] = value;
+  }
+  return options;
+}
+function setDirty() { dirty = true; $('message').textContent = 'Canvis sense desar.'; }
+async function openProblem(key) {
+  if (dirty && !confirm('Tens canvis sense desar. Vols descartar-los?')) return;
+  const problem = await request(`/api/problem?key=${encodeURIComponent(key)}`);
+  currentKey = key; currentProblem = problem; dirty = false;
+  $('title').textContent = problem.id;
+  $('meta').textContent = `${problem.language} · nivell ${problem.level} · ${problem.year}${problem.text_only ? ' · text_only' : ''}`;
+  $('image').src = problem.image; $('text').textContent = problem.text;
+  const fields = $('optionFields'); fields.replaceChildren();
+  for (const letter of 'ABCDE') {
+    const row = document.createElement('label'); row.className = 'option';
+    const badge = document.createElement('span'); badge.className = 'letter'; badge.textContent = letter;
+    const input = document.createElement('input'); input.id = `opt-${letter}`; input.type = 'text'; input.autocomplete = 'off';
+    input.value = problem.options[letter] || ''; input.placeholder = 'No llegida'; input.addEventListener('input', setDirty);
+    row.append(badge, input); fields.append(row);
+  }
+  showStatus(problem); $('message').textContent = problem.options && Object.keys(problem.options).length ? '' : 'L’OCR no ha trobat les cinc opcions; pots completar-les a mà.';
+  renderList();
+}
+function move(delta) {
+  const at = visible.findIndex(x => x.key === currentKey);
+  const next = visible[at < 0 ? 0 : at + delta]; if (next) openProblem(next.key);
+}
+async function saveReview(pending=false) {
+  if (!currentProblem) return;
+  const path = pending ? '/api/pending' : '/api/save';
+  const data = await request(path, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({key:currentKey, options:getOptions()}) });
+  const item = items.find(x => x.key === currentKey);
+  item.reviewed = data.reviewed; item.corrected = data.corrected; item.has_options = Object.keys(data.options).length > 0;
+  currentProblem.options = data.options; dirty = false; showStatus(currentProblem); renderList();
+  $('message').textContent = pending ? 'Desat com a pendent.' : data.corrected ? 'Revisió desada amb correccions.' : 'Marcat com a revisat; les opcions no s’han canviat.';
+  if (!pending) {
+    const at = visible.findIndex(x => x.key === currentKey);
+    const next = visible[at < 0 ? 0 : at + 1];
+    if (next) await openProblem(next.key);
+  }
+}
+async function exportReviewed() {
+  const data = await request('/api/export', {method:'POST'});
+  $('message').textContent = 'Fitxers creats: ' + data.files.map(x => `${x.file} (${x.reviewed} revisats)`).join(' · ');
+}
+async function start() {
+  const data = await request('/api/problems'); items = data.items;
+  if (items.length) await openProblem(items[0].key); else renderList();
+}
+$('filter').onchange = renderList;
+$('problemSelect').onchange = () => openProblem($('problemSelect').value);
+$('prev').onclick = () => move(-1); $('next').onclick = () => move(1);
+$('save').onclick = () => saveReview(false).catch(e => $('message').textContent = e.message);
+$('pending').onclick = () => saveReview(true).catch(e => $('message').textContent = e.message);
+$('export').onclick = () => exportReviewed().catch(e => alert(e.message));
+document.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') move(-1); if (e.key === 'ArrowRight') move(1); });
+start().catch(e => { $('empty').hidden = false; $('empty').textContent = `No s’han pogut carregar els problemes: ${e.message}`; });
+</script>
+</body>
+</html>
