@@ -143,6 +143,13 @@ For teaching, the picture problem solves itself: the tutor shows the image to th
 
 About 5% of validation problems have an almost identical problem in train at another level of the same year. The options are in a different order there, so copying the neighbour's letter is right only about half the time. Copying the answer value was right 5 of 5 times, but applies to only 5 of 243 validation problems. Not built into the pipeline: for a test set of unseen problems it would never fire.
 
+## 8. Unfinished
+
+- **The new validation file** (6,774 rows, 281 problems, 105 languages): the model-free prior alone gets 26.8% against 23.2% for always-D (English: 27.4% against 23.1%). The full pipeline has not been rerun on it yet; a run stopped at 47 of 281 English problems had 16 right.
+- **Other small models** (`experiments/model_bakeoff.sh`): only Qwen3.5 0.8B at Q4_K_M was finished, 34 right of 142 against 45 of 147 for Q8_0, so the smaller quantisation is no better. LFM2.5 1.2B, Gemma 3 1B, Llama 3.2 1B, Qwen2.5 1.5B, Qwen2.5-Math 1.5B, DeepSeek-R1-distill 1.5B and Qwen3 1.7B are downloaded but untested.
+- **A second attempt in the spare time** (`experiments/second_pass.py`): started, no conclusion.
+- **On the board**, the pipeline ran 80 problems of the old validation file before we stopped it: 26 right (32.5%), against 21 for always-D, mean about 18 s, worst 57.1 s.
+
 ## What did not work
 
 - One-letter answers, with or without bias correction.
