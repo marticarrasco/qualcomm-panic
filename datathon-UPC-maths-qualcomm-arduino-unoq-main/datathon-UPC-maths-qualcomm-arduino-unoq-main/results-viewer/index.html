@@ -514,22 +514,150 @@ function renderAll() {
   render();
 }
 
+// --- comparison A vs B ---
+const cardHTML = x => '<div class="card"><div class="k">' + x.k + '</div><div class="v ' + (x.cls || "") + '">' + x.v + '</div><div class="s">' + x.s + '</div></div>';
+const cmpAcc = rows => { const c = rows.filter(correctRow).length; return { c, n: rows.length, p: rows.length ? c / rows.length : null }; };
+const meanOfRows = (rows, key) => mean(rows.map(r => num(r[key])).filter(v => v != null));
+
+function joinedPairs() {
+  const mB = new Map(DATA_B.rows.map(r => [joinKey(r), r]));
+  return DATA_A.rows.map(rA => {
+    const rB = mB.get(joinKey(rA));
+    return rB ? { rA, rB } : null;
+  }).filter(Boolean);
+}
+
+function cmpGroups(keyFn, labelFn, pairs) {
+  const g = new Map();
+  for (const q of pairs) {
+    const k = keyFn(q.rA);
+    if (!g.has(k)) g.set(k, { n: 0, cA: 0, cB: 0 });
+    const e = g.get(k);
+    e.n++;
+    if (correctRow(q.rA)) e.cA++;
+    if (correctRow(q.rB)) e.cB++;
+  }
+  return [...g.entries()].sort((x, y) => String(x[0]).localeCompare(String(y[0]), "ca", { numeric: true }))
+    .map(([k, e]) => ({ key: k, label: labelFn(k), n: e.n, pA: e.cA / e.n, pB: e.cB / e.n }));
+}
+
+function cmpBarList(title, groups) {
+  const body = groups.map(g => {
+    const d = g.pB - g.pA;
+    const cls = d > 0.0005 ? "up" : d < -0.0005 ? "down" : "";
+    return '<div class="g"><div class="top"><b>' + esc(g.label) + ' <span class="hint">n=' + g.n + "</span></b>" +
+      "<span>A " + Math.round(100 * g.pA) + "% &middot; B " + Math.round(100 * g.pB) + '%</span>' +
+      '<span class="pill ' + cls + '">' + (d >= 0 ? "+" : "") + (100 * d).toFixed(0) + " pp</span></div>" +
+      '<div class="gbar a"><div style="width:' + (g.pA * 100).toFixed(0) + '%"></div></div>' +
+      '<div class="gbar b"><div style="width:' + (g.pB * 100).toFixed(0) + '%"></div></div></div>';
+  }).join("");
+  return panel(title, body || '<p class="hint">Sense dades.</p>');
+}
+
+function renderCompare() {
+  const A = DATA_A, B = DATA_B;
+  const pr = joinedPairs();
+  const a = cmpAcc(A.rows), b = cmpAcc(B.rows);
+  const d = (b.p ?? 0) - (a.p ?? 0);
+  const fixes = pr.filter(q => !correctRow(q.rA) && correctRow(q.rB)).length;
+  const regress = pr.filter(q => correctRow(q.rA) && !correctRow(q.rB)).length;
+  const same = pr.filter(q => String(q.rA.selected_answer).trim().toUpperCase() === String(q.rB.selected_answer).trim().toUpperCase()).length;
+  $("#cmcards").innerHTML = [
+    { k: "A: " + shortName(A.name), v: pct(a.c, a.n), s: a.c + "/" + a.n },
+    { k: "B: " + shortName(B.name), v: pct(b.c, b.n), s: b.c + "/" + b.n },
+    { k: "Diferència (B \u2212 A)", v: (d >= 0 ? "+" : "") + (100 * d).toFixed(1) + " pp", s: "punts percentuals", cls: d > 0.0005 ? "up" : d < -0.0005 ? "down" : "" },
+    { k: "Canvia l'encert", v: fixes + " \u25b2 / " + regress + " \u25bc", s: "millores / empitjoraments" },
+    { k: "Resposta igual", v: pct(same, pr.length), s: "estabilitat entre A i B" },
+    { k: "Preguntes compartides", v: pr.length, s: "de " + Math.max(A.rows.length, B.rows.length) },
+  ].map(cardHTML).join("");
+  $("#cmlegend").innerHTML = 'Barra <span style="color:var(--accent)">blava</span> = A (' + esc(shortName(A.name)) +
+    ') &middot; <span style="color:var(--ok)">verda</span> = B (' + esc(shortName(B.name)) + ')' +
+    (pr.length < Math.min(A.rows.length, B.rows.length) * 0.95
+      ? ' &middot; <b>atenci&oacute;:</b> nom&eacute;s coincideixen ' + pr.length + ' preguntes, potser mostres diferents.'
+      : "");
+  const nopt = v => isTrue(v) ? "amb opcions" : "text-only";
+  $("#cmgroups").innerHTML =
+    cmpBarList("Precisió per nivell", cmpGroups(r => String(r.level ?? ""), k => "nivell " + k, pr)) +
+    cmpBarList("Precisió per llengua", cmpGroups(r => r.language || "—", k => k, pr)) +
+    cmpBarList("Text-only vs amb opcions", cmpGroups(r => nopt(r.has_options), k => k, pr)) +
+    cmpBarList("Per estat de resposta", cmpGroups(r => r.status || "—", k => k, pr));
+  cmpFlips(pr);
+  cmpStats();
+}
+
+function cmpFlips(pr) {
+  const rows = pr.filter(q => correctRow(q.rA) !== correctRow(q.rB));
+  rows.sort((x, y) => {
+    const gx = correctRow(x.rB) ? 0 : 1, gy = correctRow(y.rB) ? 0 : 1;   // improvements first
+    return gx - gy || String(x.rA.problem_id).localeCompare(String(y.rA.problem_id), "ca", { numeric: true });
+  });
+  $("#cmfhead").innerHTML = "<tr><th>problema</th><th>niv.</th><th>correcta</th><th>A tria</th><th>A</th><th>B tria</th><th>B</th></tr>";
+  const body = rows.map((q, i) =>
+    '<tr class="row" data-i="' + i + '">' +
+    '<td class="wrap2">' + esc(q.rA.problem_id) + "</td><td>" + esc(q.rA.level) + "</td><td>" + esc(q.rA.correct_answer) + "</td>" +
+    "<td>" + esc(q.rA.selected_answer) + '</td><td class="' + (correctRow(q.rA) ? "tick" : "cross") + '">' + (correctRow(q.rA) ? "✔" : "✘") + "</td>" +
+    "<td>" + esc(q.rB.selected_answer) + '</td><td class="' + (correctRow(q.rB) ? "tick" : "cross") + '">' + (correctRow(q.rB) ? "✔" : "✘") + "</td></tr>" +
+    (cmpOpen.has(i)
+      ? '<tr class="detail"><td colspan="7"><div class="cmpout"><div><div class="kv">Sortida A</div><pre>' +
+        esc(q.rA.model_output || "(buit)") + '</pre></div><div><div class="kv">Sortida B</div><pre>' +
+        esc(q.rB.model_output || "(buit)") + "</pre></div></div></td></tr>"
+      : "")).join("");
+  $("#cmfbody").innerHTML = body ||
+    '<tr><td colspan="7" class="hint">Cap difer&egrave;ncia: A i B encerten exactament les mateixes preguntes.</td></tr>';
+  $("#cmfnote").textContent = rows.length ? "Millores primer. Clica una fila per veure les dues sortides del model." : "";
+  [...$("#cmfbody").querySelectorAll("tr.row")].forEach(tr =>
+    tr.onclick = () => {
+      const i = +tr.dataset.i;
+      cmpOpen.has(i) ? cmpOpen.delete(i) : cmpOpen.add(i);
+      cmpFlips(joinedPairs());
+    });
+}
+
+function cmpStats() {
+  const line = (label, key, unit) => {
+    const a = meanOfRows(DATA_A.rows, key), b = meanOfRows(DATA_B.rows, key);
+    if (a == null && b == null) return "";
+    return gRow(label, "A " + fmt1(a) + " &middot; B " + fmt1(b) + " " + (unit || ""), null);
+  };
+  let html = line("Tokens d'entrada (mitjana)", "input_tokens");
+  html += line("Tokens de sortida (mitjana)", "output_tokens");
+  html += line("Temps real per pregunta (s)", "elapsed_seconds");
+  html += line("Temps estimat Arduino (s)", "arduino_estimated_seconds");
+  $("#cmstats").innerHTML = html ? panel("Tokens i temps: A vs B", html) : "";
+}
+
 // --- loading: drag & drop, file picker, server list ---
-function readFile(f) {
+function renderSlots() {
+  if (!DATA_A) { $("#slots").innerHTML = ""; return; }
+  const chipB = DATA_B
+    ? '<span class="slot on">B: ' + esc(shortName(DATA_B.name)) + ' <button class="x" data-slot="B" title="treu B">&times;</button></span>'
+    : '<span class="slot">B: buit</span>';
+  $("#slots").innerHTML =
+    '<span class="slot on">A: ' + esc(shortName(DATA_A.name)) + ' <button class="x" data-slot="A" title="treu">&times;</button></span>' + chipB;
+  [...$("#slots").querySelectorAll(".x")].forEach(b =>
+    b.onclick = () => clearSlot(b.dataset.slot));
+}
+
+function readInto(slot, f) {
   if (!f) return;
   const rd = new FileReader();
-  rd.onload = () => loadCSV(f.name, String(rd.result));
+  rd.onload = () => loadInto(slot, f.name, String(rd.result));
   rd.readAsText(f);
 }
 $("#drop").onclick = () => $("#file").click();
-$("#file").onchange = e => readFile(e.target.files[0]);
+$("#file").onchange = e => readInto("A", e.target.files[0]);
+$("#drop2").onclick = () => $("#file2").click();
+$("#file2").onchange = e => readInto("B", e.target.files[0]);
 for (const ev of ["dragover", "dragenter"]) {
   document.body.addEventListener(ev, e => { e.preventDefault(); document.body.classList.add("drag"); });
 }
 for (const ev of ["dragleave", "drop"]) {
   document.body.addEventListener(ev, e => { e.preventDefault(); document.body.classList.remove("drag"); });
 }
-document.body.addEventListener("drop", e => readFile(e.dataTransfer.files[0]));
+document.body.addEventListener("drop", e => {
+  const intoB = e.target && e.target.closest && e.target.closest("#cmpload");
+  readInto(intoB ? "B" : "A", e.dataTransfer.files[0]);
+});
 
 // If served by server.py, show the CSVs available in results/
 (async () => {
@@ -538,12 +666,17 @@ document.body.addEventListener("drop", e => readFile(e.dataTransfer.files[0]));
     if (!res.ok) return;
     const files = (await res.json()).files;
     if (!files.length) return;
+    const get = async name => (await fetch("results/" + encodeURIComponent(name))).text();
     $("#filelist").innerHTML = files.map(f =>
-      '<button class="res" data-name="' + esc(f.name) + '">' + esc(f.name) + "<span>" + (f.kb).toFixed(0) + " kB</span></button>").join("");
+      '<span class="listrow"><button class="res" data-name="' + esc(f.name) + '" title="carrega com a A">' + esc(f.name) + "<span>" +
+      f.kb.toFixed(0) + ' kB</span></button><button class="mini" data-name="' + esc(f.name) + '" title="carrega com a B i compara">+B</button></span>').join("");
     [...$("#filelist").querySelectorAll(".res")].forEach(b =>
+      b.onclick = async () => loadInto("A", b.dataset.name, await get(b.dataset.name)));
+    [...$("#filelist").querySelectorAll(".mini")].forEach(b =>
       b.onclick = async () => {
-        const r = await fetch("results/" + encodeURIComponent(b.dataset.name));
-        loadCSV(b.dataset.name, await r.text());
+        if (!DATA_A) { loadInto("A", b.dataset.name, await get(b.dataset.name)); return; }
+        if (b.dataset.name === DATA_A.name) return;
+        loadInto("B", b.dataset.name, await get(b.dataset.name));
       });
   } catch (e) { /* opened as file:// — drag & drop still works */ }
 })();

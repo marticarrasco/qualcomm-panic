@@ -7,9 +7,11 @@ import unittest
 from fractions import Fraction
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from unittest.mock import patch
 
 from copilot.arithmetic import calculate, numeric_options
 from copilot.rules import answer as exact_answer
+from copilot.rag import Index, build
 from copilot.text_solver import decode, infer
 from copilot.train_match import LexicalMatch
 from copilot.translations import TranslationBatch
@@ -48,6 +50,25 @@ class TextSolverTest(unittest.TestCase):
             self.assertIsNone(index.answer(query, exclude_id="train"))
             query["options"]["E"] = "6"
             self.assertIsNone(index.answer(query))
+
+    def test_semantic_retrieval_can_restrict_to_same_language(self):
+        foreign = problem("Frage drei", id="three", label="C")
+        foreign["language"] = "deu"
+        rows = [
+            problem("Question one", id="one", label="A"),
+            problem("Question deux", id="two", label="B"),
+            foreign,
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            db_path = Path(directory) / "index.db"
+            with patch("copilot.rag.embed", return_value=[
+                    [1.0, 0.0], [0.8, 0.6], [0.99, 0.01]]):
+                list(build(db_path, rows))
+            index = Index(db_path)
+            query = problem("New question", id="eval")
+            with patch("copilot.rag.embed", return_value=[[1.0, 0.0]]):
+                hits = index.search(query, k=3, same_language=True)
+            self.assertEqual([row[1]["id"] for row in hits], ["one", "two"])
 
     def test_deadline_cancels_even_when_server_keeps_writing(self):
         started = threading.Event()

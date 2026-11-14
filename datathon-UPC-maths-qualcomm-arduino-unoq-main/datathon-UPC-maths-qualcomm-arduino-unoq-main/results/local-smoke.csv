@@ -1,6 +1,0 @@
-id,language,answer,seconds,status
-sample-1,eng,A,1.17,ok
-sample-2,eng,A,0.73,ok
-sample-3,eng,A,0.84,ok
-sample-4,cat,A,0.81,ok
-sample-5,cat,A,0.68,ok

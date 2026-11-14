@@ -20,6 +20,8 @@ TEXT_MAX_TOKENS = int(CONFIG.get("TEXT_MAX_TOKENS", 160))
 TEXT_MEDIAN_BYPASS = CONFIG.get("TEXT_MEDIAN_BYPASS", "1") == "1"
 TEXT_FALLBACK = CONFIG.get("TEXT_FALLBACK", "prior")
 TEXT_TRAIN = CONFIG.get("TEXT_TRAIN", "")
+TEXT_RAG_K = int(CONFIG.get("TEXT_RAG_K", "3"))
+TEXT_RAG_INDEX = CONFIG.get("TEXT_RAG_INDEX", "data/index-text.db")
 TEXT_ROUTE = CONFIG.get("TEXT_ROUTE", "all")
 UNCERTAIN_THRESHOLD = 0.29
 TEXT_BOARD_BUDGET = (float(CONFIG["ARDUINO_PROMPT_TOKENS_PER_SECOND"]),
@@ -41,6 +43,8 @@ def prepare():
     """Load immutable retrieval data once, before the timed question loop."""
     if ANSWER_MODE == "text" and TEXT_TRAIN:
         _train_index()
+    if ANSWER_MODE == "text" and TEXT_PROFILE == "retrieved" and TEXT_RAG_K > 0:
+        _text_rag_index()
     if ANSWER_MODE == "text" and (TEXT_FALLBACK == "ranker" or TEXT_ROUTE != "all"):
         from .option_ranker import load_weights
         load_weights()
@@ -52,6 +56,15 @@ def batch_solver(problems):
         from .translations import TranslationBatch
         return TranslationBatch(problems, solve)
     return solve
+
+
+@lru_cache(maxsize=1)
+def _text_rag_index():
+    path = Path(ROOT) / TEXT_RAG_INDEX
+    if path.is_file():
+        from .rag import Index
+        return Index(path)
+    return None
 
 
 def _solve_text(problem, deadline, url, exclude_id, retrieve):
@@ -97,10 +110,19 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
     result = {"answer": FALLBACK, "status": "ok", "prompt_tokens": None,
               "completion_tokens": None, "model_output": None, "retrieved": "", "examples": []}
     def retrieve():
-        if index is not None and k > 0:
+        active_index = index
+        active_k = k
+        same_language = False
+        if active_index is None and ANSWER_MODE == "text" and TEXT_PROFILE == "retrieved":
+            active_index = _text_rag_index()
+            active_k = TEXT_RAG_K
+            same_language = True
+        if active_index is not None and active_k > 0:
             try:
-                hits = index.search(problem, k=k, exclude_id=exclude_id or problem.get("id"),
-                                    timeout=min(1.0, max(0.05, time_limit - MARGIN)))
+                hits = active_index.search(problem, k=active_k,
+                                           exclude_id=exclude_id or problem.get("id"),
+                                           timeout=min(1.0, max(0.05, time_limit - MARGIN)),
+                                           same_language=same_language)
             except OSError:
                 hits = []
             result["examples"] = hits

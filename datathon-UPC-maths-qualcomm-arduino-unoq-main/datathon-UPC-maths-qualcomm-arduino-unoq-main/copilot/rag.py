@@ -42,7 +42,7 @@ class Index:
             self.rows.append((key, json.loads(problem), vec))
         db.close()
 
-    def search(self, problem, k=1, exclude_id=None, timeout=60):
+    def search(self, problem, k=1, exclude_id=None, timeout=60, same_language=False):
         """Return up to k (score, problem) pairs, most similar first.
 
         exclude_id skips the same problem in other languages, so validation
@@ -54,6 +54,8 @@ class Index:
         scored = []
         for _key, stored, vec in self.rows:
             if stored["id"] in {exclude_id, problem.get("id")}:
+                continue
+            if same_language and stored.get("language") != problem.get("language"):
                 continue
             scored.append((sum(a * b for a, b in zip(query, vec)), stored))
         scored.sort(key=lambda pair: pair[0], reverse=True)

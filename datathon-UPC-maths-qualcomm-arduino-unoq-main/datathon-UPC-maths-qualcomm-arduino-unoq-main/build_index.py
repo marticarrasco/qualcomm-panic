@@ -24,6 +24,8 @@ def main():
     p.add_argument("--languages", default="", help="e.g. eng,cat (default: all in the file)")
     p.add_argument("--only-with-options", action="store_true", help="legacy flag; always enabled")
     p.add_argument("--text-only", action="store_true")
+    p.add_argument("--batch", type=int, default=16,
+                   help="embedding batch size (larger batches can speed up laptop builds)")
     args = p.parse_args()
 
     languages = set(filter(None, args.languages.split(",")))
@@ -40,7 +42,7 @@ def main():
     fd, staged = tempfile.mkstemp(prefix=".embed-", suffix=".db", dir=directory)
     os.close(fd)
     try:
-        for done in rag.build(staged, problems):
+        for done in rag.build(staged, problems, batch=args.batch):
             rate = done / (time.perf_counter() - start)
             print(f"\r{done}/{len(problems)} problems embedded, {rate:.1f}/s", end="", flush=True)
         os.replace(staged, args.db)

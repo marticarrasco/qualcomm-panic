@@ -1,6 +1,0 @@
-id,language,answer,seconds,status
-sample-1,eng,C,4.38,ok
-sample-2,eng,B,4.44,ok
-sample-3,eng,E,6.84,ok
-sample-4,cat,C,4.53,ok
-sample-5,cat,D,18.24,invalid_response

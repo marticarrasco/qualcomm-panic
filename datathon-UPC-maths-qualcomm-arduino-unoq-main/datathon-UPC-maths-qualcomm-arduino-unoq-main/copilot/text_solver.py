@@ -45,6 +45,12 @@ THINK = ("Solve the math problem. Work it out using as few tokens as possible. "
          "After your working, write exactly Answer: X with the correct option letter.")
 THINK_PICK = ("Solve this math contest problem. Reason briefly, then output the letter "
               "of the correct option with no other visible text.")
+RETRIEVED = ("You solve multiple-choice math competition problems for school students. "
+             "Examples show a question and its correct answer value, without options or working. "
+             "Use a similar example only when its mathematical method applies. Work out the "
+             "new problem briefly. Never reply with a bare letter: first write one short "
+             "calculation or deduction, then finish with exactly 'Answer: X' using the correct "
+             "option letter A–E.")
 CALC_FIRST = """Solve the math problem. Reply with Calc: followed by one arithmetic expression that gives the answer in the units of the options. Use + - * / **, parentheses and optionally gcd, lcm, comb, perm or factorial. For problems that cannot be expressed that way, reply Answer: followed by the correct choice.
 Equal split of 87 sweets among 3 children: Calc: 87/3
 Maximum area of a rectangle with perimeter 24: Calc: (24/4)**2
@@ -68,7 +74,7 @@ Answer: E
 Continue with calculations or brief deductions, then Answer: X. Work in any language."""
 PROMPTS = {"shots": reasoner.SYSTEM, "short": SHORT, "formula": FORMULA, "value": VALUE,
            "brief": BRIEF, "pick": PICK, "think": THINK, "calc": CALC_FIRST,
-           "compact": COMPACT, "think-pick": THINK_PICK}
+           "compact": COMPACT, "think-pick": THINK_PICK, "retrieved": RETRIEVED}
 FINAL = re.compile(
     r"(?im)^\s*(?:\*{1,2})?(?:final answer|answer|resposta|respuesta|réponse|antwort)"
     r"(?:\*{1,2})?\s*[:：]\s*(?:\*{1,2})?\(?([A-E])\b"
@@ -101,13 +107,23 @@ def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=
     if profile == "compact":
         user = ("Question: " + user + "\nUse the pattern in the examples. "
                 "Give one line of work, then Answer: X.")
+    messages = [{"role": "system", "content": system}]
     if examples:
-        # Keep the fixed system prefix cached; examples are charged on each question.
-        demos = "\n\n".join(f"{format_problem(example)}\nAnswer: {example['label']}"
-                            for example in examples)
-        user = f"Examples of different problems:\n{demos}\n\nSolve this problem:\n{user}"
-    payload = {"messages": [{"role": "system", "content": system},
-                            {"role": "user", "content": user}],
+        if profile == "retrieved":
+            for example in examples:
+                value = (example.get("options") or {}).get(example.get("label"),
+                                                             example.get("label", ""))
+                messages.extend([
+                    {"role": "user", "content": "Question: " + (example.get("text") or "")},
+                    {"role": "assistant", "content": "Answer value: " + str(value)},
+                ])
+        else:
+            # Keep the fixed system prefix cached; examples are charged on each question.
+            demos = "\n\n".join(f"{format_problem(example)}\nAnswer: {example['label']}"
+                                for example in examples)
+            user = f"Examples of different problems:\n{demos}\n\nSolve this problem:\n{user}"
+    messages.append({"role": "user", "content": user})
+    payload = {"messages": messages,
                "max_tokens": max_tokens, "temperature": 0, "seed": int(CONFIG["SEED"]),
                "cache_prompt": True, "stream": True, "timings_per_token": True,
                "return_progress": True, "stream_options": {"include_usage": True}}

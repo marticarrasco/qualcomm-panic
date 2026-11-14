@@ -35,6 +35,22 @@ Per a un CSV d'avaluació (`eval-*.csv`):
 - Filtres (llengua, nivell, estat, cerca, només no encertades) i taula ordenable;
   clica una fila per veure la sortida íntegra del model.
 
+## Comparar dues execucions
+
+Amb un CSV carregat com a **A**, pots carregar-ne un segon com a **B** (el botó
+`+B` de la llista, la segona zona d'arrastre, o el selector de fitxers). Es mostra:
+
+- Precisió de cadascuna, diferència en punts percentuals, quantes preguntes
+  milloren (▲) i quantes empitjoren (▼), i quina fracció de respostes és idèntica.
+- Barres comparades per nivell, llengua i **text-only vs amb opcions** (i per estat).
+- La llista de preguntes que canvien (millores primer); clica una fila per veure
+  les dues sortides del model costat a costat.
+- Tokens i temps mitjans de cada execució.
+
+A i B es fusionen per `problem_id` + `llengua`; si les mostres no coincideixen
+del tot, ho indica amb un avís. El botó `×` d'una ranura la buida i torna a la
+vista d'una sola execució.
+
 Els CSV d'avaluació amb esquemes antics (`id,language,level,has_options,label,answer,
 correct,seconds,...`) s'adapten automàticament al format actual. Els que no tenen
 resposta correcta (`local-reasoning-*.csv`) es mostren com a taula genèrica.
