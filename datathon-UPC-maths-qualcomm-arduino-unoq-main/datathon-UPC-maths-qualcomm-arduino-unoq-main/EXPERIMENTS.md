@@ -62,11 +62,12 @@ After five rotations the picks are spread evenly over the letters, so the bias i
 
 147 English validation problems with options, all levels:
 
-| | Count |
-| --- | --- |
-| Reached `Answer: X` in budget | 107 of 147 |
-| Right when finished | about 27 to 29% |
-| Unfinished, last number matched to an option ("salvage") | worse than the prior; dropped |
+| Prompt | Reached `Answer: X` in budget | Right when finished | Right overall, D when unfinished |
+| --- | --- | --- | --- |
+| Terse instructions only | 76 of 147 | 18 = 24% | 35 = 24% |
+| Terse instructions plus three worked examples (shipped) | 107 of 147 | 32 = 30% | 45 = 31% |
+
+Matching the last number of unfinished reasoning to an option ("salvage") was right 4 of 16 times with the worked examples, worse than the prior, so we dropped it.
 
 Finishing more often did not make the answers right: an earlier 63% (12 of 19) came from short, easy problems that finished on their own. Across levels the model's finished answers are only a little better than a guess.
 
@@ -99,7 +100,16 @@ On the 147 English validation problems with options:
 
 The order of the steps was chosen on these same problems, so expect a little less on new data. Where the rule fires the prior beats the model (15 against 8 right of 36); elsewhere the model beats D (24 against 17 right of 84 finished).
 
-On the board, with an earlier version of step 2 only, problems took 10 to 57 s and none went over the limit; the server cancels the generation when we close the connection at the deadline.
+The whole pipeline through `eval.py` on the full validation file (275 problems, five languages, run on a laptop):
+
+| | Right |
+| --- | --- |
+| Always D | 57 = 20.7% |
+| **`ANSWER_MODE=budget`** | **80 = 29.1%** |
+| of which problems with options | 55 of 165 = 33.3% |
+| of which problems without options (prior only) | 25 of 110 = 22.7% |
+
+On the board, with an earlier version of step 2 only, 30 problems took 10 to 57 s and none went over the limit (9 right, the same as always-D on those 30); the server cancels the generation when we close the connection at the deadline.
 
 ## 6. Pictures
 

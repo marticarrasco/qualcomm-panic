@@ -15,7 +15,7 @@ Updated 14 Nov, evening. Work on this branch is not merged into `main` yet: merg
   1. no options, or five numeric options printed out of order: a model-free prior (median value, else D), no model call;
   2. otherwise terse reasoning, streamed and stopped at a 57 s wall-clock deadline;
   3. the prior again if the reasoning does not reach `Answer: X`.
-- On 147 English validation problems with options: 50 right (34%), against 32 (22%) for always-D. On the board, problems took 10 to 57 s and none went over 60 s.
+- Full validation file (275 problems): 80 right (29.1%), against 57 (20.7%) for always-D. On problems with options: 33%. On the board, problems took 10 to 57 s and none went over 60 s.
 - Set `ANSWER_MODE=direct` to get the previous behaviour back.
 
 **Teaching (in progress)**
