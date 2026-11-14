@@ -61,6 +61,24 @@
   .cm-bad { background: var(--bad-bg); color: var(--bad); }
   .cm-sum { color: var(--muted); }
   td.wrap2 { white-space: normal; min-width: 220px; }
+  .slots { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .slot { font-size: 13px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); color: var(--muted); }
+  .slot.on { background: var(--card); color: var(--ink); border-color: var(--accent); font-weight: 600; }
+  .slot .x { border: 0; background: none; cursor: pointer; font-size: 15px; padding: 0 3px; color: var(--muted); }
+  .slot .x:hover { color: var(--bad); }
+  .listrow { display: inline-flex; align-items: stretch; gap: 4px; }
+  .mini { font: inherit; font-size: 12px; font-weight: 700; color: var(--accent); background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; cursor: pointer; }
+  .mini:hover { border-color: var(--accent); }
+  #drop2 { border: 2px dashed var(--line); border-radius: 8px; padding: 14px; text-align: center; color: var(--muted); cursor: pointer; margin-top: 12px; }
+  #drop2:hover, #drop2.over { border-color: var(--accent); color: var(--accent); }
+  .gbar.a { height: 8px; } .gbar.a div { background: var(--accent); }
+  .gbar.b { height: 8px; margin-top: 2px; }
+  .card .v.up { color: var(--ok); } .card .v.down { color: var(--bad); }
+  .pill.up { color: var(--ok); background: var(--ok-bg); border-color: transparent; }
+  .pill.down { color: var(--bad); background: var(--bad-bg); border-color: transparent; }
+  #cmlegend { font-size: 13px; color: var(--muted); }
+  .cmpout { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 800px) { .cmpout { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -75,8 +93,30 @@
       Arrossega aquí un CSV de <code>results/</code> &mdash; o <span class="link">tria'l</span>
     </div>
     <input type="file" id="file" accept=".csv,text/csv">
+    <div id="slots" class="slots"></div>
     <div id="filelist"></div>
+    <div id="cmpload" hidden>
+      <div id="drop2" title="Clica per triar el segon fitxer">
+        Compara amb un segon CSV: arrossega'l aqu&iacute; &mdash; o <span class="link">tria'l</span>
+      </div>
+      <input type="file" id="file2" accept=".csv,text/csv">
+    </div>
   </section>
+
+  <div id="cmp" hidden>
+    <div class="cards" id="cmcards"></div>
+    <div id="cmlegend" class="hint"></div>
+    <div class="grid2" id="cmgroups"></div>
+    <section>
+      <h2>Preguntes que canvien</h2>
+      <table>
+        <thead id="cmfhead"></thead>
+        <tbody id="cmfbody"></tbody>
+      </table>
+      <p class="hint" id="cmfnote"></p>
+    </section>
+    <div class="grid2" id="cmstats"></div>
+  </div>
 
   <div id="dash" hidden>
     <div class="cards" id="cards"></div>
@@ -126,7 +166,9 @@ function parseCSV(text) {
   return rows;
 }
 
-let COLS = [], ROWS = [], NAME = "";
+let COLS = [], ROWS = [];
+let DATA_A = null, DATA_B = null;   // A = run of reference, B = run to compare against
+let cmpOpen = new Set();
 let expanded = new Set();
 let sort = { key: null, dir: 1 };
 const F = { lang: "", level: "", status: "", onlyWrong: false, q: "" };
@@ -134,30 +176,46 @@ const F = { lang: "", level: "", status: "", onlyWrong: false, q: "" };
 const isEval = () => COLS.includes("problem_id") && COLS.includes("is_correct");
 const okRow = r => (r.status || "ok") === "ok" && String(r.selected_answer).trim() !== "";
 const correctRow = r => isTrue(r.is_correct);
+const shortName = s => String(s).replace(/^eval-/, "").replace(/\.csv$/i, "");
+const joinKey = r => (r.problem_id ?? "") + "\u0000" + (r.language ?? "");
 
-function loadCSV(name, text) {
+function toData(name, text) {
   const rows = parseCSV(text);
-  if (!rows.length) { alert("El fitxer sembla buit."); return; }
-  COLS = rows[0].map(h => h.trim());
-  ROWS = rows.slice(1).map(r => {
-    const o = {}; COLS.forEach((h, i) => o[h] = r[i] == null ? "" : r[i]); return o;
+  if (!rows.length) { alert("El fitxer sembla buit."); return null; }
+  let cols = rows[0].map(h => h.trim());
+  const out = rows.slice(1).map(r => {
+    const o = {}; cols.forEach((h, i) => o[h] = r[i] == null ? "" : r[i]); return o;
   });
   // adapt older/simpler schemas to the current eval column names
   const ALIASES = [["problem_id", "id"], ["selected_answer", "answer"], ["correct_answer", "label"],
                    ["elapsed_seconds", "seconds"], ["input_tokens", "prompt_tokens"], ["is_correct", "correct"]];
   for (const [to, from] of ALIASES) {
-    if (COLS.includes(to) || !COLS.includes(from)) continue;
-    COLS = COLS.concat(to);
-    ROWS.forEach(r => r[to] = r[from]);
+    if (cols.includes(to) || !cols.includes(from)) continue;
+    cols = cols.concat(to);
+    out.forEach(r => r[to] = r[from]);
   }
-  NAME = name;
-  expanded = new Set();
-  sort = { key: null, dir: 1 };
-  Object.keys(F).forEach(k => F[k] = k === "onlyWrong" ? false : "");
-  $("#fname").textContent = name + " (" + ROWS.length + " files)";
-  const stamps = ROWS.map(r => r.evaluated_at).filter(Boolean);
-  $("#fstamp").textContent = stamps.length ? stamps[0].replace("T", " ").slice(0, 16) : "";
-  render();
+  return { name, cols, rows: out };
+}
+
+function loadInto(slot, name, text) {
+  const d = toData(name, text);
+  if (!d) return;
+  if (slot === "B") {
+    if (!DATA_A) { alert("Primer carrega el CSV A, que fa de referència."); return; }
+    if (!DATA_A.cols.includes("is_correct") || !d.cols.includes("is_correct")) {
+      alert("Per comparar, tots dos fitxers han de tenir resposta correcta."); return;
+    }
+    DATA_B = d;
+  } else {
+    DATA_A = d;
+    DATA_B = null;
+  }
+  renderAll();
+}
+
+function clearSlot(slot) {
+  if (slot === "A") { DATA_A = null; DATA_B = null; } else DATA_B = null;
+  renderAll();
 }
 
 // --- summary cards ---
@@ -418,13 +476,42 @@ function renderGeneric() {
 }
 
 function render() {
-  $("#load").hidden = true;
-  $("#dash").hidden = false;
-  if (isEval()) {
-    cards(); breakdown(); buildDiag(); buildFilters(); renderTable();
-  } else {
-    renderGeneric();
+  if (!DATA_A) {
+    $("#fname").textContent = "Cap fitxer carregat";
+    $("#fstamp").textContent = "";
+    $("#cmpload").hidden = true;
+    $("#dash").hidden = true;
+    $("#cmp").hidden = true;
+    return;
   }
+  $("#cmpload").hidden = false;
+  ROWS = DATA_A.rows;
+  COLS = DATA_A.cols;
+  expanded = new Set();
+  cmpOpen = new Set();
+  sort = { key: null, dir: 1 };
+  Object.keys(F).forEach(k => F[k] = k === "onlyWrong" ? false : "");
+  $("#fname").textContent = shortName(DATA_A.name) + (DATA_B ? "  vs  " + shortName(DATA_B.name) : "") + " (" + ROWS.length + " files)";
+  const stamps = ROWS.map(r => r.evaluated_at).filter(Boolean);
+  $("#fstamp").textContent = stamps.length ? stamps[0].replace("T", " ").slice(0, 16) : "";
+  if (DATA_B) {
+    $("#dash").hidden = true;
+    $("#cmp").hidden = false;
+    renderCompare();
+  } else {
+    $("#cmp").hidden = true;
+    $("#dash").hidden = false;
+    if (isEval()) {
+      cards(); breakdown(); buildDiag(); buildFilters(); renderTable();
+    } else {
+      renderGeneric();
+    }
+  }
+}
+
+function renderAll() {
+  renderSlots();
+  render();
 }
 
 // --- loading: drag & drop, file picker, server list ---
