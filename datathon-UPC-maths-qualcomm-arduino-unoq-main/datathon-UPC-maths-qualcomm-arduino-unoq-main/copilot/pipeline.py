@@ -77,6 +77,13 @@ def _text_rag_index():
 
 
 def _solve_text(problem, deadline, url, exclude_id, retrieve, text_rag=False):
+    if TEXT_ROUTE == "model":
+        # Diagnostic mode: no rules, ranker, prior or retrieval. Every problem
+        # goes to Qwen; a missing answer falls back only to satisfy the A-E format.
+        answer, status, text, timings = text_solver.infer(
+            problem, deadline, url, TEXT_PROFILE, TEXT_MAX_TOKENS, (),
+            board_budget=TEXT_BOARD_BUDGET)
+        return answer or FALLBACK, status, text, timings
     flag = problem.get("text_only")
     if flag is not None and str(flag).strip().casefold() in {"false", "0", "no"}:
         return reasoner.answer(problem, deadline, url)

@@ -83,6 +83,18 @@ class TextSolverTest(unittest.TestCase):
             result = pipeline.solve(row, time_limit=60)
         self.assertEqual((result["answer"], result["status"]), ("D", "prior"))
 
+    def test_model_only_route_skips_all_shortcuts(self):
+        row = problem("A question", ("5", "1", "4", "3", "2"), id="model-only")
+        with patch.object(pipeline, "TEXT_ROUTE", "model"), \
+                patch.object(pipeline, "TEXT_TRAIN", ""), \
+                patch.object(pipeline, "TEXT_PROFILE", "shots"), \
+                patch.object(pipeline, "_text_rag_index", return_value=None), \
+                patch("copilot.text_solver.infer",
+                      return_value=("C", "ok", "Answer: C", {})) as infer:
+            result = pipeline.solve(row, time_limit=60)
+        self.assertEqual((result["answer"], result["status"]), ("C", "ok"))
+        infer.assert_called_once()
+
     def test_numeric_route_uses_ranker_without_model(self):
         row = problem("A numeric question", ("5", "1", "4", "3", "2"),
                       id="numeric-route", text_only=True)
