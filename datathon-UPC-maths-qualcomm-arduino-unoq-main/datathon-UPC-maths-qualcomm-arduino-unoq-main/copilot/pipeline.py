@@ -24,7 +24,8 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
     image_b64 and llm_url send the problem image to a vision server.
     """
     start = time.perf_counter()
-    result = {"answer": FALLBACK, "status": "ok", "prompt_tokens": 0, "retrieved": "", "examples": []}
+    result = {"answer": FALLBACK, "status": "ok", "prompt_tokens": 0,
+              "completion_tokens": 0, "retrieved": "", "examples": []}
     try:
         examples = []
         if index is not None and k > 0:
@@ -37,6 +38,7 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
                                         image_b64=image_b64, url=llm_url)
         result["answer"] = letter
         result["prompt_tokens"] = timings.get("prompt_n", 0)
+        result["completion_tokens"] = timings.get("predicted_n", 0)
     except (socket.timeout, TimeoutError):
         result["status"] = "timeout"
     except urllib.error.URLError as error:
@@ -44,5 +46,10 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
             result["status"] = "timeout"
         else:
             result["status"] = f"error: {error.reason}"
+    except ValueError as error:
+        timings = getattr(error, "timings", {})
+        result["prompt_tokens"] = timings.get("prompt_n", 0)
+        result["completion_tokens"] = timings.get("predicted_n", 0)
+        result["status"] = "invalid_response"
     result["seconds"] = round(time.perf_counter() - start, 2)
     return result
