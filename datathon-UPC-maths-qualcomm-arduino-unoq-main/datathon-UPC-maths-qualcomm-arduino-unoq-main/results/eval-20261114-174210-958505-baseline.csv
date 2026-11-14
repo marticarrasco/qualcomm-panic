@@ -1,0 +1,83 @@
+eval_id,evaluated_at,problem_id,language,level,has_options,selected_answer,correct_answer,is_correct,model_output,input_tokens,output_tokens,elapsed_seconds,arduino_estimated_seconds,arduino_read_estimated_seconds,arduino_write_estimated_seconds,arduino_read_tokens_per_second,arduino_write_tokens_per_second,status,retrieved
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-1_2020_9,eng,1,True,D,A,0,"Let $n$ be the number of sheets Clàudia cut. Since she starts with 10 sheets and cuts them into 5 parts each, the total number of pieces is $5n$. We are given that the total number of pieces is 22. Therefore, the equation is $5n = 22$. Solving for $n$, we get $n = \frac{22}{5} = 4.4$. Since the number of sheets must be an integer, there is no solution. However, in the context of multiple-choice questions, this often implies a typo in the problem statement (",84,128,16.25,28.97,7.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-1_2020_23,eng,1,True,C,C,1,"The mother is currently 36. The two sons are 13 and 4, and the daughter is 6. The sum of their ages is $13 + 4 + 6 = 23$. The mother is 36. The difference between the mother's age and the sum of the sons' and daughter's ages is $36 - 23 = 13$. For the sum to exceed the mother's age, it must take 13 years for this difference to close.
+
+Answer: C",103,112,15.45,28.03,9.36,18.67,11.0,6.0,ok,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-0_2019_22,eng,0,True,D,D,1,"Let $S$ be the number of sheep and $C$ be the number of cows.
+From the problem, we have:
+1. $S = C + 8$ (Sheep are 8 more than cows)
+2. $C = \frac{1}{2}S$ (Cows are half the number of sheep)
+
+Substitute equation (2) into equation (1):
+$S = \frac{1}{2}S + 8$
+$S - \frac{1}{2}S = 8$
+$\frac{1}{2}S = ",93,128,16.85,29.78,8.45,21.33,11.0,6.0,invalid_response,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-2_2017_17,eng,2,True,E,B,0,"Miquel has 17 pets. The problem states that all 17 pets are cats, dogs, or hamsters, with exactly two exceptions. Since there are 17 pets total and 2 are exceptions, the number of pets that are not exceptions is $17 - 2 = 15$. Therefore, Miquel has 15 pets.
+
+Answer: E",91,82,11.1,21.94,8.27,13.67,11.0,6.0,ok,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-2_2021_11,eng,2,False,D,B,0,"To find the smallest sum of three numbers obtained by cutting the number 5021972970, we need to partition the digits into three groups such that the sum of the numbers formed by these groups is minimized.
+
+The number is $N = 5021972970$.
+The total sum of all digits is $5+0+2+1+9+7+2+9+7+0 = 44$.
+Let the three numbers be $A, B, C$. Then $A+B+C = 44$.
+To minimize $A",95,128,17.21,29.97,8.64,21.33,11.0,6.0,invalid_response,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-1_2018_18,eng,1,False,A,B,0,"The dragon grows a new head every time a head is cut off. Since the knight cuts off 13 heads in total, and the growth happens immediately after each cut, the number of heads at the start must be exactly 13.
+
+Answer: A",107,54,7.85,18.73,9.73,9.0,11.0,6.0,ok,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-2_2020_7,eng,2,False,A,B,0,"Maria starts with 10 sheets. Each cut produces 2 new pieces (one from each original sheet), so each cut adds 2 pieces. The total number of pieces is 22. The number of cuts is $22 - 2 = 20$.
+
+Answer: A",74,61,7.56,16.9,6.73,10.17,11.0,6.0,ok,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-2_2016_6,eng,2,False,D,B,0,"Let $A, B, C, D, E$ represent the distances Antoni, Berta, Carles, Diana, and Ester can fly, respectively.
+We are given:
+1. $A = 2B$
+2. $C = 3D$
+3. $E = 2A$ (Since Antoni's airplane flies twice as far as Berta's).
+
+Substitute $A = 2B$ into the equation for $E$:
+$E = 2(2B) = 4B$.
+
+We need to find the value of $E$ in terms of $",123,128,17.99,32.51,11.18,21.33,11.0,6.0,invalid_response,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-0_2024_17,eng,0,True,C,D,0,"The penguin catches 9 fish in total. She gives 5 to the first young and 4 to the second, meaning she ate 9 - 5 - 4 = 0 fish. The problem states that one young has eaten 26 fish. Since the total amount eaten is 0, the other young must have eaten 26 - 0 = 26 fish.
+
+Answer: C",117,86,14.03,24.97,10.64,14.33,11.0,6.0,ok,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-1_2016_14,eng,1,True,D,B,0,"Let the two numbers be $x$ and $y$. We are given:
+1. $x + y = 15$
+2. $x - y = 3$
+
+Adding the two equations:
+$x + y + x - y = 15 + 3$
+$2x = 18$
+$x = 9$
+
+Substituting $x = 9$ into the first equation:
+$9 + y = 15$
+$y = 6$
+
+The two numbers are 9 and 6.
+The product is $9 \times ",75,128,17.56,28.15,6.82,21.33,11.0,6.0,invalid_response,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-0_2016_8,eng,0,True,D,C,0,"To ensure we have at least one black ball, we need to consider the worst-case scenario where we take out as many non-black balls as possible. We have 10 red balls, 8 blue balls, and 11 black balls. The total number of balls is 29.
+
+The worst-case scenario is that we take out all the non-black balls first.
+- Number of non-black balls = 10 (red) + 8 (blue) = 18.
+- We take out 18 balls.
+- The number of black balls remaining is 11.
+- Since",101,128,20.5,30.51,9.18,21.33,11.0,6.0,invalid_response,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-0_2017_7,eng,0,True,D,D,1,"To solve this problem, we first determine the total number of squares and triangles in the country of polygons.
+
+1.  **Count the squares**:
+    *   There are 3 squares.
+    *   There are 2 pentagons.
+    *   Total squares = $3 + 2 = 5$.
+
+2.  **Count the triangles**:
+    *   There are 3 squares.
+    *   There are 2 pentagons.
+    *   Total triangles = $3 + 2 = 5$.
+
+3.  **Calculate the number of pentagons needed",90,128,15.99,29.51,8.18,21.33,11.0,6.0,invalid_response,
+eval-20261114-174210-958505-baseline,2026-11-14T17:42:10.958505+01:00,lvl-2_2018_28,eng,2,True,D,A,0,"Let $n=14$ be the number of people. Let $k$ be the number of liars. The remaining $14-k$ people are truth-tellers.
+Let the positions be $1, 2, \dots, 14$.
+A person at position $i$ says ""My two neighbors are liars.""
+This statement is true if and only if exactly one of their neighbors is a liar.
+If a person is a liar, they always lie. So their statement is false.
+If a person is a truth-teller, they always tell the truth. So their statement is",99,128,13.84,30.33,9.0,21.33,11.0,6.0,invalid_response,

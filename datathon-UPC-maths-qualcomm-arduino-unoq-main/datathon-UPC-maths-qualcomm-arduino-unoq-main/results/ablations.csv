@@ -1,0 +1,6 @@
+time,name,commit,input,languages,n,rag_k,accuracy,mean_s,worst_s,over_limit
+20261114-170353,current-eng-all,600743e,data/val.jsonl,eng,13,0,23.1,13.2,24.3,0
+20261114-173436-088394,baseline [interrupted],e957f46,data/val.jsonl,all,7,0,28.6,12.4,16.5,0
+20261114-174210-958505,baseline,e957f46,data/val.jsonl,all,13,0,23.1,14.8,20.5,0
+20261114-180500-516778,baseline,3e81ad9,data/val.jsonl,all,15,0,20.0,6.1,6.8,0
+20261114-181457-996298,baseline-text-only [text-only],3e81ad9,data/val.jsonl,all,20,0,15.0,6.3,7.3,0
