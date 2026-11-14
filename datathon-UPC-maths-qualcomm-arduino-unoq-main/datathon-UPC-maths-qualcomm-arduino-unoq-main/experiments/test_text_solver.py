@@ -13,7 +13,7 @@ from copilot import pipeline, reasoner
 from copilot.arithmetic import calculate, numeric_options
 from copilot.rules import answer as exact_answer
 from copilot.rag import Index, build
-from copilot.text_solver import decode, infer
+from copilot.text_solver import decode, infer, retrieved_grammar
 from copilot.train_match import LexicalMatch
 from copilot.translations import TranslationBatch
 
@@ -82,6 +82,11 @@ class TextSolverTest(unittest.TestCase):
                 patch("copilot.text_solver.infer", side_effect=AssertionError("model called")):
             result = pipeline.solve(row, time_limit=60)
         self.assertEqual((result["answer"], result["status"]), ("D", "prior"))
+
+    def test_retrieved_grammar_bounds_work_line(self):
+        grammar = retrieved_grammar(400)
+        self.assertIn("{0,400}", grammar)
+        self.assertIn('"Answer: " [A-E]', grammar)
 
     def test_model_only_route_skips_all_shortcuts(self):
         row = problem("A question", ("5", "1", "4", "3", "2"), id="model-only")

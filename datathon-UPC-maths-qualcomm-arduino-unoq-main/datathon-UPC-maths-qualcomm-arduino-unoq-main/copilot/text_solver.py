@@ -54,10 +54,11 @@ Equal split of 87 sweets among 3 children: Calc: 87/3
 Maximum area of a rectangle with perimeter 24: Calc: (24/4)**2
 Ways to select a team of 3 from 7: Calc: comb(7,3)
 Which option is a square? A) triangle B) circle C) square: Answer: C"""
-RETRIEVED_GRAMMAR = r'''
-root ::= work "Answer: " [A-E]
-work ::= [^\n]{0,240} "\n"
-'''
+def retrieved_grammar(max_chars=240):
+    """One bounded work line, then a forced A-E answer."""
+    max_chars = max(0, min(2000, int(max_chars)))
+    return (f'root ::= work "Answer: " [A-E]\n'
+            f'work ::= [^\\n]{{0,{max_chars}}} "\\n"\n')
 CALC_GRAMMAR = r'''
 root ::= "Calc: " expr | "Answer: " [A-E]
 expr ::= term (space ("**" | [-+*/]) space term){0,20}
@@ -166,7 +167,7 @@ def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=
         payload["grammar"] = CALC_GRAMMAR
         payload["max_tokens"] = min(max_tokens, 48)
     if profile == "retrieved" and CONFIG.get("TEXT_RAG_GRAMMAR", "1") == "1":
-        payload["grammar"] = RETRIEVED_GRAMMAR
+        payload["grammar"] = retrieved_grammar(CONFIG.get("TEXT_RAG_WORK_CHARS", "240"))
     output, timings, finish = "", {}, None
     options = numeric_options(problem) if profile in {"formula", "value", "calc"} else None
     try:
