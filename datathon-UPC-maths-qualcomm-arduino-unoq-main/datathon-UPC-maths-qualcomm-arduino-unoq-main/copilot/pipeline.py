@@ -1,5 +1,6 @@
 """Shared solver for the official predictor and the evaluation runner."""
 import socket
+import sys
 import time
 import urllib.error
 from functools import lru_cache
@@ -22,6 +23,9 @@ TEXT_FALLBACK = CONFIG.get("TEXT_FALLBACK", "prior")
 TEXT_TRAIN = CONFIG.get("TEXT_TRAIN", "")
 TEXT_RAG_K = int(CONFIG.get("TEXT_RAG_K", "3"))
 TEXT_RAG_INDEX = CONFIG.get("TEXT_RAG_INDEX", "data/index-text.db")
+TEXT_RAG_SAME_LANGUAGE = CONFIG.get("TEXT_RAG_SAME_LANGUAGE", "1") == "1"
+TEXT_RAG_MIN_SCORE = float(CONFIG.get("TEXT_RAG_MIN_SCORE", "0"))
+TEXT_RAG_MAX_CHARS = int(CONFIG.get("TEXT_RAG_MAX_CHARS", "320"))
 TEXT_ROUTE = CONFIG.get("TEXT_ROUTE", "all")
 UNCERTAIN_THRESHOLD = 0.29
 TEXT_BOARD_BUDGET = (float(CONFIG["ARDUINO_PROMPT_TOKENS_PER_SECOND"]),
@@ -44,7 +48,9 @@ def prepare():
     if ANSWER_MODE == "text" and TEXT_TRAIN:
         _train_index()
     if ANSWER_MODE == "text" and TEXT_PROFILE == "retrieved" and TEXT_RAG_K > 0:
-        _text_rag_index()
+        if _text_rag_index() is None:
+            print(f"warning: {TEXT_RAG_INDEX} not found; solving without retrieved examples",
+                  file=sys.stderr)
     if ANSWER_MODE == "text" and (TEXT_FALLBACK == "ranker" or TEXT_ROUTE != "all"):
         from .option_ranker import load_weights
         load_weights()
@@ -80,8 +86,9 @@ def _solve_text(problem, deadline, url, exclude_id, retrieve):
     index = _train_index() if TEXT_TRAIN else None
     if index and (letter := index.answer(problem, exclude_id)):
         return letter, "train_match", "", {}
-    if TEXT_MEDIAN_BYPASS and median_choice(problem) not in {None, FALLBACK}:
-        return prior, "prior", "", {}
+    median = median_choice(problem)
+    if TEXT_MEDIAN_BYPASS and median is not None:
+        return median, "prior", "", {}
     if TEXT_FALLBACK == "ranker" or TEXT_ROUTE != "all":
         from .option_ranker import probabilities
         choices = probabilities(problem)
@@ -92,7 +99,8 @@ def _solve_text(problem, deadline, url, exclude_id, retrieve):
             prior = best
     answer, status, text, timings = text_solver.infer(
         problem, deadline, url, TEXT_PROFILE, TEXT_MAX_TOKENS, retrieve(),
-        board_budget=TEXT_BOARD_BUDGET)
+        board_budget=TEXT_BOARD_BUDGET,
+        example_max_chars=TEXT_RAG_MAX_CHARS if use_text_rag else 0)
     return answer or prior, status, text, timings
 
 
@@ -109,20 +117,26 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
     start = time.perf_counter()
     result = {"answer": FALLBACK, "status": "ok", "prompt_tokens": None,
               "completion_tokens": None, "model_output": None, "retrieved": "", "examples": []}
+    use_text_rag = (text_mode and index is None and k == 0
+                    and TEXT_PROFILE == "retrieved" and TEXT_RAG_K > 0
+                    and _text_rag_index() is not None)
     def retrieve():
         active_index = index
         active_k = k
         same_language = False
+        min_score = 0.0
         if active_index is None and ANSWER_MODE == "text" and TEXT_PROFILE == "retrieved":
             active_index = _text_rag_index()
             active_k = TEXT_RAG_K
-            same_language = True
+            same_language = TEXT_RAG_SAME_LANGUAGE
+            min_score = TEXT_RAG_MIN_SCORE
         if active_index is not None and active_k > 0:
             try:
                 hits = active_index.search(problem, k=active_k,
                                            exclude_id=exclude_id or problem.get("id"),
                                            timeout=min(1.0, max(0.05, time_limit - MARGIN)),
-                                           same_language=same_language)
+                                           same_language=same_language,
+                                           min_score=min_score)
             except OSError:
                 hits = []
             result["examples"] = hits

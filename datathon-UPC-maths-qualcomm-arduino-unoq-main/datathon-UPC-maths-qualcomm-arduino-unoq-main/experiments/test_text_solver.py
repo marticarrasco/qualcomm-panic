@@ -9,6 +9,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import patch
 
+from copilot import pipeline, reasoner
 from copilot.arithmetic import calculate, numeric_options
 from copilot.rules import answer as exact_answer
 from copilot.rag import Index, build
@@ -68,7 +69,26 @@ class TextSolverTest(unittest.TestCase):
             query = problem("New question", id="eval")
             with patch("copilot.rag.embed", return_value=[[1.0, 0.0]]):
                 hits = index.search(query, k=3, same_language=True)
+                strong = index.search(query, k=3, same_language=True, min_score=0.9)
             self.assertEqual([row[1]["id"] for row in hits], ["one", "two"])
+            self.assertEqual([row[1]["id"] for row in strong], ["one"])
+
+    def test_median_rule_is_used_even_when_it_returns_d(self):
+        row = problem("A question", ("5", "1", "4", "3", "2"), id="median-d", text_only=True)
+        with patch.object(pipeline, "TEXT_TRAIN", ""), \
+                patch.object(pipeline, "TEXT_MEDIAN_BYPASS", True), \
+                patch.object(pipeline, "ANSWER_MODE", "text"), \
+                patch.object(pipeline, "_text_rag_index", return_value=None), \
+                patch("copilot.text_solver.infer", side_effect=AssertionError("model called")):
+            result = pipeline.solve(row, time_limit=60)
+        self.assertEqual((result["answer"], result["status"]), ("D", "prior"))
+
+    def test_budget_mode_uses_median_rule_even_when_it_returns_d(self):
+        row = problem("A question", ("5", "1", "4", "3", "2"))
+        with patch.object(reasoner, "stream_reasoning",
+                          side_effect=AssertionError("model called")):
+            letter, status, text, timings = reasoner.answer(row, deadline=time.perf_counter() + 10)
+        self.assertEqual((letter, status, text, timings), ("D", "prior", "", {}))
 
     def test_deadline_cancels_even_when_server_keeps_writing(self):
         started = threading.Event()

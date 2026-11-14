@@ -20,7 +20,7 @@ from contextlib import closing
 
 from .config import CONFIG
 from .llm import URL, format_problem
-from .priors import DEFAULT as PRIOR_DEFAULT, guess
+from .priors import guess, median_choice
 from .stream import chat
 
 ANSWER_RE = re.compile(r"(?:answer|resposta|respuesta|réponse|antwort)\s*[:：]\s*\**\s*\(?([A-E])\b",
@@ -107,7 +107,7 @@ def answer(problem, deadline, url=URL):
     """
     options = problem.get("options") or {}
     prior = guess(problem)
-    if len(options) < 2 or prior != PRIOR_DEFAULT:
+    if len(options) < 2 or median_choice(problem) is not None:
         return prior, "prior", "", {}
     text, timings, _hit = stream_reasoning(problem, deadline, url)
     found = ANSWER_RE.findall(text)

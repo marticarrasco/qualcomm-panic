@@ -42,11 +42,13 @@ class Index:
             self.rows.append((key, json.loads(problem), vec))
         db.close()
 
-    def search(self, problem, k=1, exclude_id=None, timeout=60, same_language=False):
+    def search(self, problem, k=1, exclude_id=None, timeout=60, same_language=False,
+               min_score=0.0):
         """Return up to k (score, problem) pairs, most similar first.
 
         exclude_id skips the same problem in other languages, so validation
-        never retrieves its own translation.
+        never retrieves its own translation. min_score drops weak neighbours
+        instead of padding the prompt with irrelevant examples.
         """
         if k <= 0:
             return []
@@ -57,7 +59,9 @@ class Index:
                 continue
             if same_language and stored.get("language") != problem.get("language"):
                 continue
-            scored.append((sum(a * b for a, b in zip(query, vec)), stored))
+            score = sum(a * b for a, b in zip(query, vec))
+            if score >= min_score:
+                scored.append((score, stored))
         scored.sort(key=lambda pair: pair[0], reverse=True)
         seen, hits = set(), []
         for score, stored in scored:

@@ -82,6 +82,21 @@ FINAL = re.compile(
 CALC = re.compile(r"(?im)^\s*Calc\s*[:：]\s*([^\r\n]{1,160})(?:\r?\n|\Z)")
 
 
+def format_example(example, max_chars=0):
+    """A retrieved example, optionally shortened so it fits the board budget."""
+    if not max_chars:
+        return f"{format_problem(example)}\nAnswer: {example['label']}"
+    text = " ".join(str(example.get("text", "")).split())
+    if len(text) > max_chars:
+        text = text[:max_chars].rsplit(" ", 1)[0].rstrip() + " …"
+    lines = [text]
+    for letter in "ABCDE":
+        if letter in (example.get("options") or {}):
+            lines.append(f"{letter}) {example['options'][letter]}")
+    lines.append(f"Answer: {example['label']}")
+    return "\n".join(lines)
+
+
 def decode(output, options, final_chunk=False):
     # A stream can end mid-number. Only use a formula after a newline or EOS.
     for match in CALC.finditer(output):
@@ -101,7 +116,7 @@ def decode(output, options, final_chunk=False):
 
 
 def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=(),
-          board_budget=None):
+          board_budget=None, example_max_chars=0):
     system = PROMPTS[profile]
     user = format_problem(problem)
     if profile == "compact":
@@ -113,13 +128,16 @@ def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=
             for example in examples:
                 value = (example.get("options") or {}).get(example.get("label"),
                                                              example.get("label", ""))
+                question = " ".join(str(example.get("text") or "").split())
+                if example_max_chars and len(question) > example_max_chars:
+                    question = question[:example_max_chars].rsplit(" ", 1)[0].rstrip() + " …"
                 messages.extend([
-                    {"role": "user", "content": "Question: " + (example.get("text") or "")},
+                    {"role": "user", "content": "Question: " + question},
                     {"role": "assistant", "content": "Answer value: " + str(value)},
                 ])
         else:
             # Keep the fixed system prefix cached; examples are charged on each question.
-            demos = "\n\n".join(f"{format_problem(example)}\nAnswer: {example['label']}"
+            demos = "\n\n".join(format_example(example, example_max_chars)
                                 for example in examples)
             user = f"Examples of different problems:\n{demos}\n\nSolve this problem:\n{user}"
     messages.append({"role": "user", "content": user})
