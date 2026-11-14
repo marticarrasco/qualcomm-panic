@@ -136,19 +136,25 @@ was hit on 55 rows. Retrieved prompting used 29,666 input tokens across the coho
 compared with 8,046 for `shots`. The default therefore remains `shots`; the retrieved
 profile stays available for further prompt and retrieval experiments.
 
-## Ranker-first default
+## Ranker-first default with uncertain model routing
 
-The default now routes complete multiple-choice problems to the train-fitted
-option ranker (`TEXT_ROUTE=ranker`, `TEXT_MEDIAN_BYPASS=0`) and does not call
-Qwen. This is the measured best policy on the 300-row cohort:
+The default now uses the train-fitted option ranker for every complete
+multiple-choice problem (`TEXT_MEDIAN_BYPASS=0`) and escalates to Qwen only when
+the ranker's best probability is below **0.29** (`TEXT_ROUTE=uncertain`). This is
+the measured best policy on the 300-row cohort:
 
 | Policy | Correct | Mean over IDs | Time |
 |---|---:|---:|---:|
 | Always D | 78/300 (26.0%) | 26.0% | 0 s |
 | Model-free prior (`priors.guess`) | 98/300 (32.7%) | — | 0 s |
 | Ranker, median bypass on | 104/300 (34.7%) | 31.0% | 0 s |
-| **Ranker, median bypass off (default)** | **113/300 (37.7%)** | **32.6%** | **0 s** |
+| Ranker only, median bypass off | 113/300 (37.7%) | 32.6% | 0 s |
+| **Ranker + model on uncertain items (default)** | **118/300 (39.3%)** | **33.5%** | **14.8 s projected mean, 48.0 s p95** |
 | Previous text hybrid (`shots`, model, bypass on) | 97/300 (32.3%) | — | — |
+
+The uncertain row made 118 model calls and reused the ranker for the rest. The
+ranker-only policy remains available with `TEXT_ROUTE=ranker` for a fully
+model-free run.
 
 The median rule is worse than the ranker exactly where it fires: **25/85
 (29.4%)** against **35/85 (41.2%)**. That is why `TEXT_MEDIAN_BYPASS=0` is now the
