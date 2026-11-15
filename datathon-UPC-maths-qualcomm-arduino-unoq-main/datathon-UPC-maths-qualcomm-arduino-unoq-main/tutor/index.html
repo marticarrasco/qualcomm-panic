@@ -191,8 +191,6 @@
   .rung.used .rname { color: var(--ink); }
   .rung.next .dot { border-color: var(--ink); color: var(--ink); border-style: dashed; }
   .rung.next .rname { color: var(--ink); }
-  .rung.absent { opacity: .5; }
-  .rung.absent .rname { text-decoration: line-through; }
   .rung.answer.used .dot { background: var(--ink); color: #fff; }
   .note { grid-column: 2; margin-top: 8px; padding: 12px 14px; border-radius: 4px 14px 14px 14px; background: var(--hi-soft); border: 1px solid #F0D766; font-size: 16px; line-height: 1.5; }
   .note.ai { background: var(--pen-soft); border-color: #C3D2FA; border-radius: 4px 14px 14px 14px; }
@@ -220,6 +218,23 @@
   .warmup .problem { border-color: #E8D27A; }
   .warmup .btn { min-height: 40px; padding: 6px 14px; font-size: 15px; box-shadow: 0 2px 0 var(--ink); }
   .warmup .said { font-weight: 700; }
+  .exercise-text { margin: 4px 0 14px; font-size: clamp(19px, 3vw, 25px); line-height: 1.45; }
+  .exercise-options { display: flex; gap: 8px 16px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
+  .exercise-options li { background: var(--paper); border: 1px solid var(--line); border-radius: 9px; padding: 6px 10px; }
+  .exercise-options b { color: var(--pen-ink); margin-right: 6px; }
+  .chat { padding: 16px; }
+  .chat h2 { font-size: 19px; margin-bottom: 8px; }
+  .chat-log { display: grid; gap: 8px; max-height: 16rem; overflow: auto; }
+  .chat-log:empty { display: none; }
+  .chat-log p { margin: 0; padding: 8px 11px; border-radius: 10px; background: var(--pen-soft); overflow-wrap: anywhere; }
+  .chat-log .mine { justify-self: end; background: var(--paper); }
+  .chat-log small { display: block; color: var(--ink-2); margin-top: 4px; }
+  .chat-form { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chat-form input { flex: 1 1 12rem; min-width: 0; min-height: 48px; padding: 8px 12px; border: 1px solid var(--line);
+                     border-radius: 10px; background: var(--paper); font: inherit; }
+  .chat-status { margin: 8px 0 0; font-size: 14px; color: var(--ink-2); }
+  .chat-status:empty { display: none; }
+  .practice-actions { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 20px; }
   .tap-cap { display: none; margin: 8px 0 0; font-size: 14px; font-weight: 700; color: var(--pen-ink); text-align: center; }
   .levels { padding: 18px; }
   .levels h2 { font-size: 19px; margin-bottom: 12px; }
@@ -270,7 +285,7 @@
     .welcome, .play { grid-template-columns: minmax(0, 1fr); }
     .side, .ladder { position: static; max-height: none; }
     .answer-col { display: contents; }
-    .problem-card { order: 1; } #answerCard, #doneAll { order: 2; } .ladder { order: 3; } .board-row { order: 4; }
+    .problem-card { order: 1; } #answerCard, #doneAll { order: 2; } .chat { order: 3; } .ladder { order: 4; } .board-row { order: 5; }
     .side { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   }
   @media (max-width: 640px) {
@@ -316,15 +331,16 @@
       <h1 data-t="headline"></h1>
       <p class="lead" data-t="intro"></p>
       <div class="card setup">
-        <div class="field">
+        <div class="field" id="nameField">
           <label class="label" for="name" data-t="name"></label>
           <input class="name" type="text" id="name" maxlength="40" autocomplete="off" spellcheck="false">
         </div>
+        <p class="tag hidden" id="demoProfile" data-t="demoProfile"></p>
         <div class="field">
           <span class="label" id="topicLabel" data-t="topic"></span>
           <div class="topics" id="topics" role="group" aria-labelledby="topicLabel"></div>
         </div>
-        <div class="field">
+        <div class="field" id="levelField">
           <span class="label"><span data-t="startLevel"></span><span class="help" id="levelHelp"></span></span>
           <div class="stairs" id="stairs" role="group" aria-label="Level"></div>
           <div class="stairs-legend"><span data-t="easiest"></span><span data-t="hardest"></span></div>
@@ -353,7 +369,8 @@
         <img id="image" alt="">
         <span class="stamp" id="stamp" aria-hidden="true"><svg viewBox="0 0 200 150"><path d="M20 80 L75 130 L185 15"/></svg></span>
       </button>
-      <p class="tap-cap" data-t="tapCap"></p>
+      <p class="tap-cap" id="tapCap" data-t="tapCap"></p>
+      <div id="exerciseText" class="hidden"></div>
       <div class="warmup hidden" id="warmup"></div>
     </article>
     <div class="answer-col">
@@ -372,6 +389,16 @@
         <div class="keys" data-t="keys"></div>
       </article>
       <div class="card done-all hidden" id="doneAll"><h2 data-t="finished"></h2></div>
+      <article class="card chat hidden" id="chatCard" aria-labelledby="chatTitle">
+        <h2 id="chatTitle" data-t="chatTitle"></h2>
+        <div class="chat-log" id="chatLog" role="log"></div>
+        <p class="chat-status" id="chatStatus" role="status"></p>
+        <form class="chat-form" id="chatForm">
+          <label class="sr" for="chatInput" data-t="chatInput"></label>
+          <input id="chatInput" type="text" maxlength="220" autocomplete="off" required>
+          <button type="submit" id="chatSend" class="btn" data-t="chatSend"></button>
+        </form>
+      </article>
       <div class="board-row">
         <div class="led" id="ledPlay"></div>
         <div class="card levels">
@@ -416,13 +443,19 @@ const T = {
     problems: n => n + " problems",
     levelN: n => "Level " + n, levelHelp: n => "Level " + n + (n === 0 ? ", the easiest" : n === 7 ? ", the hardest" : ""),
     needName: "Type your name first, so the tutor can remember your levels.",
+    demoProfile: "Demo · Aina (fictional profile)",
+    chatTitle: "Ask Pista", chatInput: "Question about this problem", chatPlaceholder: "How do I start?",
+    chatSend: "Send", chatWaiting: "Pista is writing a hint…", chatModel: "Written by the local model",
+    chatStarter: "What should I try next?", chatFallback: "Fallback hint",
+    chatError: "This message could not be answered. Try again.",
+    practiceAction: { review: "Review", challenge: "Challenge" },
     howTitle: "How the hints work", enlarge: "Enlarge", tapCap: "Tap the problem to read it bigger", close: "Close", viewerTip: "Pinch to zoom. Tap Close or press Esc to go back.",
     hint: "Give me a hint", hintMore: "Another hint", showAnswer: "Show me the answer", next: "Next problem", skip: "Skip this one",
     rungs: ["A question to start", "A similar problem", "Rule two out", "A first step", "The answer"],
     aiFrom: m => "Question from the AI" + (m ? " (" + m + ", runs on the board)" : ""),
     aiNote: "Written by the AI for this problem. It may not always fit: use it to start thinking.",
     methodFor: t => "Method for " + t,
-    rungHow: ["A question about your problem from the AI, and a method tip", "An easier one that uses the same idea", "Two options that are wrong", "One sentence from the small on-board model", "Only if you ask, and it counts as not solved"],
+    rungHow: ["A hint written for your problem and a method tip", "An easier one that uses the same idea", "Two options that are wrong", "One sentence from the small on-board model", "Only if you ask, and it counts as not solved"],
     ladderTitle: "Hint ladder", ladderIntro: "Climb only as far as you need.",
     exEasier: "Solve this easier one first; the same idea works in your problem.",
     exSame: "Solve this similar one first; the same idea works in your problem.",
@@ -430,7 +463,7 @@ const T = {
     warmTitle: "Warm-up: try this one first", exWhere: "It is under your problem.",
     elText: "These are not correct. Why can they not be right? Check the others.",
     nuNote: "A suggestion from the small on-board model. It may be imperfect: use it only as a way to start.",
-    noRung: "Not for this problem", answerShown: a => "The answer was " + a + ".",
+    answerShown: a => "The answer was " + a + ".",
     noMore: "No more hints. Try once more, or ask to see the answer.",
     sure: "Seeing the answer counts as not solved. Are you sure?", yesShow: "Yes, show it", noTry: "No, I'll try again",
     right: "Correct! Well done.", up: n => "First try: the next one is harder (level " + n + ").",
@@ -459,13 +492,19 @@ const T = {
     problems: n => n + " problemes",
     levelN: n => "Nivell " + n, levelHelp: n => "Nivell " + n + (n === 0 ? ", el més fàcil" : n === 7 ? ", el més difícil" : ""),
     needName: "Escriu primer el teu nom, perquè el tutor recordi els teus nivells.",
+    demoProfile: "Demo · Aina (perfil fictici)",
+    chatTitle: "Pregunta a Pista", chatInput: "Pregunta sobre aquest problema", chatPlaceholder: "Per on començo?",
+    chatSend: "Envia", chatWaiting: "Pista està redactant una pista…", chatModel: "Redactada pel model local",
+    chatStarter: "Quin pas puc provar ara?", chatFallback: "Pista de reserva",
+    chatError: "No s'ha pogut respondre al missatge. Torna-ho a provar.",
+    practiceAction: { review: "Repassa", challenge: "Accepta el repte" },
     howTitle: "Com funcionen les pistes", enlarge: "Amplia", tapCap: "Toca el problema per llegir-lo en gran", close: "Tanca", viewerTip: "Pessiga per ampliar. Toca Tanca o prem Esc per tornar.",
     hint: "Dona'm una pista", hintMore: "Una altra pista", showAnswer: "Ensenya'm la resposta", next: "Problema següent", skip: "Salta aquest",
     rungs: ["Una pregunta per començar", "Un problema semblant", "Descarta'n dues", "Un primer pas", "La resposta"],
     aiFrom: m => "Pregunta de la IA" + (m ? " (" + m + ", funciona a la placa)" : ""),
     aiNote: "Escrita per la IA per a aquest problema. Pot no encaixar sempre: fes-la servir per començar a pensar.",
     methodFor: t => "Mètode per a " + t,
-    rungHow: ["Una pregunta de la IA sobre el teu problema, i un consell de mètode", "Un de més fàcil que fa servir la mateixa idea", "Dues opcions que són incorrectes", "Una frase del petit model de la placa", "Només si la demanes, i compta com a no resolt"],
+    rungHow: ["Una pista redactada per al teu problema i un consell de mètode", "Un de més fàcil que fa servir la mateixa idea", "Dues opcions que són incorrectes", "Una frase del petit model de la placa", "Només si la demanes, i compta com a no resolt"],
     ladderTitle: "Escala de pistes", ladderIntro: "Puja només fins on et calgui.",
     exEasier: "Resol primer aquest, que és més fàcil; la mateixa idea serveix per al teu problema.",
     exSame: "Resol primer aquest, que és semblant; la mateixa idea serveix per al teu problema.",
@@ -473,7 +512,7 @@ const T = {
     warmTitle: "Escalfament: prova primer aquest", exWhere: "El tens sota el teu problema.",
     elText: "Aquestes no són correctes. Per què no poden ser-ho? Comprova les altres.",
     nuNote: "Un suggeriment del petit model de la placa. Pot no ser perfecte: fes-lo servir només per començar.",
-    noRung: "No per a aquest problema", answerShown: a => "La resposta era " + a + ".",
+    answerShown: a => "La resposta era " + a + ".",
     noMore: "No hi ha més pistes. Torna-ho a provar, o demana veure la resposta.",
     sure: "Veure la resposta compta com a no resolt. N'estàs segur?", yesShow: "Sí, ensenya-la", noTry: "No, ho torno a provar",
     right: "Correcte! Molt bé.", up: n => "A la primera: el següent és més difícil (nivell " + n + ").",
@@ -548,6 +587,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 let lang = store.get("tutor.lang") === "cat" ? "cat" : "eng";
 let info = null, state = null, name = "", busy = false, noMoreHints = false, feedback = { text: "", kind: "" };
 let chosenTopic = "", chosenLevel = 1, view = "setup", lastHintCount = 0;
+let conversation = { key: "", previous: null, lastHint: "", pending: false };
 const t = () => T[lang];
 
 async function api(path, body) {
@@ -607,7 +647,12 @@ function drawStatic() {
   document.querySelectorAll("[data-t]").forEach(el => { el.innerHTML = t()[el.dataset.t]; });
   document.querySelectorAll("#lang button").forEach(b => { b.classList.toggle("on", b.dataset.lang === lang); b.setAttribute("aria-pressed", b.dataset.lang === lang); });
   $("teacherLink").setAttribute("aria-label", t().teacher);
-  $("howList").innerHTML = t().rungs.map((r, i) => `<li><span><b>${esc(r)}</b><br><span class="muted">${esc(t().rungHow[i])}</span></span></li>`).join("");
+  $("chatInput").placeholder = t().chatPlaceholder;
+  $("nameField").classList.toggle("hidden", !!info?.demo);
+  $("levelField").classList.toggle("hidden", !!info?.demo);
+  $("demoProfile").classList.toggle("hidden", !info?.demo);
+  $("howList").innerHTML = t().rungs.map((r, i) => i === 3 && !info?.nudge ? "" :
+    `<li><span><b>${esc(r)}</b><br><span class="muted">${esc(t().rungHow[i])}</span></span></li>`).join("");
   drawTopics(); drawStairs(); drawLeds();
 }
 function drawTopics() {
@@ -641,6 +686,7 @@ function drawLetters(p) {
 }
 function drawNote(h, fresh) {
   const cls = "note" + (fresh ? " fresh" : "");
+  if (h.kind === "tip" && info?.demo) return "";
   if (h.kind === "tip") return (h.question ? `<div class="${cls} ai"><span class="ai-tag"><span class="chip" aria-hidden="true">${"<i></i>".repeat(9)}</span>${esc(t().aiFrom(h.question_model))}</span>` +
       `<span class="q">${esc(h.question)}</span><span class="small">${esc(t().aiNote)}</span></div>` : "") +
     `<div class="${cls}"><b class="lead">${esc(t().methodFor(h.topic_name))}</b>${esc(h.text)}</div>`;
@@ -657,15 +703,14 @@ function drawLadder(p) {
   let nextFound = false;
   $("rungs").innerHTML = kinds.map((kind, i) => {
     const used = !!byKind[kind] || (kind === "reveal" && p.status === "revealed");
-    const absent = kind === "nudge" && nudgeAbsent && !used;
-    let cls = used ? "used" : absent ? "absent" : "";
-    if (!used && !absent && !nextFound && !p.closed && kind !== "reveal") { cls = "next"; nextFound = true; }
+    if (kind === "nudge" && nudgeAbsent && !used) return "";
+    let cls = used ? "used" : "";
+    if (!used && !nextFound && !p.closed && kind !== "reveal") { cls = "next"; nextFound = true; }
     if (kind === "reveal") cls += " answer";
-    const dot = used ? (kind === "reveal" ? UI.info : i + 1) : absent ? "–" : cls.includes("next") ? i + 1 : UI.lock;
+    const dot = used ? (kind === "reveal" ? UI.info : i + 1) : cls.includes("next") ? i + 1 : UI.lock;
     let body = "";
     if (byKind[kind]) body = drawNote(byKind[kind], fresh === kind && !reduceMotion);
     else if (kind === "reveal" && p.status === "revealed" && p.label) body = `<div class="note">${esc(t().answerShown(p.label))}</div>`;
-    else if (absent) body = `<span class="small muted" style="grid-column:2;font-size:13px">${esc(t().noRung)}</span>`;
     return `<li class="rung ${cls}"><span class="dot">${dot}</span><span class="rname">${esc(t().rungs[i])}</span>${body}</li>`;
   }).join("");
   lastHintCount = p.hints.length;
@@ -684,14 +729,18 @@ function drawLevels() {
 function drawWarmup(p, isNew) {
   const h = p.hints.find(x => x.kind === "example"), box = $("warmup");
   if (!h) { box.classList.add("hidden"); box.innerHTML = ""; return; }
-  const src = localImage(h.image);
+  const src = h.image ? localImage(h.image) : null;
   box.innerHTML = `<div class="warmup-head"><b>${esc(t().warmTitle)}</b><span class="tag plain">${esc(t().levelN(h.level))}</span><span class="grow"></span>` +
     (h.answer ? `<span class="said">${esc(t().exAnswer(h.answer))}</span>` : `<button class="btn" id="exampleBtn" type="button">${esc(t().exShow)}</button>`) + `</div>` +
-    `<button class="problem" type="button" data-zoom="${esc(src)}"><img src="${esc(src)}" alt="${esc(t().warmTitle)}"></button>`;
+    (src ? `<button class="problem" type="button" data-zoom="${esc(src)}"><img src="${esc(src)}" alt="${esc(t().warmTitle)}"></button>` : exerciseText(h));
   box.classList.remove("hidden");
   if (isNew && !reduceMotion) { box.classList.add("fresh"); box.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
 }
 const localImage = src => src.replace(/_(eng|cat)\.png$/, "_" + lang + ".png");
+function exerciseText(p) {
+  const options = Object.entries(p.options).map(([letter, value]) => `<li><b>${esc(letter)}</b>${esc(value)}</li>`).join("");
+  return `<p class="exercise-text">${esc(p.text)}</p><ul class="exercise-options">${options}</ul>`;
+}
 
 function drawProblem() {
   const p = state.problem;
@@ -700,11 +749,18 @@ function drawProblem() {
   $("sheet").classList.toggle("hidden", !p);
   $("answerCard").classList.toggle("hidden", !p);
   $("doneAll").classList.toggle("hidden", !!p);
+  drawChat(p);
   if (!p) { $("rungs").innerHTML = ""; return; }
   drawMeta(p);
-  const src = localImage(p.image);
-  if ($("image").getAttribute("src") !== src) { $("image").src = src; $("stamp").classList.remove("show"); lastHintCount = p.hints.length; }
-  $("image").alt = p.topic_name + ", " + t().levelN(p.level);
+  for (const id of ["problemBtn", "zoomBtn", "tapCap"]) $(id).classList.toggle("hidden", !p.image);
+  $("exerciseText").classList.toggle("hidden", !p.text);
+  if (p.image) {
+    const src = localImage(p.image);
+    if ($("image").getAttribute("src") !== src) $("image").src = src;
+    $("image").alt = p.topic_name + ", " + t().levelN(p.level);
+  } else {
+    $("exerciseText").innerHTML = exerciseText(p);
+  }
   $("stamp").classList.toggle("show", p.status === "solved");
   drawLetters(p);
   drawWarmup(p, p.hints.length > lastHintCount && p.hints[p.hints.length - 1].kind === "example");
@@ -730,6 +786,7 @@ async function step(path, body, after) {
   busy = true;
   try {
     const data = await api(path, body);
+    if (data.problem?.id !== state?.problem?.id) lastHintCount = data.problem?.hints.length || 0;
     state = { student: data.student, problem: data.problem, profile: data.profile };
     if (after) after(data);
     drawProblem();
@@ -739,12 +796,83 @@ async function step(path, body, after) {
 }
 
 function start() {
-  name = $("name").value.trim();
+  name = info?.demo?.name || $("name").value.trim();
   if (!name) { $("setupError").textContent = t().needName; $("name").focus(); return; }
   $("setupError").textContent = "";
-  store.set("tutor.name", name);
+  if (!info?.demo) store.set("tutor.name", name);
   noMoreHints = false; feedback = { text: "", kind: "" }; lastHintCount = 0;
-  step("/api/start", { name, language: lang, topic: chosenTopic, level: chosenLevel }, () => show("play"));
+  const level = info?.demo ? undefined : chosenLevel;
+  step("/api/start", { name, language: lang, topic: chosenTopic, level }, () => show("play"));
+}
+
+function drawChat(p) {
+  const key = p ? JSON.stringify([name, lang, p.id]) : "";
+  if (conversation.key !== key) {
+    conversation = { key, previous: null, lastHint: "", pending: false };
+    $("chatLog").replaceChildren();
+    $("chatStatus").textContent = "";
+    $("chatInput").value = "";
+  }
+  $("chatCard").classList.toggle("hidden", !p || (p.closed && !$("chatLog").childElementCount));
+  $("chatForm").classList.toggle("hidden", !p || p.closed);
+  $("chatSend").disabled = conversation.pending;
+}
+
+function appendChat(text, source) {
+  const row = document.createElement("p");
+  row.textContent = text;
+  if (source) {
+    const label = document.createElement("small");
+    label.textContent = source;
+    row.append(label);
+  } else {
+    row.className = "mine";
+  }
+  $("chatLog").append(row);
+  $("chatLog").scrollTop = $("chatLog").scrollHeight;
+}
+
+function sendChat(event) {
+  event.preventDefault();
+  requestHint($("chatInput").value.trim(), true);
+}
+
+async function requestHint(message, showMessage) {
+  const p = state?.problem;
+  const turn = conversation;
+  if (!p || p.closed || turn.pending || !message) return;
+  turn.pending = true;
+  $("chatSend").disabled = true;
+  if (showMessage) {
+    $("chatInput").value = "";
+    appendChat(message);
+  }
+  $("chatStatus").textContent = t().chatWaiting;
+  try {
+    let result = await api("/api/chat", { name, problem: p.id, message, previous: turn.previous, last_hint: turn.lastHint });
+    const job = result.job;
+    if (job) {
+      const deadline = Date.now() + 38000;
+      do {
+        await new Promise(resolve => setTimeout(resolve, 500));
+        if (turn !== conversation) return;
+        if (Date.now() >= deadline) throw new Error("timed out");
+        result = await api("/api/chat?job=" + encodeURIComponent(job));
+      } while (result.pending);
+    }
+    if (turn !== conversation) return;
+    turn.previous = result.intent;
+    turn.lastHint = result.text;
+    appendChat(result.text, result.used_model ? t().chatModel : t().chatFallback);
+    $("chatStatus").textContent = "";
+  } catch (error) {
+    if (turn === conversation) $("chatStatus").textContent = t().chatError;
+  } finally {
+    if (turn === conversation) {
+      turn.pending = false;
+      drawChat(state?.problem);
+    }
+  }
 }
 
 function answer(letter) {
@@ -769,6 +897,10 @@ function hint() {
   if (p.closed || noMoreHints) { $("confirm").classList.remove("hidden"); $("revealNo").focus(); return; }
   step("/api/hint", { name }, data => {
     if (!data.hint) { noMoreHints = true; setFeedback(t().noMore, "info"); }
+    else if (data.hint.kind === "tip") {
+      requestHint(t().chatStarter, false);
+      requestAnimationFrame(() => $("chatCard").scrollIntoView({ block: "nearest" }));
+    }
   });
 }
 
@@ -819,6 +951,8 @@ async function teacher(pick) {
         `<div class="stat"><b>${tt.best_streak}</b><span>${esc(t().stStreak)}</span></div>` +
       `</div>` +
       `<div class="advice">${UI.bulb}<div><b>${esc(t().practise)}</b><br>${esc(s.practise_next)}</div></div>` +
+      (s.recommendations.length ? `<div class="practice-actions">` + s.recommendations.map(r =>
+        `<button class="btn" type="button" data-practice="${esc(r.topic)}">${esc(t().practiceAction[r.kind])} · ${esc(r.topic_name)}</button>`).join("") + `</div>` : "") +
       `<h2>${esc(t().byTopic)}</h2><div class="table"><table><tr><th>${esc(t().thTopic)}</th><th>${esc(t().thLevel)}</th><th class="num">${esc(t().thMastered)}</th>` +
       `<th class="num">${esc(t().thAttempts)}</th><th class="num">${esc(t().thAcc)}</th><th class="num">${esc(t().thHints)}</th></tr>` +
       s.profile.map(p => `<tr><td>${esc(p.topic_name)}</td><td>${p.level}${pips(p.level)}</td><td class="num">${dash(p.mastered)}</td>` +
@@ -847,6 +981,7 @@ $("name").addEventListener("keydown", e => { if (e.key === "Enter") start(); });
 $("letters").addEventListener("click", e => { const b = e.target.closest(".letter"); if (b) answer(b.dataset.letter); });
 $("letters").addEventListener("animationend", e => e.target.classList.remove("shake"));
 $("hintBtn").addEventListener("click", hint);
+$("chatForm").addEventListener("submit", sendChat);
 $("nextBtn").addEventListener("click", next);
 $("revealYes").addEventListener("click", reveal);
 $("revealNo").addEventListener("click", () => $("confirm").classList.add("hidden"));
@@ -865,6 +1000,16 @@ $("viewerClose").addEventListener("click", closeViewer);
 $("viewer").addEventListener("click", e => { if (e.target === $("viewer")) closeViewer(); });
 $("teacherLink").addEventListener("click", () => teacher());
 $("studentPick").addEventListener("change", () => teacher($("studentPick").value));
+$("summary").addEventListener("click", e => {
+  const button = e.target.closest("[data-practice]");
+  if (!button || busy) return;
+  name = $("studentPick").value;
+  chosenTopic = button.dataset.practice;
+  feedback = { text: "", kind: "" };
+  noMoreHints = false;
+  lastHintCount = 0;
+  step("/api/start", { name, language: lang, topic: chosenTopic }, () => show("play"));
+});
 $("teacherClose").addEventListener("click", () => show(state ? "play" : "setup"));
 $("home").addEventListener("click", () => show("setup"));
 document.addEventListener("keydown", e => {
@@ -887,9 +1032,13 @@ document.addEventListener("keydown", e => {
   show("setup");
   pollLed();
   try { info = await api("/api/info"); } catch (error) { $("setupError").textContent = t().error; }
+  if (info?.demo) {
+    if (!["eng", "cat"].includes(q.get("lang"))) lang = info.demo.language;
+    chosenTopic = info.demo.topic;
+  }
   if (info && q.get("topic") && info.topics.some(x => x.key === q.get("topic"))) chosenTopic = q.get("topic");
   drawStatic();
-  if (q.get("name")) { $("name").value = q.get("name"); start(); }
+  if (q.get("name") && !info?.demo) { $("name").value = q.get("name"); start(); }
 })();
 </script>
 </body>

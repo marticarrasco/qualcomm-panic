@@ -1,0 +1,101 @@
+{
+  "eval_id": "model-only-20261115-000907-252929-eng-text-only-one-sentence",
+  "name": "eng-text-only-one-sentence",
+  "status": "completed",
+  "started_at": "2026-11-15T00:09:07.252929+01:00",
+  "finished_at": "2026-11-15T00:22:34.183201+01:00",
+  "input": "data/eval_sets/val_text_only_all.jsonl",
+  "languages": [
+    "eng"
+  ],
+  "text_only": true,
+  "limit": 0,
+  "offset": 0,
+  "max_tokens": 128,
+  "prompt": "one",
+  "served_models": "qwen3.5-0.8b",
+  "llm_port": 8081,
+  "planned_problems": 121,
+  "completed_problems": 121,
+  "system_prompt": "You solve multiple-choice math competition problems. Reason in one short sentence giving the key calculation or deduction. Then write a final line exactly 'Answer: X', where X is the letter A, B, C, D or E of the correct option. Do not restate the question and do not add any other text.\n\nExample:\n7 pens cost $21. How much do 5 pens cost? A) 10 B) 15 C) 20 D) 25 E) 30\nEach pen costs $3, so 5 pens cost $15, which is option B.\nAnswer: B",
+  "summary": {
+    "correct": 17,
+    "total": 121,
+    "accuracy_percent": 14.05,
+    "mean_elapsed_seconds": 6.66,
+    "mean_prompt_tokens": 104.6,
+    "mean_output_tokens": 107.3,
+    "total_output_tokens": 12978,
+    "status": {
+      "ok": 57,
+      "no_answer": 64
+    },
+    "sentences": {
+      "3": 21,
+      "5": 23,
+      "4": 32,
+      "1": 10,
+      "2": 22,
+      "0": 5,
+      "7": 4,
+      "6": 4
+    },
+    "predicted_letters": {
+      "C": 12,
+      "B": 11,
+      "D": 10,
+      "A": 16,
+      "": 64,
+      "E": 8
+    },
+    "true_letters": {
+      "C": 18,
+      "D": 24,
+      "B": 27,
+      "A": 28,
+      "E": 24
+    },
+    "by_level": {
+      "0": {
+        "correct": 2,
+        "total": 4,
+        "accuracy_percent": 50.0
+      },
+      "1": {
+        "correct": 2,
+        "total": 4,
+        "accuracy_percent": 50.0
+      },
+      "2": {
+        "correct": 2,
+        "total": 6,
+        "accuracy_percent": 33.33
+      },
+      "3": {
+        "correct": 1,
+        "total": 6,
+        "accuracy_percent": 16.67
+      },
+      "4": {
+        "correct": 4,
+        "total": 28,
+        "accuracy_percent": 14.29
+      },
+      "5": {
+        "correct": 3,
+        "total": 30,
+        "accuracy_percent": 10.0
+      },
+      "6": {
+        "correct": 2,
+        "total": 26,
+        "accuracy_percent": 7.69
+      },
+      "7": {
+        "correct": 1,
+        "total": 17,
+        "accuracy_percent": 5.88
+      }
+    }
+  }
+}

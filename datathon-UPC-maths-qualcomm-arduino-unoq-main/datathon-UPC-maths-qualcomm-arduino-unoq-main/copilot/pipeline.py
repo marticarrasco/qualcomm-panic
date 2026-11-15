@@ -1,6 +1,5 @@
 """Shared solver for the official predictor and the evaluation runner."""
 import socket
-import sys
 import time
 import urllib.error
 from functools import lru_cache
@@ -21,11 +20,6 @@ TEXT_MAX_TOKENS = int(CONFIG.get("TEXT_MAX_TOKENS", 160))
 TEXT_MEDIAN_BYPASS = CONFIG.get("TEXT_MEDIAN_BYPASS", "1") == "1"
 TEXT_FALLBACK = CONFIG.get("TEXT_FALLBACK", "prior")
 TEXT_TRAIN = CONFIG.get("TEXT_TRAIN", "")
-TEXT_RAG_K = int(CONFIG.get("TEXT_RAG_K", "3"))
-TEXT_RAG_INDEX = CONFIG.get("TEXT_RAG_INDEX", "data/index-text.db")
-TEXT_RAG_SAME_LANGUAGE = CONFIG.get("TEXT_RAG_SAME_LANGUAGE", "1") == "1"
-TEXT_RAG_MIN_SCORE = float(CONFIG.get("TEXT_RAG_MIN_SCORE", "0"))
-TEXT_RAG_MAX_CHARS = int(CONFIG.get("TEXT_RAG_MAX_CHARS", "320"))
 TEXT_ROUTE = CONFIG.get("TEXT_ROUTE", "all")
 # Numeric options are a weak spot for the letter model and a strong spot for
 # the train-fitted ranker, so they can be routed without a model call.
@@ -50,10 +44,6 @@ def prepare():
     """Load immutable retrieval data once, before the timed question loop."""
     if ANSWER_MODE == "text" and TEXT_TRAIN:
         _train_index()
-    if ANSWER_MODE == "text" and TEXT_PROFILE == "retrieved" and TEXT_RAG_K > 0:
-        if _text_rag_index() is None:
-            print(f"warning: {TEXT_RAG_INDEX} not found; solving without retrieved examples",
-                  file=sys.stderr)
     if ANSWER_MODE == "text" and (TEXT_FALLBACK == "ranker" or TEXT_ROUTE != "all"):
         from .option_ranker import load_weights
         load_weights()
@@ -67,16 +57,7 @@ def batch_solver(problems):
     return solve
 
 
-@lru_cache(maxsize=1)
-def _text_rag_index():
-    path = Path(ROOT) / TEXT_RAG_INDEX
-    if path.is_file():
-        from .rag import Index
-        return Index(path)
-    return None
-
-
-def _solve_text(problem, deadline, url, exclude_id, retrieve, text_rag=False):
+def _solve_text(problem, deadline, url, exclude_id, retrieve):
     if TEXT_ROUTE == "model":
         # Diagnostic mode: no rules, ranker, prior or retrieval. Every problem
         # goes to Qwen; a missing answer falls back only to satisfy the A-E format.
@@ -113,8 +94,7 @@ def _solve_text(problem, deadline, url, exclude_id, retrieve, text_rag=False):
             prior = best
     answer, status, text, timings = text_solver.infer(
         problem, deadline, url, TEXT_PROFILE, TEXT_MAX_TOKENS, retrieve(),
-        board_budget=TEXT_BOARD_BUDGET,
-        example_max_chars=TEXT_RAG_MAX_CHARS if text_rag else 0)
+        board_budget=TEXT_BOARD_BUDGET)
     return answer or prior, status, text, timings
 
 
@@ -132,26 +112,14 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
     start = time.perf_counter()
     result = {"answer": FALLBACK, "status": "ok", "prompt_tokens": None,
               "completion_tokens": None, "model_output": None, "retrieved": "", "examples": []}
-    use_text_rag = (text_mode and index is None and k == 0
-                    and TEXT_PROFILE == "retrieved" and TEXT_RAG_K > 0
-                    and _text_rag_index() is not None)
     def retrieve():
         active_index = index
         active_k = k
-        same_language = False
-        min_score = 0.0
-        if active_index is None and ANSWER_MODE == "text" and TEXT_PROFILE == "retrieved":
-            active_index = _text_rag_index()
-            active_k = TEXT_RAG_K
-            same_language = TEXT_RAG_SAME_LANGUAGE
-            min_score = TEXT_RAG_MIN_SCORE
         if active_index is not None and active_k > 0:
             try:
                 hits = active_index.search(problem, k=active_k,
                                            exclude_id=exclude_id or problem.get("id"),
-                                           timeout=min(1.0, max(0.05, time_limit - MARGIN)),
-                                           same_language=same_language,
-                                           min_score=min_score)
+                                           timeout=min(1.0, max(0.05, time_limit - MARGIN)))
             except OSError:
                 hits = []
             result["examples"] = hits
@@ -177,8 +145,7 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
                 result["status"] = "prior"
         elif text_mode:
             letter, result["status"], model_output, timings = _solve_text(
-                problem, start + time_limit - MARGIN, llm_url, exclude_id, retrieve,
-                text_rag=use_text_rag)
+                problem, start + time_limit - MARGIN, llm_url, exclude_id, retrieve)
         elif budget_mode:
             letter, result["status"], model_output, timings = reasoner.answer(
                 problem, deadline=start + time_limit - MARGIN, url=llm_url)
