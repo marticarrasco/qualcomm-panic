@@ -1,0 +1,284 @@
+eval_id,evaluated_at,problem_id,language,level,has_options,selected_answer,correct_answer,is_correct,model_output,input_tokens,output_tokens,full_input_tokens,cached_input_tokens,elapsed_seconds,arduino_estimated_seconds,arduino_read_estimated_seconds,arduino_write_estimated_seconds,arduino_read_tokens_per_second,arduino_write_tokens_per_second,status,retrieved
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_13,eng,2,True,D,C,0,"best = 0
+for k in range(6):
+    for p in combinations(range(5), k):
+        if all(all(p[i] == 1 for i in range(len(p))) for p in combinations(p, 2) for l in combinations(p, 2) if sum(p) == len(p) + 2 and all(not l[i] for i in range(len(p)) if p[i] == 1) for p in combinations(p, 2) for l in combinations(p, 2) if sum(p) == len(p) + 2):
+            best = max(best, k)
+print(best)",75,232,,,5.64,48.25,6.82,41.43,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_12,cat,2,True,D,B,0,"ans = comb(4, 2)
+print(ans)",66,14,,,0.45,8.5,6.0,2.5,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_3,cat,7,True,A,A,1,"a = 1
+for i in range(1, 10):
+    a = a + sum(int(c) for c in str(a))
+print(a)",74,37,,,0.98,13.34,6.73,6.61,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_9,cat,0,True,D,B,0,"best = 0
+for b in range(1, 11):
+    for a in range(1, 11):
+        for p in combinations(range(1, 6), 2):
+            if 10 * (a + p[0] + p[1]) == 25:
+                best = max(best, 5 * p[0])
+print(best)",85,255,,,6.04,53.27,7.73,45.54,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_9,cat,4,True,D,A,0,"for a in range(1, 10):
+    for b in range(1, 10):
+        if 100 * a + 30 + 10 * b + b % 9 == 0:
+            print(a + b)",48,208,,,4.97,41.5,4.36,37.14,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_6,eng,3,True,E,A,0,"ways = [1]
+for i in range(4):
+    ways.append(ways[-1] * 2)
+print(ways[4])",56,34,,,0.9,11.16,5.09,6.07,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_2,cat,0,True,B,B,1,"pos = 0
+for i in range(10):
+    pos += 3 if i % 2 == 0 else -1
+print(pos)",74,35,,,0.95,12.98,6.73,6.25,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_1,eng,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_16,cat,0,True,B,B,1,"for a in range(50, 101):
+    if a % 4 == 0 and (a + 1) % 5 == 0 and (a + 2) % 3 == 0:
+        print(a)",84,160,,,3.89,36.21,7.64,28.57,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_10,eng,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_3,cat,5,True,E,E,1,"roots = [r for r in range(1, 100) if r * r - 13 * r + 36 == 0]
+ans = sum(n for n in range(1, 100) if n * n - 13 * n + 36 < 0)
+print(ans)",42,74,,,1.79,17.03,3.82,13.21,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_10,eng,0,True,C,A,0,"ans = factorial(4)
+print(ans)",44,11,,,0.35,5.96,4.0,1.96,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_11,cat,3,True,D,D,1,"ans = sum(1 for a in range(10) for b in range(10) for c in range(10) if a != b and a != c and b != c)
+print(ans)",40,151,,,3.65,30.6,3.64,26.96,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_12,eng,3,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_3,eng,5,True,E,E,1,"roots = [n for n in range(-10, 10) if n * n - 13 * n + 36 < 0]
+ans = sum(roots)
+print(ans)",40,46,,,1.15,11.85,3.64,8.21,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_14,cat,2,True,D,C,0,"for pos in range(26):
+    before = pos - 1
+    behind = 25 - pos
+    if before == behind:
+        print(pos)",66,102,,,2.57,24.21,6.0,18.21,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_5,eng,3,True,D,D,1,"evens = [n for n in range(1, 10) if n % 2 == 0]
+odds = [n for n in range(1, 10) if n % 2 == 1]
+ans = comb(len(evens), 1) + comb(len(odds), 1)
+print(ans)",52,226,,,5.39,45.09,4.73,40.36,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_4,eng,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_9,eng,5,True,D,C,0,"total = 3 + 2
+red = 3
+blue = 2
+ans = comb(red, 3) * (total - red) ** (blue - 1)
+print(ans)",59,90,,,2.32,21.43,5.36,16.07,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_6,cat,2,True,D,D,1,"best = 0
+for a in combinations(range(1, 5), 2):
+    best = max(best, a[0] + a[1] + a[0] + a[1])
+print(best)",67,179,,,4.46,38.05,6.09,31.96,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_15,eng,1,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_7,cat,1,True,D,B,0,"for boys in range(1, 100):
+    if 3 * boys // 5 + boys == 6 + boys // 5:
+        print(boys)",52,110,,,2.83,24.37,4.73,19.64,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_2,eng,2,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_9,eng,7,True,A,A,1,"ans = sum(1 for n in range(1, 1000) if n % 10 == 1 and n % 100 == 1 and n % 1000 == 1 and n % 100 == 1 and n % 10 == 1)
+print(ans)",39,73,,,1.78,16.59,3.55,13.04,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_3,eng,6,True,A,D,0,"ans = Fraction(4, 16)
+print(ans)",39,50,,,1.35,12.48,3.55,8.93,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_5,cat,3,True,D,D,1,"evens = [n for n in range(1, 10) if n % 2 == 0]
+odds = [n for n in range(1, 10) if n % 2 == 1]
+ans = comb(len(evens), 1) + comb(len(odds), 1)
+print(ans)",62,226,,,5.55,46.0,5.64,40.36,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_4,cat,6,True,B,B,1,"ans = sum(1 for x in range(-10, 11) if (x*x - 4)*(x*x - 25) < 0)
+print(ans)",41,41,,,1.03,11.05,3.73,7.32,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_13,eng,1,True,B,B,1,"ans = sum(1 for n in range(1, 101) if any(int(c) == 7 for c in str(n)))
+print(ans)",36,36,,,0.98,9.7,3.27,6.43,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_8,cat,6,True,A,E,0,"ans = factorial(100) % 24
+print(ans)",46,51,,,1.4,13.29,4.18,9.11,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_2,cat,2,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_9,eng,0,True,C,B,0,"best = 0
+for a in range(1, 11):
+    for b in range(1, 11):
+        for c in range(1, 11):
+            if a + b + c == 10 and 5 * c <= 25:
+                best = max(best, c)
+print(best)",68,78,,,1.89,20.11,6.18,13.93,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_1,cat,3,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_4,cat,4,True,D,D,1,"for a in range(1, 100):
+    for b in range(a + 1, 100):
+        for c in range(b + 1, 100):
+            if a * b * c == 72 and a + b + c == 13:
+                print(max(a, b, c))",51,78,,,1.86,18.57,4.64,13.93,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_6,cat,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_8,eng,5,True,A,C,0,"ans = sum(1 for x in range(1, 6) for y in range(1, 6) if x + y == 6)
+print(ans)",41,75,,,1.94,17.12,3.73,13.39,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_14,eng,2,True,D,C,0,"total = 25
+ahead = (total + 1) // 2
+behind = total - ahead
+print(behind + 1)",45,98,,,2.42,21.59,4.09,17.5,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_10,eng,7,True,B,B,1,"total = 2 ** 8
+ans = 0
+for mask in range(1, total + 1):
+    s = sum(x for x in range(1, 8) if mask & (1 << x))
+    if s % 4 == 0:
+        ans += 1
+print(ans)",61,111,,,2.69,25.37,5.55,19.82,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_10,eng,3,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_7,cat,6,True,D,C,0,"for a in range(-5, 6):
+    for b in range(-5, 6):
+        if all(a + b / x == 3 / x for x in [2, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8, 1/9, 1/10]):
+            print(a + b)",50,231,,,5.37,45.8,4.55,41.25,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_15,eng,0,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_6,eng,2,True,D,D,1,"best = 0
+for a in permutations([1, 2, 3, 4]):
+    best = max(best, 10 * a[0] + a[1] + 10 * a[2] + a[3])
+print(best)",52,158,,,3.87,32.94,4.73,28.21,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_8,cat,1,True,E,E,1,"for n in range(2, 1000):
+    if n % 2 == 1 and n % 3 == 1 and n % 4 == 1 and n % 5 == 1 and n % 6 == 1:
+        print(n)
+        break",55,65,,,1.49,16.61,5.0,11.61,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_7,cat,2,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_12,eng,2,True,B,B,1,"ways = 0
+for a in range(20 // 2 + 1):
+    for b in range(20 // 5 + 1):
+        if 2 * a + 5 * b == 20:
+            ways += 1
+print(ways)",51,103,,,2.43,23.03,4.64,18.39,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_2,eng,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_10,eng,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_5,cat,4,True,D,C,0,"ans = sum(1 for a in range(1, 10) for b in range(10) for c in range(10) if 100*a + 10*b + c - (100*c + 10*b + a) == 495)
+print(ans)",77,216,,,5.03,45.57,7.0,38.57,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_5,eng,4,True,D,C,0,"ans = sum(1 for a in range(1, 10) for b in range(10) for c in range(10) if 100*a + 10*b + c - (100*b + 10*c + a) == 495)
+print(ans)",62,226,,,5.21,46.0,5.64,40.36,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_8,cat,0,True,D,C,0,"ans = sum(1 for h in range(24) for m in range(60) if h * 60 + m == 4 * 60)
+print(ans)",58,129,,,3.28,28.31,5.27,23.04,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_5,eng,2,True,E,E,1,"base = 7
+exp = 2026
+print(base ** exp % 10)",28,78,,,1.84,16.48,2.55,13.93,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_10,cat,7,True,D,B,0,"total = 2 ** 8
+ans = total - sum(1 for s in combinations(range(1, 9), 2) if sum(s) % 4 == 0)
+print(ans)",65,146,,,3.5,31.98,5.91,26.07,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_1,eng,3,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_3,eng,0,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_6,cat,3,True,D,A,0,"n = 4
+ans = comb(n, n - 1)
+print(ans)",70,54,,,1.44,16.0,6.36,9.64,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_1,eng,1,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_7,eng,2,True,D,C,0,"best = 0
+for year in range(1, 76):
+    if isleap(year) and sum(1 for d in range(1, 75) if isoweekday(year + d) == isoweekday(year + 5) + isoweekday(year + 6) + isoweekday(year + 7)) == 3) + best == 3 + best:
+        best = 3 + best
+print(best)",33,266,,,6.14,50.5,3.0,47.5,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_4,eng,4,True,A,D,0,"for a in range(1, 100):
+    for b in range(a, 100):
+        for c in range(b, 100):
+            if a * b * c == 72 and a + b + c == 13:
+                print(a)",45,67,,,1.57,16.05,4.09,11.96,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_11,eng,4,True,B,E,0,"best = 1000000
+for a in combinations(range(1, 11), 2):
+    b = [n for n in range(1, 11) if n not in a][0]
+    if a[0] * a[1] % b == 0:
+        best = min(best, a[0] * a[1] // b)
+print(best)",68,231,,,5.42,47.43,6.18,41.25,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_8,eng,1,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_6,eng,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_9,eng,1,True,E,E,1,"ans = sum(1 for a in range(1, 10) if a % 2 == 1 for b in range(1, 10) if b % 2 == 1)
+print(ans)",35,49,,,1.22,11.93,3.18,8.75,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_7,cat,0,True,A,A,1,"for s in range(1, 20):
+    if 5 * s - 2 * (s - 1) == 20:
+        print(s)
+        break",105,42,,,1.14,17.05,9.55,7.5,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_8,eng,0,True,C,C,1,"count = 0
+for h in range(24):
+    for m in range(60):
+        s = f""{h:02d}{m:02d}""
+        if len(set(s)) == 1 and len(s) == 4:
+            count += 1
+print(count)",49,70,,,1.65,16.95,4.45,12.5,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_10,cat,4,True,D,C,0,"best = 1000000000
+for p in product(range(1, 12), repeat=3):
+    if all(x % 2 == 1 for x in p):
+        best = min(best, p)
+print(best)",42,210,,,6.93,41.32,3.82,37.5,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_4,eng,6,True,B,B,1,"ans = sum(1 for x in range(-100, 101) if (x*x - 4)*(x*x - 25) < 0)
+print(ans)",38,43,,,1.04,11.13,3.45,7.68,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_2,cat,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_10,cat,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_13,cat,2,True,D,C,0,"best = 0
+for k in range(1, 20):
+    for p in combinations(range(1, k + 1), k):
+        if all(sum(p) == 2 for p in combinations(p, 2) if p[0] in p[1:]):
+            best = max(best, k)
+print(best)",102,164,,,3.99,38.56,9.27,29.29,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_3,eng,7,True,A,A,1,"a = 1
+for i in range(1, 10):
+    a = a + sum(int(c) for c in str(a))
+print(a)",66,37,,,1.0,12.61,6.0,6.61,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_7,eng,1,True,D,B,0,"for g in range(1, 20):
+    b = 6 - g
+    if 3 * g == 5 * (g + b):
+        print(g + b)",45,131,,,3.14,27.48,4.09,23.39,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_2,eng,0,True,B,B,1,"pos = 0
+for i in range(10):
+    pos += 3 if i % 2 == 0 else -1
+print(pos)",64,35,,,0.83,12.07,5.82,6.25,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_8,cat,7,True,B,B,1,"ans = sum(1 for n in range(1, 101) if (n * n + n + 1) % 7 == 0)
+print(ans)",42,40,,,1.01,10.96,3.82,7.14,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_12,cat,3,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_4,cat,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_10,cat,3,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_10,cat,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_9,cat,1,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_1,cat,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_7,eng,6,True,D,C,0,"for a in range(-5, 6):
+    for b in range(-5, 6):
+        if a + 2 * (1/a) + 2 * b * (1/b) == 3 * 2:
+            print(2 + a + b)",47,239,,,5.52,46.95,4.27,42.68,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_9,cat,5,True,D,C,0,"total = 3 + 2
+white = 2
+black = 3
+ans = comb(white, 3) * comb(total - white, 3 - white) / comb(total, 3)
+print(ans)",74,109,,,2.69,26.19,6.73,19.46,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_9,eng,4,True,B,A,0,"for a in range(1, 10):
+    for b in range(1, 10):
+        n = 1000 * a + 30 * b + 100 * a + 10 * b
+        if n % 90 == 0:
+            print(a + b)",43,74,,,1.85,17.12,3.91,13.21,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_14,cat,1,True,D,B,0,"ans = 0
+for a in range(1, 13):
+    for b in range(1, 9):
+        ans += a * b
+print(ans)",58,136,,,3.29,29.56,5.27,24.29,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_13,cat,1,True,B,B,1,"ans = sum(1 for n in range(1, 101) if any(7 in str(n) for _ in range(3)))
+print(ans)",42,37,,,0.9,10.43,3.82,6.61,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_10,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_9,cat,7,True,D,A,0,"ans = sum(1 for n in range(1, 1000) if n % 11 == 11 * sum(int(c) for c in str(n)))
+print(ans)",47,124,,,3.04,26.41,4.27,22.14,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_7,eng,0,True,E,A,0,"for jumps in range(1, 100):
+    for back in range(1, 100):
+        if 5 * jumps - 2 * back == 20:
+            print(jumps + back)",86,52,,,1.37,17.11,7.82,9.29,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-3_2026_11,eng,3,True,D,D,1,"ans = sum(1 for a in range(10) for b in range(10) for c in range(10) if a != b and a != c and b != c)
+print(ans)",32,151,,,3.63,29.87,2.91,26.96,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-5_2026_8,cat,5,True,D,C,0,"ans = sum(1 for x in range(1, 100) for y in range(x, 100) if x * y * 6 == x + y)
+print(ans)",47,133,,,3.18,28.02,4.27,23.75,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_10,cat,0,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-4_2026_11,cat,4,True,B,E,0,"best = 1000000000
+for a in combinations(range(1, 11), 2):
+    b = 1
+    for x in a:
+        b *= x
+    best = min(best, b // 1)
+print(best)",73,221,,,5.08,46.1,6.64,39.46,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_8,eng,6,True,E,E,1,"ans = sum(factorial(i) for i in range(1, 101)) % 24
+print(ans)",45,28,,,0.77,9.09,4.09,5.0,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_15,cat,0,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_1,cat,1,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_14,eng,1,True,D,B,0,"ans = 0
+for a in range(1, 13):
+    for b in range(1, 9):
+        ans += (a * b) // (a + b)
+print(ans)",47,138,,,3.32,28.91,4.27,24.64,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-1_2026_15,cat,1,True,D,E,0,"n = 1
+while 2 * n + 3 * n + 4 * n < 2 * n + 3 * n + 4:
+    n += 1
+print(n)",74,107,,,2.69,25.84,6.73,19.11,11.0,5.6,pot_fallback,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-2_2026_5,cat,2,True,E,E,1,"ans = str(7 ** 2026)[-1]
+print(ans)",33,19,,,0.51,6.39,3.0,3.39,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-7_2026_8,eng,7,True,B,B,1,"ans = sum(1 for n in range(1, 101) if (n * n + n + 1) % 7 == 0)
+print(ans)",38,40,,,1.02,10.59,3.45,7.14,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_3,cat,0,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-0_2026_16,eng,0,True,B,B,1,"for a in range(50, 101):
+    if a % 4 == 0 and (a + 1) % 5 == 0 and (a + 2) % 3 == 0:
+        print(a)",71,56,,,1.43,16.45,6.45,10.0,11.0,5.6,pot_match,
+eval-20261115-110654-819345-demo-pot-v4,2026-11-15T11:06:54.819345+01:00,lvl-6_2026_3,cat,6,True,A,D,0,"ans = Fraction(4, 16)
+print(ans)",47,67,,,1.76,16.23,4.27,11.96,11.0,5.6,pot_match,
