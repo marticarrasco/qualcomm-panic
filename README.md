@@ -68,6 +68,8 @@ Validation problems are held out by problem id, so none of them was used to fit 
 
 The organizers' baseline is 22.5% on 40 English text-only problems.
 
+**These are M3Kang numbers.** On the organizers' practice set for the final test (new problems, balanced letters, options always in order) every route we tried is at chance: 21 or 22 of 100. See [docs/FINAL_TEST_FINDINGS.md](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main/docs/FINAL_TEST_FINDINGS.md).
+
 Estimated board time on the English run: mean 13.4 s, 95th percentile 48.9 s. On the laptop 11 answers ran past what the board could write in 60 s; on the board the wall-clock deadline stops those and the ranker answers instead, so the board number can differ by a few problems. A timed run on the board is the last check before submission.
 
 ### Tutor
