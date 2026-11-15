@@ -1,0 +1,32 @@
+# Python environments and bytecode
+.venv/
+.venv-py313-backup/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local models, credentials, data exports, and application state
+/.env
+/.env.*
+/models/
+/local/
+*.gguf
+*.parquet
+*.db
+*.db-*
+/data/*
+!/data/README.md
+!/data/sample_problems.jsonl
+!/data/m3kang_expansion_manifest.json
+
+# Detailed evaluation output and research review material stay local.
+/results/*
+!/results/README.md
+!/results/text-only/
+/results/text-only/*
+!/results/text-only/*-summary.json
+/results_local/
+/analysis/review/
+/analysis/review_queue.txt
+/analysis/review_sample_confident.txt
+/analysis/ocr_quality_review_company.ipynb
