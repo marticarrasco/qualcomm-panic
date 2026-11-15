@@ -23,6 +23,31 @@ The practice set contains 50 problems in two languages. V4 scored **22/50 in Cat
 
 ![V1 and V4 accuracy by level on the Datathon practice set](docs/predictor/assets/practice-by-level.png)
 
+### Against the organizers' baseline
+
+The organizers' baseline asks the model for one letter, with a grammar that only allows A to E. It was measured on M3Kang `val`, not on the practice set. V4 was run on M3Kang `val` too, on a laptop:
+
+| Run | Problems | Correct | Always `D` on the same rows |
+| --- | --- | ---: | ---: |
+| Organizers' baseline: one letter, grammar A–E | 40 English text-only `val` problems with OCR options | 9/40 · 22.5% | – |
+| V4-e1 Program-of-Thought | All 123 English text-only `val` problems, with or without five numeric options | 30/123 · 24.4% | 24/123 · 19.5% |
+
+The two cohorts are not the same rows, so this comparison is indicative. On M3Kang, V4 is only a little above the baseline: across both languages, 163 of 246 text-only `val` rows had five numeric options and reached the model, 42 of them printed a value that matched an option, and 23 of those matches were right. On the practice set, which is closer to the final test, V4 more than doubles always-`D` (43/100 against 20/100). Error analysis by level, language and topic: [predictor evaluation](docs/predictor/EVALUATION.md).
+
+## What didn't work
+
+| Idea | Result |
+| --- | --- |
+| One letter straight from the model | Chance (24%). It answers `D` 69 times out of 100 |
+| Cancelling the letter bias over five option orders | Bias gone, still chance (26%) |
+| A 2B model | 31% with one-letter answers, three times slower on the board |
+| Seven other small models | None beat Qwen3.5 0.8B inside the time budget |
+| The vision model on the whole image | 15.3%, below always-`D` (25.3%) |
+| The vision model on the cropped figure | 5.6 to 12.2% on 90 problems: it reads the numbers but not what they mean |
+| Fine-tunes V2 and V3 | V2 gained on the practice set and lost on M3Kang `val`; V3's longer programs did not beat V1. V4 added new low-level problems instead |
+
+Most remaining PoT misses are programs that run but print a number that is none of the options. Next we would try: an on-board timed run of the final configuration, more training problems in the thin topics (patterns, algebra, fractions), teachers judging the tutor's guiding questions, and spoken hints. [More detail and numbers](docs/project-hub-draft.md#what-we-tried-that-did-not-work) · [Experiment log](docs/experiments/EXPERIMENTS.md)
+
 ## Run the project
 
 Python 3.10 or later is required. The predictor and Pista use a local `llama-server` and GGUF model for AI features; model weights and the M3Kang dataset are not included in this repository. The board setup, model configuration, and reproducible predictor settings are covered in the linked guides below.
@@ -73,6 +98,17 @@ The predictor and tutor run on the board’s Linux processor. The tutor publishe
 ## Credits and data
 
 MathQ uses the M3Kang research dataset, Qwen3.5, and llama.cpp. Prepare the licensed problems and images locally using the [data guide](data/README.md). The charts and public evaluation evidence contain aggregate results. [M3Kang dataset terms](https://huggingface.co/datasets/qualcomm/M3Kang/blob/main/LICENSE.pdf) · [M3Kang paper](https://arxiv.org/abs/2601.16218) · [Qwen3.5-0.8B](https://huggingface.co/Qwen/Qwen3.5-0.8B) · [llama.cpp](https://github.com/ggml-org/llama.cpp)
+
+- **M3Kang**: Torres-Camps et al., 2026, Qualcomm AI Research. Research use only. Problems from the Kangaroo competition ([Societat Catalana de Matemàtiques, Cangur](https://scm.iec.cat/concurs-presencial/cangur/)).
+- **Qwen3.5 0.8B** by the Qwen team (Apache 2.0), GGUF by [bartowski](https://huggingface.co/bartowski/Qwen_Qwen3.5-0.8B-GGUF). Our fine-tune: [Rigau/Qwen3.5-0.8B-M3Kang-PoT-GGUF](https://huggingface.co/Rigau/Qwen3.5-0.8B-M3Kang-PoT-GGUF), non-commercial research use.
+- **bge-small-en-v1.5** by BAAI, GGUF by [CompendiumLabs](https://huggingface.co/CompendiumLabs/bge-small-en-v1.5-gguf), for retrieval.
+- **llama.cpp** (MIT), **RapidOCR** (Apache 2.0) for reading the options from the problem images.
+- **Fonts**: Bricolage Grotesque and Instrument Sans (SIL Open Font License), in `tutor/static/fonts/`.
+- **Starter code and board setup** from the organizers' [datathon repository](https://github.com/mpous/datathon-UPC-maths-qualcomm-arduino-unoq).
+
+## License
+
+The team's code is under the [MIT License](LICENSE). The license file lists what it does not cover: the organizers' starter files, the fonts, and the model weights and data, which are not in this repository.
 
 ## Team
 
