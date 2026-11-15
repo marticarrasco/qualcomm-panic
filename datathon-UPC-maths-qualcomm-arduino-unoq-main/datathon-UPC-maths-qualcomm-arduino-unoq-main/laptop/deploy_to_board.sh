@@ -12,6 +12,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 BOARD_DIR=/home/arduino/qp
 IMAGES=data/full_noocr/images
+[ -d "$IMAGES" ] || IMAGES=data/images
 WITH_IMAGES=1
 [ "${1:-}" = "--no-images" ] && WITH_IMAGES=0
 
@@ -25,7 +26,7 @@ step "Packing"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 FILES=(copilot tutor predict.py eval.py build_index.py config.env data/sample_problems.jsonl data/val.jsonl data/train.jsonl)
-for extra in data/tutor.db data/tutor_questions.db data/index-text.db; do
+for extra in data/tutor.db data/index-text.db; do
   [ -f "$extra" ] && FILES+=("$extra") || echo "  (no $extra: skipped)"
 done
 if [ "$WITH_IMAGES" = 1 ] && [ -d "$IMAGES" ]; then FILES+=("$IMAGES"); fi

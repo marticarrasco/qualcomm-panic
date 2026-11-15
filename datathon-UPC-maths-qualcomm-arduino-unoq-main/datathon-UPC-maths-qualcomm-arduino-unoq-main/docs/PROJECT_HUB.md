@@ -20,7 +20,6 @@ The same board also answers Kangaroo problems on its own (one letter, A to E, in
 | Arduino App Lab | Runs the small app that draws on the LED matrix |
 | llama.cpp (commit `2cbe0ec`) | Runs the models on the CPU |
 | Qwen3.5 0.8B, Q8_0 (835 MB) | The on-board language model: reasons about a problem when asked, inside a time budget |
-| Qwen3.5 2B, Q4_K_M (1.4 GB) | Writes one guiding question per problem, ahead of time |
 | bge-small-en-v1.5 (37 MB) | Embeddings, to find similar problems |
 | M3Kang | 1,747 Kangaroo problems, 8 levels, 108 languages: problem bank, map, training data and benchmark |
 
@@ -50,11 +49,11 @@ No external modules: only the board, its LED matrix, and a web page.
 How M3Kang is used:
 
 1. **As the problem bank, with its original images.** Each image already holds the question, the figure and the five options, so the student sees the real problem and nothing has to read the picture.
-2. **As a map.** Every problem gets a topic (keyword rules), a level, and its nearest easier and harder neighbours (embeddings). That map drives the adaptive practice and the "similar, easier problem" hint.
+2. **As a map.** The 1,466 train assignments supply the ten topics. Each problem also has a level and neighbouring exercises to guide adaptive practice and follow-ups.
 3. **As training data.** A small ranker learns from the training problems which options tend to be right (for example, rarely the smallest or the largest value).
 4. **As the benchmark.** Every number below is on validation problems held out by problem id.
 
-The key design decision: the language model is never the source of truth. We measured that it cannot solve these problems (see Results), so correct answers come from the dataset labels, hints come from retrieval and fixed rules, and the model only writes short text that code checks before it is shown.
+The key design decision: the language model is never the source of truth. We measured that it cannot solve these problems (see Results), so correct answers come from the dataset labels, and the model generates teaching hints for each attempt. The tutor filters these drafts before showing them.
 
 ## 4. Step by step
 
@@ -65,20 +64,12 @@ Start from a board set up with steps 0 to 12 of the [datathon repository](https:
 **4.2 Build the tutor's bank (laptop or board).**
 
 ```bash
-python3 tutor/build_bank.py
+python3 tutor/build_bank.py --lexical
 ```
 
-You should see: `1747 problems`, and a file `data/tutor.db` of about 6 MB. It takes about a minute.
+The bank should report 1,747 problems in both Catalan and English.
 
-**4.3 Write the guiding questions (laptop, optional, about 2 hours).**
-
-```bash
-python3 tutor/write_questions.py --llm http://127.0.0.1:8083/v1/chat/completions
-```
-
-Each question must pass a code check (no answer, no option letter, no number that is not in the problem) or it is not used.
-
-**4.4 Copy everything to the board (laptop, board on USB).**
+**4.3 Copy everything to the board (laptop, board on USB).**
 
 ```bash
 bash laptop/deploy_to_board.sh
@@ -86,7 +77,7 @@ bash laptop/deploy_to_board.sh
 
 You should see five sample answers, each one letter and under 60 seconds, then the tutor's address.
 
-**4.5 Open the tutor.** On the laptop: http://127.0.0.1:8000 (it travels over the USB cable, so it works with Wi-Fi off). On a phone on the same network: `http://<board-ip>:8000`.
+**4.4 Open the tutor.** On the laptop: http://127.0.0.1:8000 (it travels over the USB cable, so it works with Wi-Fi off). On a phone on the same network: `http://<board-ip>:8000`.
 
 **4.6 The LED matrix.** The deploy script installs and starts the App Lab app `math-matrix`. It polls the tutor twice a second and draws the last event.
 
@@ -134,7 +125,7 @@ Estimated board time on the English run: mean 13.4 s, 95th percentile 48.9 s. On
 | Time per step (next problem, hint, answer) | 5 to 12 ms on the board |
 | Simulated students settle at their true level | within 1 to 3 problems |
 | Topic classifier, hand check | 21 of 30 right |
-| AI guiding questions, hand check of 30 | about 17 useful, about 6 misleading: shown as the first rung only, labelled as AI-written |
+| AI guiding questions, hand check of 30 | prototype measurement for the earlier offline question generator |
 
 ## 6. What we learned
 

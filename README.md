@@ -36,14 +36,14 @@ En aquesta branca documentem i integrem el pipeline complet de **Program-of-Thou
 
 Datathon FME 2026, Qualcomm challenge. Everything runs on an Arduino UNO Q (4 GB), offline.
 
-- **Teaching.** A student practises real Kangaroo problems on a web page served by the board. When stuck, they climb a ladder of hints that each give a little more, and the answer only appears if they ask for it. The board's LED matrix shows a tick, a cross, a hint or the level.
+- **Teaching.** A student practises real Kangaroo problems on a web page served by the board. The local model generates progressive hints and responds to wrong choices. The official key is shown after solving or requesting the answer. The board's LED matrix shows a tick, a cross, a hint or the level.
 - **Reasoning.** `predict.py` answers a file of problems with one letter each, A to E, in under 60 seconds per problem.
 
 The code is in [`datathon-UPC-maths-qualcomm-arduino-unoq-main/…`](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main). *[Photo or short video of the board and the page goes here.]*
 
 ### The idea in one paragraph
 
-We measured first, and the small on-board model cannot solve these problems when asked for a letter or free-form prose: asked for a letter it is at chance, with or without bias correction, a bigger model, or the picture ([EXPERIMENTS.md](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main/EXPERIMENTS.md)). So the model is never trusted to do arithmetic in its head. In the tutor, correct answers come from M3Kang's labels and hints come from retrieval and fixed rules. In the solver (`ANSWER_MODE=pot`), the fine-tuned `Qwen3.5-0.8B-M3Kang-PoT-v2` model translates the problem statement into a 2–6 line flat Python program (without seeing the options), Python computes the exact answer in an isolated AST-checked sandbox (`copilot/pot.py`), and we select the option matching the printed value (`74.2%` precision when matched).
+We measured first, and the small on-board model cannot solve these problems when asked for a letter or free-form prose: asked for a letter it is at chance, with or without bias correction, a bigger model, or the picture ([EXPERIMENTS.md](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main/EXPERIMENTS.md)). So the model is never trusted to do arithmetic in its head. Pista grades against M3Kang’s official labels. The local model writes the teaching hints from the current problem and attempt. In the solver (`ANSWER_MODE=pot`), the fine-tuned `Qwen3.5-0.8B-M3Kang-PoT-v2` model translates the problem statement into a 2–6 line flat Python program (without seeing the options), Python computes the exact answer in an isolated AST-checked sandbox (`copilot/pot.py`), and we select the option matching the printed value (`74.2%` precision when matched).
 
 ## Architecture
 
@@ -51,12 +51,12 @@ We measured first, and the small on-board model cannot solve these problems when
 | --- | --- |
 | Linux side of the board | `llama-server` with Qwen3.5 0.8B (port 8081) and bge-small embeddings (port 8082); `tutor/server.py` (port 8000); `predict.py` |
 | Microcontroller | `applab/math-matrix`: the sketch draws the frame it gets over the Bridge on the 8x13 LED matrix |
-| Laptop / Kaggle, ahead of time only | data preparation and OCR of the options (`laptop/`), synthetic PoT generation & verification (`finetune/build_synthetic_dataset.py`), LoRA fine-tuning & GGUF export (`finetune/01_train_pot_lora.ipynb`), guiding questions (`tutor/write_questions.py`), fitting the ranker (`experiments/train_option_ranker.py`) |
+| Laptop / Kaggle, ahead of time only | data preparation and OCR of the options (`laptop/`), synthetic PoT generation & verification (`finetune/build_synthetic_dataset.py`), LoRA fine-tuning & GGUF export (`finetune/01_train_pot_lora.ipynb`), fitting the ranker (`experiments/train_option_ranker.py`) |
 
 How we use M3Kang:
 
-1. **Problem bank with its original images** (tutor): the image holds the question, the figure and the options, so no OCR or vision model is needed to teach.
-2. **A map**: topic, level and nearest easier or harder problem for every problem (embeddings and keyword rules). It drives adaptive practice and the "similar, easier problem" hint.
+1. **Problem bank with its original images** (tutor): the image holds the question, the figure and the options, so the full bilingual bank is usable with its original figures.
+2. **A map**: topic, level and nearest easier or harder problem for every problem (embeddings and keyword rules). It drives adaptive practice and follow-up problems.
 3. **Training data** for the execution-verified Program-of-Thought LoRA fine-tune (929 bilingual `(statement, Python code)` pairs from M3Kang `train`), the option ranker, and near-identical problem matching.
 4. **Benchmark**: validation problems held out by problem id, plus the organizers' 2026 practice set (`data/demo/train.jsonl`, 100 rows).
 
@@ -71,17 +71,16 @@ How we use M3Kang:
   3. If it is not confident, ask the model for short reasoning with worked examples in the cached system prompt, streamed and stopped at a wall-clock deadline (`copilot/text_solver.py`).
   4. If the reasoning does not finish, use the ranker's answer.
 
-**The tutor** ([tutor/README.md](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main/tutor/README.md)): adaptive level per topic with no model in the loop, and a five-rung hint ladder: a guiding question written by the AI plus a method tip, a similar easier solved problem, two wrong options ruled out, an optional first step from the model, and the answer only on request.
+**The tutor** ([tutor/README.md](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main/tutor/README.md)): The full Catalan and English bank has 1,747 problems. The local model offers three progressive hints, feedback on a wrong choice and conversation. Follow-up results distinguish first-try solves without help.
 
 ## How to replicate
 
 Start from a board set up with steps 0 to 12 of the [organizers' repository](https://github.com/mpous/datathon-UPC-maths-qualcomm-arduino-unoq). Then, from [`datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main`](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main):
 
 1. On the laptop, prepare M3Kang as the README in that folder explains (the data is not meant to be in a public repository).
-2. `python3 tutor/build_bank.py` builds the tutor's problem bank (about a minute, needs the embedding server).
-3. Optional, about 2 hours: `python3 tutor/write_questions.py --llm http://127.0.0.1:8083/v1/chat/completions` writes the guiding questions with Qwen3.5 2B.
-4. With the board on USB: `bash laptop/deploy_to_board.sh`. It copies the code, data, bank and images to `~/qp`, runs `predict.py` on five sample problems, starts the tutor and the LED app, and forwards port 8000.
-5. Open http://127.0.0.1:8000. On the board, `python3 predict.py --input data/val.jsonl --output results/predictions.csv` is the official run.
+2. `python3 tutor/build_bank.py --lexical` builds the full bilingual bank offline. Omit `--lexical` when the embedding service is running.
+3. With the board on USB, run `bash laptop/deploy_to_board.sh`. It copies the bank and images, starts the tutor and the LED app, and forwards port 8000. The tutor uses the board’s model service on port 8081.
+4. Open http://127.0.0.1:8000. On the board, `python3 predict.py --input data/val.jsonl --output results/predictions.csv` is the official solver run.
 
 The demo and pitch script is in [docs/DEMO.md](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main/docs/DEMO.md); the Project Hub draft in [docs/PROJECT_HUB.md](datathon-UPC-maths-qualcomm-arduino-unoq-main/datathon-UPC-maths-qualcomm-arduino-unoq-main/docs/PROJECT_HUB.md).
 

@@ -3,21 +3,20 @@
 
     python3 tutor/server.py                      # http://127.0.0.1:8000
     python3 tutor/server.py --host 0.0.0.0       # reachable from phones and the LED app
-    python3 tutor/server.py --no-llm             # use local fallback hints
-    python3 tutor/server.py --demo               # original exercises and a fictional profile
+    python3 tutor/server.py --no-llm             # practise without model assistance
 
 Build the bank first with tutor/build_bank.py. Standard library only.
 
 API (JSON). The answer letter of the current problem is only ever sent after
 the student has solved it or asked for it with /api/reveal.
     GET  /api/info                          topics, levels, problem counts
-    POST /api/start   {name, language, topic?, level?}
-    POST /api/answer  {name, choice}        choice is A-E
-    POST /api/hint    {name}                next rung of the hint ladder
-    POST /api/example {name}                answer of the example problem in rung 2
-    POST /api/reveal  {name}                show the answer (counts as not solved)
-    POST /api/next    {name, topic?}        next problem; topic "" means mixed
-    POST /api/chat    {name, problem, message, previous?, last_hint?}
+    POST /api/start   {name, language, topic?, level?, resume?}
+    POST /api/answer  {name, choice, problem?}        choice is A-E
+    POST /api/hint    {name, problem?}         generate the next hint
+    POST /api/feedback {name, problem?}        generate feedback on the latest wrong choice
+    POST /api/reveal  {name, problem?}                show the answer (counts as not solved)
+    POST /api/next    {name, topic?, problem?}        next problem; topic "" means mixed
+    POST /api/chat    {name, problem, message, last_hint?}
     GET  /api/chat?job=                    pending or completed conversation turn
     GET  /api/state?name=                   where the student is now
     GET  /api/summary?name=&language=       teacher view for one student
@@ -31,22 +30,26 @@ import json
 import os
 import re
 import sys
-import tempfile
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from tutor import demo, matrix  # noqa: E402
-from tutor.chat import Chat  # noqa: E402
+from tutor import matrix  # noqa: E402
+from tutor.chat import Chat, validate_message  # noqa: E402
+from tutor.local_model import MODEL_URL, start_windows_model  # noqa: E402
 from tutor.tutor import Tutor, TutorError  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 IMAGE_KEY = re.compile(r"^(.+)_(eng|cat)\.png$")
-# Fonts and other page assets in tutor/static. Only plain file names in known folders are served.
-STATIC_KEY = re.compile(r"^(fonts/)?[A-Za-z0-9_-]+\.(ttf|woff2|svg|css|js|txt)$")
+# Fonts and page assets in tutor/static. Only plain file names in known folders are served.
+STATIC_KEY = re.compile(
+    r"^(?:[A-Za-z0-9_-]+\.(?:ttf|woff2|svg|css|js|txt)|"
+    r"fonts/[A-Za-z0-9_-]+\.(?:ttf|woff2)|logos/[A-Za-z0-9_-]+\.(?:svg|png))$"
+)
 STATIC_TYPES = {"ttf": "font/ttf", "woff2": "font/woff2", "svg": "image/svg+xml",
+                "png": "image/png",
                 "css": "text/css; charset=utf-8", "js": "text/javascript; charset=utf-8",
                 "txt": "text/plain; charset=utf-8"}
 
@@ -54,11 +57,10 @@ STATIC_TYPES = {"ttf": "font/ttf", "woff2": "font/woff2", "svg": "image/svg+xml"
 def parse_args(argv=None):
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--bank", default="data/tutor.db", help="problem bank from build_bank.py")
-    p.add_argument("--students", help="student database (defaults to a separate file in demo mode)")
-    p.add_argument("--demo", action="store_true", help="serve a fictional profile and a small bilingual bank")
-    p.add_argument("--images", default="data/full_noocr/images", help="folder with <id>_<language>.png")
-    p.add_argument("--questions", default="data/tutor_questions.db", help="rung-1 questions from write_questions.py (optional)")
-    p.add_argument("--llm", default="http://127.0.0.1:8081/v1/chat/completions", help="local language model")
+    p.add_argument("--students", default="data/tutor_students.db", help="student database")
+    p.add_argument("--images", help="folder with <id>_<language>.png")
+    p.add_argument("--llm", help=f"chat completions endpoint (default: {MODEL_URL})")
+    p.add_argument("--vision", action="store_true", help="send the figure to a multimodal llama server")
     p.add_argument("--no-llm", action="store_true", help="never call the language model")
     p.add_argument("--host", default="127.0.0.1", help="use 0.0.0.0 to open it to your network")
     p.add_argument("--port", type=int, default=8000)
@@ -79,7 +81,7 @@ def image_type(data):
     return "application/octet-stream"
 
 
-def make_handler(tutor, images, quiet=False, chat=None, demo_mode=False):
+def make_handler(tutor, images, quiet=False, chat=None, vision=False):
     def emit(result):
         """Send the events of one step to the LED matrix hook, and keep them out of the reply."""
         for event, info in result.pop("events", []):
@@ -114,20 +116,14 @@ def make_handler(tutor, images, quiet=False, chat=None, demo_mode=False):
                         with open(file, "rb") as f:
                             return self.send(200, f.read(), STATIC_TYPES[key.rsplit(".", 1)[1]], cache="max-age=86400")
                 if path == "/api/info":
-                    info = tutor.info()
-                    if demo_mode:
-                        student = tutor.state(demo.NAME)["student"]
-                        info["demo"] = {"name": demo.NAME, "topic": student["topic_choice"] or "",
-                                        "language": student["language"]}
-                    return self.send(200, info)
+                    return self.send(200, tutor.info())
                 if path == "/api/matrix":
                     return self.send(200, matrix.last())
                 if path == "/api/students":
-                    students = tutor.students()
-                    return self.send(200, [s for s in students if s["name"] == demo.NAME] if demo_mode else students)
+                    return self.send(200, tutor.students())
                 if path == "/api/chat" and chat:
-                    return self.send(200, chat.status(params.get("job", "")))
-                name = demo.NAME if demo_mode else params.get("name", "")
+                    return self.send(200, emit(chat.status(params.get("job", ""))))
+                name = params.get("name", "")
                 if path == "/api/state":
                     return self.send(200, tutor.state(name))
                 if path == "/api/summary":
@@ -153,26 +149,34 @@ def make_handler(tutor, images, quiet=False, chat=None, demo_mode=False):
                 body = json.loads(self.rfile.read(size) or b"{}")
                 if not isinstance(body, dict):
                     return self.send(400, {"error": "expected a JSON object"})
-                name = demo.NAME if demo_mode else " ".join(str(body.get("name") or "").split())[:40]
+                name = " ".join(str(body.get("name") or "").split())[:40]
                 if self.path == "/api/start":
-                    state = tutor.start(name, body.get("language", "eng"), body.get("topic") or None, body.get("level"))
+                    state = tutor.start(name, body.get("language", "eng"), body.get("topic") or None, body.get("level"), resume=body.get("resume") is True)
                     if state["problem"]:
                         matrix.show("thinking", level=state["problem"]["level"])
                     return self.send(200, state)
+                problem = body.get("problem")
                 if self.path == "/api/answer":
-                    return self.send(200, emit(tutor.answer(name, str(body.get("choice", "")).upper())))
-                if self.path == "/api/hint":
-                    return self.send(200, emit(tutor.hint(name)))
-                if self.path == "/api/example":
-                    return self.send(200, emit(tutor.example_answer(name)))
+                    return self.send(200, emit(tutor.answer(name, str(body.get("choice", "")).upper(), problem)))
                 if self.path == "/api/reveal":
-                    return self.send(200, emit(tutor.reveal(name)))
+                    return self.send(200, emit(tutor.reveal(name, problem)))
                 if self.path == "/api/next":
                     topic = body["topic"] or None if "topic" in body else "keep"
-                    return self.send(200, emit(tutor.next(name, topic)))
-                if self.path == "/api/chat" and chat:
-                    context = tutor.chat_context(name, body.get("problem"))
-                    return self.send(200, chat.start(context, body.get("message"), body.get("previous"), body.get("last_hint")))
+                    return self.send(200, emit(tutor.next(name, topic, problem)))
+                mode = self.path.removeprefix("/api/")
+                if chat and self.path in ("/api/chat", "/api/hint", "/api/feedback"):
+                    message = validate_message(body.get("message")) if mode == "chat" else ""
+                    context = tutor.coaching_context(name, problem, mode)
+                    image = None
+                    if vision and context["diagram"] and chat.url and not context["cached"]:
+                        file = os.path.join(images, f"{context['problem']}_{context['language']}.png")
+                        try:
+                            with open(file, "rb") as source:
+                                data = source.read()
+                            image = image_type(data), data
+                        except OSError:
+                            pass
+                    return self.send(200, emit(chat.start(context, message, body.get("last_hint"), image)))
             except TutorError as error:
                 return self.send(400, {"error": str(error)})
             except (ValueError, TypeError) as error:
@@ -182,20 +186,18 @@ def make_handler(tutor, images, quiet=False, chat=None, demo_mode=False):
     return Handler
 
 
+def images_folder(path):
+    if path:
+        return path
+    return "data/full_noocr/images" if os.path.isdir("data/full_noocr/images") else "data/images"
+
+
 def make_server(args):
     """Build the server without starting it (simulate.py uses this too)."""
-    demo_mode = getattr(args, "demo", False)
-    url = None if args.no_llm else args.llm
-    if demo_mode:
-        students = args.students or "data/tutor_demo_students.db"
-        with tempfile.TemporaryDirectory() as folder:
-            bank = os.path.join(folder, "demo.db")
-            demo.build_bank(bank)
-            tutor = Tutor(bank, students, questions=None, inline_problems=True)
-        demo.seed_student(tutor)
-    else:
-        tutor = Tutor(args.bank, args.students or "data/tutor_students.db", questions=args.questions)
-    handler = make_handler(tutor, args.images, args.quiet, Chat(url), demo_mode)
+    url = None if args.no_llm else (args.llm or MODEL_URL)
+    tutor = Tutor(args.bank, args.students, model_enabled=bool(url))
+    handler = make_handler(tutor, images_folder(args.images), args.quiet,
+                           Chat(url, tutor.save_coaching), args.vision)
     server = ThreadingHTTPServer((args.host, args.port), handler)
     return server, tutor
 
@@ -203,23 +205,37 @@ def make_server(args):
 def main():
     args = parse_args()
     os.chdir(ROOT)
-    if not args.demo and not os.path.exists(args.bank):
-        sys.exit(f"{args.bank} is missing: run python3 tutor/build_bank.py first")
+    if not os.path.exists(args.bank):
+        sys.exit(f"{args.bank} is missing: run python3 tutor/build_bank.py --lexical first")
     server, tutor = make_server(args)
-    found = sum(os.path.exists(os.path.join(args.images, f"{pid}_eng.png")) for pid in tutor.problems)
-    if args.demo:
-        print(f"Demo: {len(tutor.problems)} original exercises, fictional profile {demo.NAME}")
-    else:
-        print(f"{len(tutor.problems)} problems in the bank, {found} with an English image in {args.images}")
-        print(f"Rung-1 questions from the model: {args.questions if os.path.exists(args.questions) else 'none (topic tips only)'}")
-    print(f"Conversation model: {'off (local rules)' if args.no_llm else args.llm}")
+    images = images_folder(args.images)
+    print(f"{len(tutor.problems)} problems in the bank")
+    missing = 0
+    for language in ("cat", "eng"):
+        found = sum(os.path.isfile(os.path.join(images, f"{pid}_{language}.png")) for pid in tutor.problems)
+        print(f"{language}: {found}/{len(tutor.problems)} images in {images}")
+        missing += len(tutor.problems) - found
+    if missing:
+        server.server_close()
+        tutor.db.close()
+        sys.exit(f"{missing} exercise images are missing. Prepare the bilingual images or set --images.")
+    print(f"Coaching model: {'disabled' if args.no_llm else (args.llm or MODEL_URL)}")
     browser_host = "127.0.0.1" if args.host == "0.0.0.0" else args.host
-    print(f"Open http://{browser_host}:{server.server_port} (Ctrl+C to stop)", flush=True)
-    matrix.show("idle")
+    model_process = None
     try:
+        if os.name == "nt" and not (args.no_llm or args.llm or args.vision):
+            model_process = start_windows_model("data/tutor_model.log")
+        print(f"Open http://{browser_host}:{server.server_port} (Ctrl+C to stop)", flush=True)
+        matrix.show("idle")
         server.serve_forever()
     except KeyboardInterrupt:
         pass
+    finally:
+        server.server_close()
+        tutor.db.close()
+        if model_process and model_process.poll() is None:
+            model_process.terminate()
+            model_process.wait(timeout=5)
 
 
 if __name__ == "__main__":

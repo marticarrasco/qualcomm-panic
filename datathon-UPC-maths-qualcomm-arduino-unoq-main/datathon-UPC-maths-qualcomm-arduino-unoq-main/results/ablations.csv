@@ -14,3 +14,5 @@ time,name,commit,input,languages,n,rag_k,accuracy,mean_s,worst_s,over_limit
 20261115-013445-898965,demo-model-only,a1056cc,data/demo/train.jsonl,all,100,0,21.0,2.9,4.1,0
 20261115-013932-169462,demo-budget,a1056cc,data/demo/train.jsonl,all,100,0,22.0,4.3,8.3,0
 20261115-014643-480170,demo-direct,a1056cc,data/demo/train.jsonl,all,100,0,15.0,2.5,2.8,0
+20261115-094216-937240,pot-v1-smart-runner-demo,b5dd54d,data/datathon-demo-eval/train.jsonl,"eng,cat",100,0,36.0,3.7,18.4,0
+20261115-095043-602598,pot-v1-smart-runner-val-cat-eng,b5dd54d,data/val.jsonl,"eng,cat",562,0,25.6,2.1,40.0,0

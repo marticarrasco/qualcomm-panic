@@ -8,9 +8,8 @@
    Does the level estimate settle at L, how fast, does it stay on topic?
 2. Noisy students: right with a probability that falls as the level rises.
 3. A student who always needs two hints: the level must not move.
-4. Rung 3 over the whole bank: never crosses out the right letter.
-5. The model-sentence filter on known bad sentences.
-6. A student who walks through the whole bank over HTTP: the answer letter is
+4. The model-sentence filter on known bad sentences.
+5. A student who walks through the whole bank over HTTP: the answer letter is
    never in a reply before the problem is solved or the answer is asked for.
 Standard library only. Uses temporary student databases; your real one is untouched.
 """
@@ -28,9 +27,10 @@ import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from tutor.server import make_server, parse_args as server_args  # noqa: E402
+from tutor.server import images_folder, make_server, parse_args as server_args  # noqa: E402
+from tutor.chat import check_reply
 from tutor.topics import NAMES  # noqa: E402
-from tutor.tutor import LETTERS, Tutor, check_nudge, eliminate  # noqa: E402
+from tutor.tutor import LETTERS, Tutor  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -38,7 +38,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def parse_args():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--bank", default="data/tutor.db")
-    p.add_argument("--images", default="data/full_noocr/images")
+    p.add_argument("--images")
     p.add_argument("--steps", type=int, default=30, help="problems per simulated student")
     p.add_argument("--start", type=int, default=2, help="starting level of the simulated students")
     p.add_argument("--quick", action="store_true", help="walk only 150 problems over HTTP instead of the whole bank")
@@ -65,14 +65,13 @@ def run_student(tutor, name, topic, start, steps, is_right, hints=0):
         ids.append(problem["id"])
         began = time.perf_counter()
         for _ in range(hints):
-            tutor.hint(name)
+            context = tutor.coaching_context(name, problem["id"], "hint")
+            tutor.save_coaching(context, "A model hint supplied by the simulation.")
         tutor.answer(name, label if is_right(problem["level"]) else wrong_letter(label))
         state = tutor.next(name)
         times.append((time.perf_counter() - began) * 1000)
     profile = {p["topic"]: p for p in tutor.state(name)["profile"]}
     repeats = len(ids) - len(set(ids))
-    for a, b in itertools.combinations(ids, 2):
-        repeats += b in tutor.duplicates.get(a, ())
     levels = [level for level, t in zip(levels, topics) if t == topic]
     return {"levels": levels, "on_topic": sum(t == topic for t in topics) / max(1, len(topics)),
             "mastered": profile.get(topic, {}).get("mastered"), "repeats": repeats,
@@ -89,7 +88,7 @@ def settle_step(levels, target):
 
 
 def simulate(args, students_db):
-    tutor = Tutor(args.bank, students_db, llm_url=None, seed=args.seed)
+    tutor = Tutor(args.bank, students_db, seed=args.seed)
     rows = []
     for topic in ("geometry_measure", "arithmetic", "counting", "numbers"):
         for target in (1, 3, 5):
@@ -130,7 +129,7 @@ def simulate(args, students_db):
             ok &= r["on_topic"] == 1.0
     print(f"  mixed mode: {len(set(mixed_topics))} topics in {args.steps} problems, "
           f"blocks of {mixed_topics[:9]} ...")
-    print("  estimate = highest level solved cleanly (first try, at most one hint) and not failed since")
+    print("  estimate = highest level solved on the first try without hints and not failed since")
     print("  last-10 mean and settled at: levels of the problems served in the topic; on topic < 100% means the")
     print("  topic had no unseen problem within one level, so a problem of another topic was served instead")
     print(f"  RESULT: {'PASS' if ok else 'FAIL'} (exact students end on their level and settle; no repeats; "
@@ -138,33 +137,18 @@ def simulate(args, students_db):
     return tutor, ok
 
 
-def check_elimination(tutor):
-    checks = 0
-    for pid, problem in tutor.problems.items():
-        wrong = [letter for letter in LETTERS if letter != problem["label"]]
-        for size in range(3):
-            for tried in itertools.combinations(wrong, size):
-                out = eliminate(pid, problem["label"], "".join(tried))
-                left = len(LETTERS) - len(set(out) | set(tried))
-                assert problem["label"] not in out, (pid, tried, out)
-                assert not set(out) & set(tried) and left >= 2 and 1 <= len(out) <= 2, (pid, tried, out)
-                assert out == eliminate(pid, problem["label"], "".join(tried)), "must be deterministic"
-                checks += 1
-    print(f"\nRung 3 (elimination): {checks} cases over {len(tutor.problems)} problems, "
-          f"the right letter was never crossed out, at least two letters always remain: PASS")
-
-
 def check_filter():
-    problem = "Anna has 12 apples and gives 5 to Pere. How many apples does she have left?"
+    context = {"kind": "orient", "exercise": "Anna has 12 apples and gives 5 to Pere.",
+               "options": {"C": "7"}, "correct": "C", "language": "eng", "earlier": []}
     bad = ["The answer is seven apples for Anna now.", "Subtract and you will see it is option C for sure.",
            "You should pick B) because it is the largest.", "Take 5 away from 12 to get 7 apples left.",
-           "Just compute 12 - 5 = and write it down.", "Ok.", "word " * 40, "<think>12-5 is 7</think>"]
+           "Just compute 12 - 5 = and write it down.", "Think about whether seven is a sensible size for what is left.",
+           "Draw 18 apples and split them into two groups.", "Check 12 - 5"]
     good = ["Write down how many apples Anna starts with and how many she gives away.",
             "Start from the 12 apples and think about what giving 5 away does."]
-    assert all(check_nudge(s, problem, "7") is None for s in bad), [s for s in bad if check_nudge(s, problem, "7")]
-    assert all(check_nudge(s, problem, "7") for s in good)
-    assert check_nudge("Think about whether seven is a sensible size for what is left.", problem, "seven") is None
-    print(f"Rung 4 filter: {len(bad) + 1} unsafe sentences rejected, {len(good)} safe ones kept: PASS")
+    assert all(check_reply(s, context, "", "") is None for s in bad)
+    assert all(check_reply(s, context, "", "") for s in good)
+    print(f"Model filter: {len(bad)} unsafe replies rejected, {len(good)} coaching replies kept: PASS")
 
 
 def call(base, path, body=None):
@@ -213,15 +197,11 @@ def check_api(args, students_db):
         problems += 1
         mode = problems % 4
         step("/api/state?name=" + name, None, False)
-        if mode in (0, 1):  # every hint (mode 1: then a wrong answer)
-            for _ in range(5):
-                data = step("/api/hint", {"name": name}, False)
-                assert truth not in data["problem"]["eliminated"], f"{pid}: rung 3 crossed out the answer"
-            if mode == 0:
-                step("/api/example", {"name": name}, False)
+        if mode in (0, 1):
+            data = step("/api/hint", {"name": name, "problem": pid}, False)
+            assert data == {"model_error": "disabled"}
         if mode == 1:
-            data = step("/api/answer", {"name": name, "choice": next(
-                l for l in LETTERS if l != truth and l not in data["problem"]["eliminated"])}, False)
+            data = step("/api/answer", {"name": name, "problem": pid, "choice": wrong_letter(truth)}, False)
             assert not data["correct"]
         if mode == 2:  # three wrong answers in a row: closes without the answer
             for letter in [l for l in LETTERS if l != truth][:3]:
@@ -236,9 +216,8 @@ def check_api(args, students_db):
         if problems % 60 == 1:
             for lang in ("eng", "cat"):
                 raw, kind = call(base, f"/image/{pid}_{lang}.png")
-                assert kind == "image/jpeg" and raw[:2] == b"\xff\xd8", (pid, kind)
+                assert kind.startswith("image/") and raw, (pid, kind)
                 images += 1
-        # When the bank is used up the reply repeats the last, already answered problem
         state = step("/api/next", {"name": name}, True)
         if not state.get("finished") and has_key(state, "label"):
             leaks += 1
@@ -251,22 +230,25 @@ def check_api(args, students_db):
     except urllib.error.HTTPError as error:
         assert error.code == 404
     server.shutdown()
+    server.server_close()
     missing = sum(not os.path.exists(os.path.join(args.images, f"{pid}_{lang}.png"))
                   for pid in tutor.problems for lang in ("eng", "cat"))
-    print(f"\nAPI walk over HTTP: {problems} different problems (bank has {len(tutor.problems)}; "
-          f"the rest were shown as rung-2 examples or are near-duplicates, so they are never served), {replies} replies before/after answering, "
+    expected = min(limit, len(tutor.problems))
+    print(f"\nAPI walk over HTTP: {problems}/{expected} different problems, {replies} replies, "
           f"{leaks} leaked the answer letter: {'PASS' if leaks == 0 else 'FAIL'}")
-    print(f"Images: {images} fetched and served as image/jpeg; {missing} of {2 * len(tutor.problems)} files missing on disk")
+    print(f"Images: {images} fetched and served as images; {missing} of {2 * len(tutor.problems)} files missing on disk")
     print(f"LED hook: /api/matrix -> {led}")
-    return leaks == 0
+    tutor.db.close()
+    return leaks == 0 and problems == expected and missing == 0
 
 
 def main():
     args = parse_args()
     os.chdir(ROOT)
+    args.images = images_folder(args.images)
     with tempfile.TemporaryDirectory() as folder:
         tutor, ok = simulate(args, os.path.join(folder, "students.db"))
-        check_elimination(tutor)
+        tutor.db.close()
         check_filter()
         ok &= check_api(args, os.path.join(folder, "walk.db"))
     print(f"\nALL CHECKS: {'PASS' if ok else 'FAIL'}")
