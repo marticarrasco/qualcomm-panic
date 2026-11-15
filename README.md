@@ -25,18 +25,28 @@ The practice set contains 50 problems in two languages. V4 scored **22/50 in Cat
 
 ## Run the project
 
-From the repository root, run the predictor on the included synthetic sample after starting the local model service. To reproduce the V4 results, load the V4-e1 GGUF and use the documented PoT settings. [Start and reproduce the predictor](docs/predictor/RUN.md)
+Python 3.10 or later is required. The predictor and Pista use a local `llama-server` and GGUF model for AI features; model weights and the M3Kang dataset are not included in this repository. The board setup, model configuration, and reproducible predictor settings are covered in the linked guides below.
+
+### MathQ Predictor
+
+Start a compatible local `llama-server` on port 8081 and set `LLM_PORT=8081`. Then, from the repository root, run the included synthetic sample:
 
 ```bash
-mkdir -p results
 python3 predict.py --input data/sample_problems.jsonl --output results/predictions.csv
 ```
 
-To run Pista, prepare the bilingual bank and images, then start the tutor. Open [Pista on localhost](http://127.0.0.1:8000). [Prepare the bank and deploy Pista](docs/tutor/RUN.md)
+On Windows, use `py` instead of `python3`. To reproduce the V4 evaluation, load the V4-e1 GGUF and use the documented PoT settings. [Start the model and reproduce the predictor](docs/predictor/RUN.md)
+
+### Pista Tutor
+
+Prepare the bilingual exercise bank and images first (this requires access to the M3Kang dataset), then build the local tutor database and start the server:
 
 ```bash
+python3 tutor/build_bank.py --lexical
 python3 tutor/server.py
 ```
+
+Open [Pista on localhost](http://127.0.0.1:8000). To run practice without model assistance, use `python3 tutor/server.py --no-llm`. [Prepare the bank and deploy Pista](docs/tutor/RUN.md)
 
 The predictor and tutor run on the board’s Linux processor. The tutor publishes practice events to the Arduino App Lab app for display on the LED matrix. Data preparation and training run ahead of time. [Board setup](docs/setup/BOARD.md) · [Data preparation](data/README.md)
 
@@ -63,3 +73,7 @@ The predictor and tutor run on the board’s Linux processor. The tutor publishe
 ## Credits and data
 
 MathQ uses the M3Kang research dataset, Qwen3.5, and llama.cpp. Prepare the licensed problems and images locally using the [data guide](data/README.md). The charts and public evaluation evidence contain aggregate results. [M3Kang dataset terms](https://huggingface.co/datasets/qualcomm/M3Kang/blob/main/LICENSE.pdf) · [M3Kang paper](https://arxiv.org/abs/2601.16218) · [Qwen3.5-0.8B](https://huggingface.co/Qwen/Qwen3.5-0.8B) · [llama.cpp](https://github.com/ggml-org/llama.cpp)
+
+## Team
+
+MathQ was developed by **Abdullah Baig**, **Martí Carrasco**, and **Jordi Rigau** for the Datathon FME 2026 Qualcomm challenge.
