@@ -108,7 +108,7 @@ MathQ uses the M3Kang research dataset, Qwen3.5, and llama.cpp. Prepare the lice
 
 ## License
 
-The team's code is under the [MIT License](LICENSE). The license file lists what it does not cover: the organizers' starter files, the fonts, and the model weights and data, which are not in this repository.
+The team's code is under the [MIT License](LICENSE). [NOTICE](NOTICE) lists what it does not cover: the organizers' starter files, the fonts, and the model weights and data, which are not in this repository.
 
 ## Team
 
