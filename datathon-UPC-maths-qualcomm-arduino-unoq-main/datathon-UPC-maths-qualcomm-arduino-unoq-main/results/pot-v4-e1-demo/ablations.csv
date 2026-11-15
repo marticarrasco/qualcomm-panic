@@ -1,0 +1,2 @@
+time,name,commit,input,languages,n,rag_k,accuracy,mean_s,worst_s,over_limit
+20261115-105958-184892,pot-v4-e1-smart-runner-demo,b5dd54d,data/datathon-demo-eval/train.jsonl,"eng,cat",100,0,43.0,4.5,13.4,0

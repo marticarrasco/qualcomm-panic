@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<meta name="theme-color" content="#F5F8FD">
+<meta name="theme-color" content="#081B2D">
 <title>Pista · Math Tutor</title>
 <style>
   /* Fonts ship with the tutor (tutor/static/fonts, SIL Open Font Licence): the page works offline on the board. */
@@ -210,18 +210,6 @@
   .note.fresh { animation: pop .35s cubic-bezier(.2, .9, .3, 1.3); }
   @keyframes pop { from { transform: scale(.94); opacity: 0; } }
 
-  .warmup { margin-top: 16px; padding: 14px; border-radius: var(--r-md); background: var(--hi-soft); border: 1px solid #F0D766; }
-  .warmup.fresh { animation: pop .35s cubic-bezier(.2, .9, .3, 1.3); }
-  .warmup-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .warmup-head b { font-family: var(--display); font-size: 18px; }
-  .warmup-head .grow { flex: 1; }
-  .warmup .problem { border-color: #E8D27A; }
-  .warmup .btn { min-height: 40px; padding: 6px 14px; font-size: 15px; box-shadow: 0 2px 0 var(--ink); }
-  .warmup .said { font-weight: 700; }
-  .exercise-text { margin: 4px 0 14px; font-size: clamp(19px, 3vw, 25px); line-height: 1.45; }
-  .exercise-options { display: flex; gap: 8px 16px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; }
-  .exercise-options li { background: var(--paper); border: 1px solid var(--line); border-radius: 9px; padding: 6px 10px; }
-  .exercise-options b { color: var(--pen-ink); margin-right: 6px; }
   .chat { padding: 16px; }
   .chat h2 { font-size: 19px; margin-bottom: 8px; }
   .chat-log { display: grid; gap: 8px; max-height: 16rem; overflow: auto; }
@@ -311,13 +299,146 @@
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
     .stamp.show path { stroke-dashoffset: 0; }
   }
+
+  /* ---------- Datathon FME 2026 / Qualcomm challenge ---------- */
+  :root {
+    --paper: #F3F7FA; --grid: #E1E9F0; --sheet: #FFFFFF; --line: #D9E3EC;
+    --ink: #102236; --ink-2: #52677B;
+    --pen: #3253DC; --pen-ink: #233EB5; --pen-soft: #E9EEFF;
+    --hi: #C6F66B; --hi-soft: #F1F9DD; --hi-ink: #455B18;
+    --tick: #087E75; --tick-soft: #DDF5F0; --red: #C13D46; --red-soft: #FCE9E9;
+    --led-bg: #081B2D; --led-off: #1B344B; --led-dim: #34536D; --led-on: #68E9C9;
+    --r-sm: 10px; --r-md: 16px; --r-lg: 20px;
+    --lift: 0 1px 2px rgba(16, 34, 54, .04), 0 14px 34px -22px rgba(16, 34, 54, .28);
+  }
+  body {
+    background-color: var(--paper);
+    background-image: radial-gradient(ellipse at 8% 0%, rgba(50, 83, 220, .07), transparent 32%),
+      linear-gradient(rgba(43, 73, 104, .035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(43, 73, 104, .035) 1px, transparent 1px);
+    background-size: auto, 36px 36px, 36px 36px;
+  }
+  :focus-visible { outline-color: #536FF1; }
+  .top {
+    background: rgba(8, 27, 45, .97); border-bottom: 1px solid #1C3A55;
+    padding-block: 10px; padding-inline-start: max(18px, env(safe-area-inset-left));
+    padding-inline-end: max(18px, env(safe-area-inset-right)); color: #F5F8FD;
+  }
+  .brand { color: #F5F8FD; }
+  .brand b { font-size: 25px; }
+  .brand small { display: none; }
+  .mark { background: #132D45; }
+  .mark i.on { background: var(--hi); box-shadow: 0 0 8px rgba(198, 246, 107, .72); }
+  .who { background: #142E46; border-color: #294862; color: #E8F0F7; }
+  .seg { background: #102940; border-color: #294862; }
+  .seg button { color: #C8D6E4; }
+  .seg button.on { background: var(--hi); color: #102236; }
+  .ghost { color: #EAF2F9; }
+  .ghost:hover { background: #173650; }
+  main { padding-top: 28px; padding-bottom: 56px; }
+  .card { border-color: var(--line); }
+  .btn {
+    border: 1px solid #BAC9D8; border-radius: 12px; box-shadow: 0 2px 0 #D0DAE4;
+    transition: transform .14s ease, box-shadow .14s ease, background .14s ease;
+  }
+  .btn:hover:not(:disabled) { box-shadow: 0 4px 0 #D0DAE4; }
+  .btn:active:not(:disabled) { box-shadow: 0 1px 0 #D0DAE4; }
+  .btn.primary { border-color: var(--pen-ink); box-shadow: 0 2px 0 var(--pen-ink); }
+  .btn.primary:hover:not(:disabled) { box-shadow: 0 4px 0 var(--pen-ink); }
+  .btn.hint { background: var(--hi); border-color: #9BBF48; box-shadow: 0 2px 0 #8DAF3F; }
+  .btn.hint:hover:not(:disabled) { box-shadow: 0 4px 0 #8DAF3F; }
+  .welcome { gap: 20px; }
+  .hello {
+    isolation: isolate; position: relative; overflow: hidden; padding: clamp(22px, 3vw, 36px);
+    border: 1px solid #173A55; border-radius: 24px;
+    background: radial-gradient(circle at 100% 0%, rgba(66, 104, 226, .42), transparent 32%),
+      linear-gradient(145deg, #0A2036 0%, #102D49 100%);
+    box-shadow: 0 22px 48px -32px rgba(8, 27, 45, .7);
+  }
+  .hello::before {
+    content: ""; position: absolute; z-index: 0; right: 18px; top: 20px; width: 130px; height: 130px;
+    background-image: radial-gradient(rgba(171, 203, 231, .44) 1px, transparent 1.4px);
+    background-size: 13px 13px; opacity: .52; pointer-events: none;
+    mask-image: linear-gradient(135deg, #000, transparent 78%);
+  }
+  .event-kicker {
+    position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 9px;
+    margin: 0 0 18px; padding: 7px 10px; border: 1px solid rgba(198, 246, 107, .4);
+    border-radius: 999px; background: rgba(198, 246, 107, .08); color: #DDF9A8;
+    font: 700 11px/1.2 var(--body); letter-spacing: .12em; text-transform: uppercase;
+  }
+  .event-kicker::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--hi); box-shadow: 0 0 10px rgba(198, 246, 107, .8); }
+  .hello h1 { position: relative; z-index: 1; color: #F8FBFF; max-width: 15ch; }
+  .hello h1 .scrib { background: linear-gradient(transparent 62%, var(--hi) 62%, var(--hi) 91%, transparent 91%); color: #F8FBFF; }
+  .hello p.lead { position: relative; z-index: 1; color: #D1DFEA; }
+  .hello .setup { position: relative; z-index: 1; background: #FFFFFF; border-color: rgba(255, 255, 255, .75); box-shadow: 0 12px 32px rgba(3, 16, 29, .2); }
+  .name, .chat-form input { background: #F7F9FC; border-color: #C8D6E2; }
+  .name:focus, .chat-form input:focus { border-color: var(--pen); box-shadow: 0 0 0 3px rgba(50, 83, 220, .12); }
+  .topic { border-width: 1px; border-color: #D8E2EA; border-radius: 12px; }
+  .topic[aria-pressed="true"] { border-color: var(--pen); background: var(--pen-soft); }
+  .stair { border-width: 1px; }
+  .stair[aria-pressed="true"] { background: var(--pen); border-color: var(--pen-ink); }
+  .letter { border-width: 1px; border-radius: 14px; box-shadow: 0 3px 0 #AAB9C9; }
+  .letter:hover:not(:disabled) { box-shadow: 0 5px 0 #AAB9C9; }
+  .letter:active:not(:disabled) { box-shadow: 0 1px 0 #AAB9C9; }
+  .letter.right { background: var(--tick); border-color: var(--tick); }
+  .note { background: var(--hi-soft); border-color: #DDE9B7; }
+  .note.ai { background: var(--pen-soft); border-color: #D4DDFB; }
+  .note b.lead { color: var(--hi-ink); }
+  .problem { border-color: #D5E0E9; }
+  .footer {
+    position: relative; overflow: hidden; padding: 36px max(18px, env(safe-area-inset-right)) 18px max(18px, env(safe-area-inset-left));
+    color: #E9F1F8; background: radial-gradient(ellipse at 85% 0%, rgba(50, 83, 220, .28), transparent 34%), #081B2D;
+    border-top: 1px solid #193B57;
+  }
+  .footer-inner { width: min(1180px, 100%); margin: 0 auto; }
+  .footer-main { display: grid; grid-template-columns: minmax(220px, .8fr) minmax(0, 1.6fr); gap: 36px; align-items: center; }
+  .footer-kicker { margin: 0 0 8px; color: #B8ED72; font: 700 11px/1.3 var(--body); letter-spacing: .16em; text-transform: uppercase; }
+  .footer h2 { color: #FFFFFF; font-size: clamp(23px, 3vw, 30px); }
+  .team-list { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 16px 0 0; padding: 0; }
+  .team-list li { padding: 7px 11px; border: 1px solid #2B4A64; border-radius: 999px; background: rgba(255, 255, 255, .055); color: #F3F7FB; font-size: 14px; }
+  .partner-heading { margin: 0 0 10px; color: #9EB2C4; font: 700 11px/1.3 var(--body); letter-spacing: .12em; text-transform: uppercase; }
+  .partner-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .partner {
+    min-height: 108px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px;
+    padding: 10px 8px; border: 1px solid #E3E9EF; border-radius: 14px; background: #FFFFFF; color: #263D52;
+    text-align: center; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .partner:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, .18); }
+  .partner img { display: block; width: auto; max-width: 100%; height: 52px; object-fit: contain; }
+  .partner[data-brand="qualcomm"] img { width: min(100%, 150px); height: auto; }
+  .partner[data-brand="aed"] img { width: auto; max-width: 108px; height: 42px; }
+  .partner[data-brand="fme"] img { width: 50px; height: 50px; }
+  .partner[data-brand="datathon"] { gap: 8px; }
+  .partner span { font-size: 11px; font-weight: 700; line-height: 1.2; }
+  .partner .datathon-wordmark { color: #102236; font: 700 20px/1 var(--display); letter-spacing: -.055em; white-space: nowrap; }
+  .partner .datathon-wordmark b { color: var(--pen); }
+  .partner .datathon-year { color: #52677B; font: 700 10px/1.2 var(--body); letter-spacing: .12em; text-transform: uppercase; }
+  .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 26px; padding-top: 14px; border-top: 1px solid #1E3A52; color: #9EB2C4; font-size: 12px; }
+  .footer-bottom b { color: #D7E5EF; font-weight: 700; letter-spacing: .08em; }
+  @media (max-width: 760px) {
+    .footer-main { grid-template-columns: 1fr; gap: 24px; }
+  }
+  @media (max-width: 640px) {
+    .top { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 6px; padding: 8px 12px; }
+    .brand { grid-column: 1; margin-right: 0; min-width: 0; }
+    .seg { grid-column: 2; grid-row: 1; }
+    #teacherLink { grid-column: 3; grid-row: 1; justify-self: end; min-width: 42px; width: 42px; padding: 7px; justify-content: center; }
+    .seg button { min-height: 34px; padding: 4px 9px; }
+    main { padding-top: 16px; }
+    .hello { padding: 22px 18px; border-radius: 20px; }
+    .event-kicker { max-width: 100%; font-size: 9px; letter-spacing: .1em; }
+    .footer { padding-top: 28px; }
+    .partner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .footer-bottom { align-items: flex-start; flex-direction: column; }
+  }
 </style>
 </head>
 <body>
 <header class="top">
   <button class="brand" id="home" aria-label="Pista">
     <span class="mark" aria-hidden="true"><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
-    <b>Pista</b><small data-t="tagline" style="white-space:nowrap"></small>
+    <b>Pista</b>
   </button>
   <span id="who" class="who hidden"></span>
   <span class="seg" id="lang" role="group" aria-label="Language"><button data-lang="eng">EN</button><button data-lang="cat">CA</button></span>
@@ -328,6 +449,7 @@
   <!-- ===== Setup ===== -->
   <section id="setup" class="welcome hidden">
     <div class="hello">
+      <p class="event-kicker" data-t="eventEyebrow"></p>
       <h1 data-t="headline"></h1>
       <p class="lead" data-t="intro"></p>
       <div class="card setup">
@@ -335,7 +457,6 @@
           <label class="label" for="name" data-t="name"></label>
           <input class="name" type="text" id="name" maxlength="40" autocomplete="off" spellcheck="false">
         </div>
-        <p class="tag hidden" id="demoProfile" data-t="demoProfile"></p>
         <div class="field">
           <span class="label" id="topicLabel" data-t="topic"></span>
           <div class="topics" id="topics" role="group" aria-labelledby="topicLabel"></div>
@@ -370,13 +491,15 @@
         <span class="stamp" id="stamp" aria-hidden="true"><svg viewBox="0 0 200 150"><path d="M20 80 L75 130 L185 15"/></svg></span>
       </button>
       <p class="tap-cap" id="tapCap" data-t="tapCap"></p>
-      <div id="exerciseText" class="hidden"></div>
-      <div class="warmup hidden" id="warmup"></div>
+      <p id="transferPrompt" class="note hidden"></p>
     </article>
     <div class="answer-col">
       <article class="card sheet" id="answerCard">
         <div class="letters" id="letters" role="group" aria-label="Answers"></div>
         <div class="feedback" id="feedback" aria-live="polite"></div>
+        <p id="modelFeedback" class="note hidden"></p>
+        <button class="btn hidden" id="feedbackBtn" type="button" data-t="askWhy"></button>
+        <p id="transferResult" class="note hidden"></p>
         <div id="confirm" class="confirm hidden">
           <span data-t="sure"></span>
           <button class="btn" id="revealYes" data-t="yesShow"></button>
@@ -384,6 +507,7 @@
         </div>
         <div class="actions">
           <button class="btn hint" id="hintBtn"></button>
+          <button class="btn" id="solutionBtn"></button>
           <button class="btn push" id="nextBtn"></button>
         </div>
         <div class="keys" data-t="keys"></div>
@@ -425,6 +549,42 @@
   </section>
 </main>
 
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-main">
+      <section aria-labelledby="footerTeamTitle">
+        <p class="footer-kicker">Pista · Datathon FME 2026</p>
+        <h2 id="footerTeamTitle" data-t="footerTeam"></h2>
+        <ul class="team-list">
+          <li>Martí Carrasco</li><li>Jordi Rigau</li><li>Gori Ribot</li><li>Abdullah Baig</li>
+        </ul>
+      </section>
+      <section aria-labelledby="footerPartnersTitle">
+        <h3 class="partner-heading" id="footerPartnersTitle" data-t="footerPartners"></h3>
+        <div class="partner-grid">
+          <a class="partner" data-brand="qualcomm" href="https://www.qualcomm.com/" target="_blank" rel="noreferrer">
+            <img src="/static/logos/qualcomm.svg" width="512" height="94" alt="">
+            <span>Qualcomm</span>
+          </a>
+          <a class="partner" data-brand="aed" href="https://aed.cat/" target="_blank" rel="noreferrer">
+            <img src="/static/logos/aed.png" width="3809" height="1444" alt="">
+            <span>AED · Estudiants de Dades</span>
+          </a>
+          <a class="partner" data-brand="fme" href="https://fme.upc.edu/" target="_blank" rel="noreferrer">
+            <img src="/static/logos/fme.png" width="614" height="614" alt="">
+            <span>FME · UPC</span>
+          </a>
+          <a class="partner" data-brand="datathon" href="https://www.datathon.cat/" target="_blank" rel="noreferrer">
+            <span class="datathon-wordmark">Datathon <b>FME</b></span>
+            <span class="datathon-year">2026 · Barcelona</span>
+          </a>
+        </div>
+      </section>
+    </div>
+    <div class="footer-bottom"><span data-t="footerMade"></span><b data-t="footerBadge"></b></div>
+  </div>
+</footer>
+
 <div class="viewer hidden" id="viewer" role="dialog" aria-modal="true">
   <img id="viewerImg" alt="">
   <button class="btn close" id="viewerClose" data-t="close"></button>
@@ -435,7 +595,8 @@
 "use strict";
 const T = {
   eng: {
-    tagline: "Math Tutor", teacher: "Teacher view",
+    tagline: "Math Tutor", teacher: "Teacher view", eventEyebrow: "DATATHON FME 2026 · QUALCOMM CHALLENGE",
+    footerTeam: "The team", footerPartners: "Challenge & organisers", footerMade: "A project for the Datathon FME · Barcelona · 2026", footerBadge: "QUALCOMM CHALLENGE · 2026",
     headline: 'Stuck? <span class="scrib">Good.</span> That is where the maths starts.',
     intro: "Read the problem, think, and choose A to E. If you are stuck, take a hint: each one helps a bit more, and none of them gives the answer away.",
     name: "Your name", topic: "What do you want to practise?", startLevel: "Where do you want to start?",
@@ -443,36 +604,33 @@ const T = {
     problems: n => n + " problems",
     levelN: n => "Level " + n, levelHelp: n => "Level " + n + (n === 0 ? ", the easiest" : n === 7 ? ", the hardest" : ""),
     needName: "Type your name first, so the tutor can remember your levels.",
-    demoProfile: "Demo · Aina (fictional profile)",
     chatTitle: "Ask Pista", chatInput: "Question about this problem", chatPlaceholder: "How do I start?",
     chatSend: "Send", chatWaiting: "Pista is writing a hint…", chatModel: "Written by the local model",
-    chatStarter: "What should I try next?", chatFallback: "Fallback hint",
-    chatError: "This message could not be answered. Try again.",
+    askWhy: "Ask about this choice",
+    transferNext: "Try a follow-up", transferOpen: "A new problem on this topic. Try it on your own first.",
+    transferResult: { independent: "You solved the follow-up on your first try without hints.",
+      supported: "You solved the follow-up with practice or help.", not_solved: "Keep practising this topic." },
+    transferStat: "follow-up problems solved without help",
+    modelErrors: { disabled: "Model assistance is turned off.", busy: "The model is helping with another request. Try again shortly.",
+      offline: "The local model server is off. Start it and ask for the hint again.",
+      loading: "The local model server is starting. Try again in a moment.",
+      timeout: "The local model took too long to respond. Try again.",
+      unavailable: "The local model could not respond. Try again.", rejected: "The model could not produce a usable hint. Try again.",
+      expired: "This request expired. Try again.", stale: "The exercise has changed. Ask again if you still need help." },
     practiceAction: { review: "Review", challenge: "Challenge" },
     howTitle: "How the hints work", enlarge: "Enlarge", tapCap: "Tap the problem to read it bigger", close: "Close", viewerTip: "Pinch to zoom. Tap Close or press Esc to go back.",
     hint: "Give me a hint", hintMore: "Another hint", showAnswer: "Show me the answer", next: "Next problem", skip: "Skip this one",
-    rungs: ["A question to start", "A similar problem", "Rule two out", "A first step", "The answer"],
-    aiFrom: m => "Question from the AI" + (m ? " (" + m + ", runs on the board)" : ""),
-    aiNote: "Written by the AI for this problem. It may not always fit: use it to start thinking.",
-    methodFor: t => "Method for " + t,
-    rungHow: ["A hint written for your problem and a method tip", "An easier one that uses the same idea", "Two options that are wrong", "One sentence from the small on-board model", "Only if you ask, and it counts as not solved"],
-    ladderTitle: "Hint ladder", ladderIntro: "Climb only as far as you need.",
-    exEasier: "Solve this easier one first; the same idea works in your problem.",
-    exSame: "Solve this similar one first; the same idea works in your problem.",
-    exShow: "Show its answer", exAnswer: a => "Its answer is " + a + ". Why? Now use the same idea on your problem.",
-    warmTitle: "Warm-up: try this one first", exWhere: "It is under your problem.",
-    elText: "These are not correct. Why can they not be right? Check the others.",
-    nuNote: "A suggestion from the small on-board model. It may be imperfect: use it only as a way to start.",
-    answerShown: a => "The answer was " + a + ".",
-    noMore: "No more hints. Try once more, or ask to see the answer.",
+    rungs: ["Get started", "Find the next step", "Check your method"],
+    rungHow: ["The model suggests a concrete action.", "The model helps you connect the steps.", "The model suggests a way to verify your thinking."],
+    ladderTitle: "Hint ladder", ladderIntro: "Ask the local model for one step at a time.",
     sure: "Seeing the answer counts as not solved. Are you sure?", yesShow: "Yes, show it", noTry: "No, I'll try again",
-    right: "Correct! Well done.", up: n => "First try: the next one is harder (level " + n + ").",
-    stay: n => "You got there with help: one more at level " + n + ".", downSolved: n => "Solved after several tries: next one at level " + n + ".",
-    wrong: ["Not yet. Look again: what exactly is being asked?", "Not that one. Take a hint, or check your working step by step.", "Still not right. A hint will help."],
-    failed: "Not this time. Let's leave it and try a similar, easier one. (You can still ask to see the answer.)",
-    revealed: a => "The answer is " + a + ". Next comes a similar, easier problem to build up the idea.",
+    right: a => "Correct. The answer is " + a + ".", up: n => "First try. Target level: " + n + ".",
+    stay: n => "Target level: " + n + ".", downSolved: n => "Solved after several tries. Target level: " + n + ".",
+    wrong: "That option is incorrect. Try again.",
+    failed: "You can review the answer or move to another problem.",
+    revealed: a => "The answer is " + a + ".",
     tries: n => n + (n === 1 ? " wrong try" : " wrong tries"), streak: n => n + " in a row",
-    picture: "Look at the figure", finished: "You have done every problem in the bank. Amazing!",
+    picture: "Look at the figure", finished: "You have reached the end of this practice.",
     keys: "Keyboard: <kbd>A</kbd>–<kbd>E</kbd> answer, <kbd>H</kbd> hint, <kbd>N</kbd> next problem",
     yourLevels: "Your levels", nowHere: "now", noLevels: "Your levels appear here after your first answer.",
     ledTitle: "Board LED matrix", ledLive: "live", ledOff: "board not connected",
@@ -484,7 +642,8 @@ const T = {
     error: "Could not reach the tutor. Check that the server is running."
   },
   cat: {
-    tagline: "tutor de matemàtiques", teacher: "Vista del professor",
+    tagline: "tutor de matemàtiques", teacher: "Vista del professor", eventEyebrow: "DATATHON FME 2026 · REPTE QUALCOMM",
+    footerTeam: "L’equip", footerPartners: "Repte i organització", footerMade: "Un projecte per a la Datathon FME · Barcelona · 2026", footerBadge: "REPTE QUALCOMM · 2026",
     headline: 'Encallat? <span class="scrib">Bé.</span> Aquí comencen les matemàtiques.',
     intro: "Llegeix el problema, pensa i tria d'A a E. Si t'encalles, demana una pista: cada pista ajuda una mica més, i cap no et dona la resposta.",
     name: "El teu nom", topic: "Què vols practicar?", startLevel: "Per on vols començar?",
@@ -492,36 +651,33 @@ const T = {
     problems: n => n + " problemes",
     levelN: n => "Nivell " + n, levelHelp: n => "Nivell " + n + (n === 0 ? ", el més fàcil" : n === 7 ? ", el més difícil" : ""),
     needName: "Escriu primer el teu nom, perquè el tutor recordi els teus nivells.",
-    demoProfile: "Demo · Aina (perfil fictici)",
     chatTitle: "Pregunta a Pista", chatInput: "Pregunta sobre aquest problema", chatPlaceholder: "Per on començo?",
     chatSend: "Envia", chatWaiting: "Pista està redactant una pista…", chatModel: "Redactada pel model local",
-    chatStarter: "Quin pas puc provar ara?", chatFallback: "Pista de reserva",
-    chatError: "No s'ha pogut respondre al missatge. Torna-ho a provar.",
+    askWhy: "Pregunta per aquesta opció",
+    transferNext: "Prova un problema de seguiment", transferOpen: "Un problema nou del mateix tema. Fes el primer intent pel teu compte.",
+    transferResult: { independent: "Has resolt el problema de seguiment a la primera i sense pistes.",
+      supported: "Has resolt el problema de seguiment després de provar-ho o amb ajuda.", not_solved: "Segueix practicant aquest tema." },
+    transferStat: "problemes de seguiment resolts sense ajuda",
+    modelErrors: { disabled: "L'ajuda del model està desactivada.", busy: "El model està atenent una altra petició. Torna-ho a provar d'aquí a un moment.",
+      offline: "El servidor del model local està aturat. Engega'l i torna a demanar la pista.",
+      loading: "El servidor del model local s'està engegant. Torna-ho a provar d'aquí a un moment.",
+      timeout: "El model local ha trigat massa a respondre. Torna-ho a provar.",
+      unavailable: "El model local no ha pogut respondre. Torna-ho a provar.", rejected: "El model no ha trobat una pista adequada. Torna-ho a provar.",
+      expired: "La petició ha caducat. Torna-ho a provar.", stale: "Has canviat d'exercici. Torna a preguntar si et cal ajuda." },
     practiceAction: { review: "Repassa", challenge: "Accepta el repte" },
     howTitle: "Com funcionen les pistes", enlarge: "Amplia", tapCap: "Toca el problema per llegir-lo en gran", close: "Tanca", viewerTip: "Pessiga per ampliar. Toca Tanca o prem Esc per tornar.",
     hint: "Dona'm una pista", hintMore: "Una altra pista", showAnswer: "Ensenya'm la resposta", next: "Problema següent", skip: "Salta aquest",
-    rungs: ["Una pregunta per començar", "Un problema semblant", "Descarta'n dues", "Un primer pas", "La resposta"],
-    aiFrom: m => "Pregunta de la IA" + (m ? " (" + m + ", funciona a la placa)" : ""),
-    aiNote: "Escrita per la IA per a aquest problema. Pot no encaixar sempre: fes-la servir per començar a pensar.",
-    methodFor: t => "Mètode per a " + t,
-    rungHow: ["Una pista redactada per al teu problema i un consell de mètode", "Un de més fàcil que fa servir la mateixa idea", "Dues opcions que són incorrectes", "Una frase del petit model de la placa", "Només si la demanes, i compta com a no resolt"],
-    ladderTitle: "Escala de pistes", ladderIntro: "Puja només fins on et calgui.",
-    exEasier: "Resol primer aquest, que és més fàcil; la mateixa idea serveix per al teu problema.",
-    exSame: "Resol primer aquest, que és semblant; la mateixa idea serveix per al teu problema.",
-    exShow: "Ensenya'n la resposta", exAnswer: a => "La resposta és " + a + ". Per què? Ara fes servir la mateixa idea al teu problema.",
-    warmTitle: "Escalfament: prova primer aquest", exWhere: "El tens sota el teu problema.",
-    elText: "Aquestes no són correctes. Per què no poden ser-ho? Comprova les altres.",
-    nuNote: "Un suggeriment del petit model de la placa. Pot no ser perfecte: fes-lo servir només per començar.",
-    answerShown: a => "La resposta era " + a + ".",
-    noMore: "No hi ha més pistes. Torna-ho a provar, o demana veure la resposta.",
+    rungs: ["Comença", "Troba el pas següent", "Comprova el mètode"],
+    rungHow: ["El model proposa una acció concreta.", "El model t'ajuda a relacionar els passos.", "El model proposa una manera de comprovar el raonament."],
+    ladderTitle: "Escala de pistes", ladderIntro: "Demana un pas cada vegada al model local.",
     sure: "Veure la resposta compta com a no resolt. N'estàs segur?", yesShow: "Sí, ensenya-la", noTry: "No, ho torno a provar",
-    right: "Correcte! Molt bé.", up: n => "A la primera: el següent és més difícil (nivell " + n + ").",
-    stay: n => "Ho has aconseguit amb ajuda: un altre al nivell " + n + ".", downSolved: n => "Resolt després d'uns quants intents: el següent al nivell " + n + ".",
-    wrong: ["Encara no. Torna-ho a mirar: què es demana exactament?", "Aquesta no. Demana una pista, o repassa els passos un per un.", "Encara no és correcte. Una pista t'ajudarà."],
-    failed: "Aquesta vegada no. Deixem-lo i provem-ne un de semblant i més fàcil. (Encara pots demanar veure la resposta.)",
-    revealed: a => "La resposta és " + a + ". Ara ve un problema semblant i més fàcil per treballar la idea.",
+    right: a => "Correcte. La resposta és " + a + ".", up: n => "A la primera. Nivell objectiu: " + n + ".",
+    stay: n => "Nivell objectiu: " + n + ".", downSolved: n => "Resolt després d'uns quants intents. Nivell objectiu: " + n + ".",
+    wrong: "Aquesta opció és incorrecta. Torna-ho a provar.",
+    failed: "Pots veure la resposta o passar a un altre problema.",
+    revealed: a => "La resposta és " + a + ".",
     tries: n => n + (n === 1 ? " intent fallat" : " intents fallats"), streak: n => n + " seguits",
-    picture: "Mira la figura", finished: "Has fet tots els problemes del banc. Increïble!",
+    picture: "Mira la figura", finished: "Has arribat al final d’aquesta pràctica.",
     keys: "Teclat: <kbd>A</kbd>–<kbd>E</kbd> resposta, <kbd>H</kbd> pista, <kbd>N</kbd> problema següent",
     yourLevels: "Els teus nivells", nowHere: "ara", noLevels: "Els teus nivells apareixeran aquí després de la primera resposta.",
     ledTitle: "Matriu LED de la placa", ledLive: "en directe", ledOff: "placa no connectada",
@@ -585,9 +741,9 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let lang = store.get("tutor.lang") === "cat" ? "cat" : "eng";
-let info = null, state = null, name = "", busy = false, noMoreHints = false, feedback = { text: "", kind: "" };
+let info = null, state = null, name = "", busy = false, feedback = { text: "", kind: "" };
 let chosenTopic = "", chosenLevel = 1, view = "setup", lastHintCount = 0;
-let conversation = { key: "", previous: null, lastHint: "", pending: false };
+let conversation = { key: "", lastHint: "", pending: false };
 const t = () => T[lang];
 
 async function api(path, body) {
@@ -648,10 +804,7 @@ function drawStatic() {
   document.querySelectorAll("#lang button").forEach(b => { b.classList.toggle("on", b.dataset.lang === lang); b.setAttribute("aria-pressed", b.dataset.lang === lang); });
   $("teacherLink").setAttribute("aria-label", t().teacher);
   $("chatInput").placeholder = t().chatPlaceholder;
-  $("nameField").classList.toggle("hidden", !!info?.demo);
-  $("levelField").classList.toggle("hidden", !!info?.demo);
-  $("demoProfile").classList.toggle("hidden", !info?.demo);
-  $("howList").innerHTML = t().rungs.map((r, i) => i === 3 && !info?.nudge ? "" :
+  $("howList").innerHTML = t().rungs.map((r, i) =>
     `<li><span><b>${esc(r)}</b><br><span class="muted">${esc(t().rungHow[i])}</span></span></li>`).join("");
   drawTopics(); drawStairs(); drawLeds();
 }
@@ -684,38 +837,17 @@ function drawLetters(p) {
     return `<button class="letter ${cls}" data-letter="${letter}" ${off ? "disabled" : ""}>${letter}</button>`;
   }).join("");
 }
-function drawNote(h, fresh) {
-  const cls = "note" + (fresh ? " fresh" : "");
-  if (h.kind === "tip" && info?.demo) return "";
-  if (h.kind === "tip") return (h.question ? `<div class="${cls} ai"><span class="ai-tag"><span class="chip" aria-hidden="true">${"<i></i>".repeat(9)}</span>${esc(t().aiFrom(h.question_model))}</span>` +
-      `<span class="q">${esc(h.question)}</span><span class="small">${esc(t().aiNote)}</span></div>` : "") +
-    `<div class="${cls}"><b class="lead">${esc(t().methodFor(h.topic_name))}</b>${esc(h.text)}</div>`;
-  if (h.kind === "example") return `<div class="${cls}">${esc(h.easier ? t().exEasier : t().exSame)}<span class="small">${esc(t().exWhere)}</span></div>`;
-  if (h.kind === "eliminate") return `<div class="${cls}"><span class="letters-out">${h.letters.map(l => `<b>${esc(l)}</b>`).join("")}</span> ${esc(t().elText)}</div>`;
-  if (h.kind === "nudge") return `<div class="${cls}">${esc(h.text)}<span class="small">${esc(t().nuNote)}</span></div>`;
-  return "";
-}
 function drawLadder(p) {
-  const kinds = ["tip", "example", "eliminate", "nudge", "reveal"];
   const byKind = Object.fromEntries(p.hints.map(h => [h.kind, h]));
-  const nudgeAbsent = !p.nudge_possible || (info && !info.nudge);
-  const fresh = p.hints.length > lastHintCount ? p.hints[p.hints.length - 1].kind : null;
-  let nextFound = false;
-  $("rungs").innerHTML = kinds.map((kind, i) => {
-    const used = !!byKind[kind] || (kind === "reveal" && p.status === "revealed");
-    if (kind === "nudge" && nudgeAbsent && !used) return "";
-    let cls = used ? "used" : "";
-    if (!used && !nextFound && !p.closed && kind !== "reveal") { cls = "next"; nextFound = true; }
-    if (kind === "reveal") cls += " answer";
-    const dot = used ? (kind === "reveal" ? UI.info : i + 1) : cls.includes("next") ? i + 1 : UI.lock;
-    let body = "";
-    if (byKind[kind]) body = drawNote(byKind[kind], fresh === kind && !reduceMotion);
-    else if (kind === "reveal" && p.status === "revealed" && p.label) body = `<div class="note">${esc(t().answerShown(p.label))}</div>`;
-    return `<li class="rung ${cls}"><span class="dot">${dot}</span><span class="rname">${esc(t().rungs[i])}</span>${body}</li>`;
+  const fresh = p.hints.length > lastHintCount ? p.hints.at(-1).kind : null;
+  $("rungs").innerHTML = ["orient", "apply", "check"].map((kind, i) => {
+    const hint = byKind[kind];
+    const upcoming = info?.model && !p.closed && kind === p.next_hint;
+    const cls = hint ? "used" : upcoming ? "next" : "";
+    const body = hint ? `<div class="note ${fresh === kind && !reduceMotion ? "fresh" : ""}">${esc(hint.text)}</div>` : "";
+    return `<li class="rung ${cls}"><span class="dot">${hint || upcoming ? i + 1 : UI.lock}</span><span class="rname">${esc(t().rungs[i])}</span>${body}</li>`;
   }).join("");
   lastHintCount = p.hints.length;
-  // Keep the newest hint in sight (the warm-up problem scrolls itself into view)
-  if (fresh && fresh !== "example") { const note = $("rungs").querySelector(".note.fresh"); if (note) note.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
 }
 function drawLevels() {
   const current = state.problem ? state.problem.topic : null;
@@ -726,20 +858,9 @@ function drawLevels() {
     `<span class="pips">${[0, 1, 2, 3, 4, 5, 6, 7].map(n => `<i class="${n <= r.level ? "on" : ""}"></i>`).join("")}</span></div>`).join("")
     : `<p class="muted" style="margin:0;font-size:15px">${esc(t().noLevels)}</p>`;
 }
-function drawWarmup(p, isNew) {
-  const h = p.hints.find(x => x.kind === "example"), box = $("warmup");
-  if (!h) { box.classList.add("hidden"); box.innerHTML = ""; return; }
-  const src = h.image ? localImage(h.image) : null;
-  box.innerHTML = `<div class="warmup-head"><b>${esc(t().warmTitle)}</b><span class="tag plain">${esc(t().levelN(h.level))}</span><span class="grow"></span>` +
-    (h.answer ? `<span class="said">${esc(t().exAnswer(h.answer))}</span>` : `<button class="btn" id="exampleBtn" type="button">${esc(t().exShow)}</button>`) + `</div>` +
-    (src ? `<button class="problem" type="button" data-zoom="${esc(src)}"><img src="${esc(src)}" alt="${esc(t().warmTitle)}"></button>` : exerciseText(h));
-  box.classList.remove("hidden");
-  if (isNew && !reduceMotion) { box.classList.add("fresh"); box.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
-}
-const localImage = src => src.replace(/_(eng|cat)\.png$/, "_" + lang + ".png");
-function exerciseText(p) {
-  const options = Object.entries(p.options).map(([letter, value]) => `<li><b>${esc(letter)}</b>${esc(value)}</li>`).join("");
-  return `<p class="exercise-text">${esc(p.text)}</p><ul class="exercise-options">${options}</ul>`;
+function note(id, text) {
+  $(id).textContent = text || "";
+  $(id).classList.toggle("hidden", !text);
 }
 
 function drawProblem() {
@@ -752,23 +873,28 @@ function drawProblem() {
   drawChat(p);
   if (!p) { $("rungs").innerHTML = ""; return; }
   drawMeta(p);
-  for (const id of ["problemBtn", "zoomBtn", "tapCap"]) $(id).classList.toggle("hidden", !p.image);
-  $("exerciseText").classList.toggle("hidden", !p.text);
-  if (p.image) {
-    const src = localImage(p.image);
-    if ($("image").getAttribute("src") !== src) $("image").src = src;
-    $("image").alt = p.topic_name + ", " + t().levelN(p.level);
-  } else {
-    $("exerciseText").innerHTML = exerciseText(p);
-  }
+  if ($("image").getAttribute("src") !== p.image) $("image").src = p.image;
+  $("image").alt = p.topic_name + ", " + t().levelN(p.level);
   $("stamp").classList.toggle("show", p.status === "solved");
   drawLetters(p);
-  drawWarmup(p, p.hints.length > lastHintCount && p.hints[p.hints.length - 1].kind === "example");
   drawLadder(p);
-  const canReveal = p.status === "failed" || p.status === "skipped" || (!p.closed && noMoreHints);
-  $("hintBtn").innerHTML = UI.bulb + esc(canReveal ? t().showAnswer : (p.hints.length ? t().hintMore : t().hint));
-  $("hintBtn").disabled = p.status === "solved" || p.status === "revealed";
-  $("nextBtn").innerHTML = esc(p.closed ? t().next : t().skip) + UI.next;
+  note("modelFeedback", p.coaching);
+  $("feedbackBtn").classList.toggle("hidden", !info?.model || p.closed || !p.tries || Boolean(p.coaching));
+  $("feedbackBtn").disabled = conversation.pending;
+  note("transferPrompt", p.transfer === "open" && t().transferOpen);
+  note("transferResult", t().transferResult[p.transfer]);
+  if (!feedback.text) {
+    if (p.status === "solved") setFeedback(t().right(p.label), "ok");
+    else if (p.status === "revealed") setFeedback(t().revealed(p.label), "info");
+    else if (p.status === "failed") setFeedback(t().failed, "bad");
+    else if (p.tries) setFeedback(t().wrong, "bad");
+  }
+  $("hintBtn").classList.toggle("hidden", !info?.model || p.closed || !p.next_hint);
+  $("hintBtn").disabled = conversation.pending;
+  $("hintBtn").innerHTML = UI.bulb + esc(p.hints.length ? t().hintMore : t().hint);
+  $("solutionBtn").classList.toggle("hidden", p.status === "solved" || p.status === "revealed");
+  $("solutionBtn").textContent = t().showAnswer;
+  $("nextBtn").innerHTML = esc(p.transfer_available ? t().transferNext : p.closed ? t().next : t().skip) + UI.next;
   $("nextBtn").className = "btn push" + (p.closed ? " primary" : "");
   drawFeedback();
 }
@@ -785,36 +911,41 @@ async function step(path, body, after) {
   if (busy) return;
   busy = true;
   try {
-    const data = await api(path, body);
+    const problem = path !== "/api/start" ? state?.problem?.id : undefined;
+    const data = await api(path, { ...body, problem });
     if (data.problem?.id !== state?.problem?.id) lastHintCount = data.problem?.hints.length || 0;
     state = { student: data.student, problem: data.problem, profile: data.profile };
     if (after) after(data);
     drawProblem();
+    return data;
   } catch (error) {
     setFeedback(error instanceof TypeError ? t().error : String(error.message), "bad");
   } finally { busy = false; }
 }
 
 function start() {
-  name = info?.demo?.name || $("name").value.trim();
-  if (!name) { $("setupError").textContent = t().needName; $("name").focus(); return; }
+  const candidate = $("name").value.trim();
+  if (!candidate) { $("setupError").textContent = t().needName; $("name").focus(); return; }
+  if (busy) return;
+  name = candidate;
   $("setupError").textContent = "";
-  if (!info?.demo) store.set("tutor.name", name);
-  noMoreHints = false; feedback = { text: "", kind: "" }; lastHintCount = 0;
-  const level = info?.demo ? undefined : chosenLevel;
-  step("/api/start", { name, language: lang, topic: chosenTopic, level }, () => show("play"));
+  store.set("tutor.name", name);
+  feedback = { text: "", kind: "" };
+  lastHintCount = 0;
+  step("/api/start", { name, language: lang, topic: chosenTopic, level: chosenLevel }, () => show("play"));
 }
 
 function drawChat(p) {
   const key = p ? JSON.stringify([name, lang, p.id]) : "";
   if (conversation.key !== key) {
-    conversation = { key, previous: null, lastHint: "", pending: false };
+    conversation = { key, lastHint: "", pending: false };
     $("chatLog").replaceChildren();
     $("chatStatus").textContent = "";
     $("chatInput").value = "";
   }
-  $("chatCard").classList.toggle("hidden", !p || (p.closed && !$("chatLog").childElementCount));
-  $("chatForm").classList.toggle("hidden", !p || p.closed);
+  $("chatCard").classList.toggle("hidden", !p || !info?.model ||
+    (p.closed && !conversation.pending && !$("chatStatus").textContent && !$("chatLog").childElementCount));
+  $("chatForm").classList.toggle("hidden", !p || p.closed || !info?.model);
   $("chatSend").disabled = conversation.pending;
 }
 
@@ -834,74 +965,80 @@ function appendChat(text, source) {
 
 function sendChat(event) {
   event.preventDefault();
-  requestHint($("chatInput").value.trim(), true);
+  requestCoaching("chat", $("chatInput").value.trim());
 }
 
-async function requestHint(message, showMessage) {
+async function requestCoaching(mode, message = "") {
   const p = state?.problem;
   const turn = conversation;
-  if (!p || p.closed || turn.pending || !message) return;
+  const stillHere = () => turn === conversation && state?.problem?.closed === p.closed && state.problem.tries === p.tries;
+  if (!p || turn.pending || busy || p.closed || (mode === "chat" && !message)) return;
   turn.pending = true;
-  $("chatSend").disabled = true;
-  if (showMessage) {
+  $("chatStatus").textContent = t().chatWaiting;
+  drawProblem();
+  if (mode === "chat") {
     $("chatInput").value = "";
     appendChat(message);
   }
-  $("chatStatus").textContent = t().chatWaiting;
   try {
-    let result = await api("/api/chat", { name, problem: p.id, message, previous: turn.previous, last_hint: turn.lastHint });
+    let result = await api("/api/" + mode, { name, problem: p.id, message, last_hint: turn.lastHint });
     const job = result.job;
     if (job) {
-      const deadline = Date.now() + 38000;
+      const deadline = Date.now() + result.wait_ms;
       do {
         await new Promise(resolve => setTimeout(resolve, 500));
-        if (turn !== conversation) return;
+        if (!stillHere()) return;
         if (Date.now() >= deadline) throw new Error("timed out");
         result = await api("/api/chat?job=" + encodeURIComponent(job));
       } while (result.pending);
     }
-    if (turn !== conversation) return;
-    turn.previous = result.intent;
-    turn.lastHint = result.text;
-    appendChat(result.text, result.used_model ? t().chatModel : t().chatFallback);
+    if (!stillHere()) return;
+    if (result.model_error) {
+      $("chatStatus").textContent = t().modelErrors[result.model_error] || t().chatError;
+      return;
+    }
+    state = { student: result.student, problem: result.problem, profile: result.profile };
+    if (mode === "chat") {
+      turn.lastHint = result.text;
+      appendChat(result.text, t().chatModel);
+    }
     $("chatStatus").textContent = "";
   } catch (error) {
-    if (turn === conversation) $("chatStatus").textContent = t().chatError;
+    if (stillHere()) $("chatStatus").textContent = t().chatError;
   } finally {
     if (turn === conversation) {
       turn.pending = false;
-      drawChat(state?.problem);
+      if (!stillHere()) $("chatStatus").textContent = "";
+      drawProblem();
     }
   }
 }
 
-function answer(letter) {
+async function answer(letter) {
   const p = state && state.problem;
   if (!p || p.closed || p.tried.includes(letter) || p.eliminated.includes(letter)) return;
   $("confirm").classList.add("hidden");
-  step("/api/answer", { name, choice: letter }, data => {
+  const result = await step("/api/answer", { name, choice: letter }, data => {
     if (data.correct) {
       const line = data.outcome === "up" ? t().up(data.level_after) : data.outcome === "stay" ? t().stay(data.level_after) : t().downSolved(data.level_after);
-      setFeedback(t().right + " " + line, "ok");
+      setFeedback(t().right(data.problem.label) + " " + line, "ok");
     } else {
-      if (data.closed) setFeedback(t().failed, "bad");
-      else setFeedback(t().wrong[Math.min(data.problem.tries, t().wrong.length) - 1], "bad");
+      setFeedback(data.closed ? t().failed : t().wrong, "bad");
       requestAnimationFrame(() => { const b = document.querySelector(`.letter[data-letter="${letter}"]`); if (b && !reduceMotion) b.classList.add("shake"); });
     }
   });
+  if (result && !result.correct && !result.closed && info?.model) requestCoaching("feedback");
 }
 
 function hint() {
-  const p = state && state.problem;
+  if (info?.model && state?.problem?.next_hint) requestCoaching("hint");
+}
+
+function solution() {
+  const p = state?.problem;
   if (!p || p.status === "solved" || p.status === "revealed") return;
-  if (p.closed || noMoreHints) { $("confirm").classList.remove("hidden"); $("revealNo").focus(); return; }
-  step("/api/hint", { name }, data => {
-    if (!data.hint) { noMoreHints = true; setFeedback(t().noMore, "info"); }
-    else if (data.hint.kind === "tip") {
-      requestHint(t().chatStarter, false);
-      requestAnimationFrame(() => $("chatCard").scrollIntoView({ block: "nearest" }));
-    }
-  });
+  $("confirm").classList.remove("hidden");
+  $("revealNo").focus();
 }
 
 function reveal() {
@@ -911,7 +1048,7 @@ function reveal() {
 
 function next() {
   if (!state || !state.problem) return;
-  noMoreHints = false; feedback = { text: "", kind: "" }; $("confirm").classList.add("hidden");
+  feedback = { text: "", kind: "" }; $("confirm").classList.add("hidden");
   step("/api/next", { name }, data => { if (data.finished) setFeedback(t().finished, "ok"); window.scrollTo(0, 0); });
 }
 
@@ -949,6 +1086,7 @@ async function teacher(pick) {
         `<div class="stat"><b>${tt.correct}${tt.accuracy === null ? "" : ` <small style="font-size:16px">(${Math.round(100 * tt.accuracy)}%)</small>`}</b><span>${esc(t().stSolved)}</span></div>` +
         `<div class="stat"><b>${tt.hints}</b><span>${esc(t().stHints)}</span></div>` +
         `<div class="stat"><b>${tt.best_streak}</b><span>${esc(t().stStreak)}</span></div>` +
+        (s.transfer.attempted ? `<div class="stat"><b>${s.transfer.independent}/${s.transfer.attempted}</b><span>${esc(t().transferStat)}</span></div>` : "") +
       `</div>` +
       `<div class="advice">${UI.bulb}<div><b>${esc(t().practise)}</b><br>${esc(s.practise_next)}</div></div>` +
       (s.recommendations.length ? `<div class="practice-actions">` + s.recommendations.map(r =>
@@ -969,10 +1107,10 @@ async function teacher(pick) {
 /* ---------- events ---------- */
 $("lang").addEventListener("click", e => {
   const b = e.target.closest("button");
-  if (!b || !b.dataset.lang || b.dataset.lang === lang) return;
+  if (!b || !b.dataset.lang || b.dataset.lang === lang || busy) return;
   lang = b.dataset.lang; store.set("tutor.lang", lang); drawStatic();
   if (view === "teacher") teacher();
-  else if (view === "play" && state) { feedback = { text: "", kind: "" }; step("/api/start", { name, language: lang, topic: state.student.topic_choice || "" }); }
+  else if (view === "play" && state) { feedback = { text: "", kind: "" }; step("/api/start", { name, language: lang, resume: true }); }
 });
 $("topics").addEventListener("click", e => { const b = e.target.closest(".topic"); if (b) { chosenTopic = b.dataset.topic; drawTopics(); } });
 $("stairs").addEventListener("click", e => { const b = e.target.closest(".stair"); if (b) { chosenLevel = Number(b.dataset.level); drawStairs(); } });
@@ -981,21 +1119,14 @@ $("name").addEventListener("keydown", e => { if (e.key === "Enter") start(); });
 $("letters").addEventListener("click", e => { const b = e.target.closest(".letter"); if (b) answer(b.dataset.letter); });
 $("letters").addEventListener("animationend", e => e.target.classList.remove("shake"));
 $("hintBtn").addEventListener("click", hint);
+$("feedbackBtn").addEventListener("click", () => requestCoaching("feedback"));
+$("solutionBtn").addEventListener("click", solution);
 $("chatForm").addEventListener("submit", sendChat);
 $("nextBtn").addEventListener("click", next);
 $("revealYes").addEventListener("click", reveal);
 $("revealNo").addEventListener("click", () => $("confirm").classList.add("hidden"));
 $("problemBtn").addEventListener("click", () => openViewer($("image").src));
 $("zoomBtn").addEventListener("click", () => openViewer($("image").src));
-$("warmup").addEventListener("click", e => {
-  if (e.target.closest("#exampleBtn")) return step("/api/example", { name });
-  const z = e.target.closest("[data-zoom]"); if (z) openViewer(z.dataset.zoom);
-});
-$("warmup").addEventListener("animationend", e => e.target.classList.remove("fresh"));
-$("rungs").addEventListener("click", e => {
-  if (e.target.closest("#exampleBtn")) return step("/api/example", { name });
-  const z = e.target.closest("[data-zoom]"); if (z) openViewer(z.dataset.zoom);
-});
 $("viewerClose").addEventListener("click", closeViewer);
 $("viewer").addEventListener("click", e => { if (e.target === $("viewer")) closeViewer(); });
 $("teacherLink").addEventListener("click", () => teacher());
@@ -1006,11 +1137,15 @@ $("summary").addEventListener("click", e => {
   name = $("studentPick").value;
   chosenTopic = button.dataset.practice;
   feedback = { text: "", kind: "" };
-  noMoreHints = false;
   lastHintCount = 0;
   step("/api/start", { name, language: lang, topic: chosenTopic }, () => show("play"));
 });
-$("teacherClose").addEventListener("click", () => show(state ? "play" : "setup"));
+$("teacherClose").addEventListener("click", () => {
+  if (state && state.student.language !== lang) {
+    feedback = { text: "", kind: "" };
+    step("/api/start", { name, language: lang, resume: true }, () => show("play"));
+  } else show(state ? "play" : "setup");
+});
 $("home").addEventListener("click", () => show("setup"));
 document.addEventListener("keydown", e => {
   if (!$("viewer").classList.contains("hidden")) { if (e.key === "Escape") closeViewer(); return; }
@@ -1032,13 +1167,9 @@ document.addEventListener("keydown", e => {
   show("setup");
   pollLed();
   try { info = await api("/api/info"); } catch (error) { $("setupError").textContent = t().error; }
-  if (info?.demo) {
-    if (!["eng", "cat"].includes(q.get("lang"))) lang = info.demo.language;
-    chosenTopic = info.demo.topic;
-  }
   if (info && q.get("topic") && info.topics.some(x => x.key === q.get("topic"))) chosenTopic = q.get("topic");
   drawStatic();
-  if (q.get("name") && !info?.demo) { $("name").value = q.get("name"); start(); }
+  if (q.get("name")) { $("name").value = q.get("name"); start(); }
 })();
 </script>
 </body>

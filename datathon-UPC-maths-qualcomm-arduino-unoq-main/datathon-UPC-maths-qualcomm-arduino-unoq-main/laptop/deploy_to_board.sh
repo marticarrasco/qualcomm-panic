@@ -17,6 +17,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 BOARD_DIR=/home/arduino/qp
 IMAGES=data/full_noocr/images
+[ -d "$IMAGES" ] || IMAGES=data/images
 WITH_IMAGES=1
 [ "${1:-}" = "--no-images" ] && WITH_IMAGES=0
 POT_FILE=Qwen3.5-0.8B-M3Kang-PoT-v4-e1-Q8_0.gguf
@@ -33,7 +34,7 @@ step "Packing"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 FILES=(copilot tutor board predict.py eval.py build_index.py config.env data/sample_problems.jsonl data/val.jsonl data/train.jsonl)
-for extra in data/tutor.db data/tutor_questions.db data/index-text.db; do
+for extra in data/tutor.db data/index-text.db; do
   [ -f "$extra" ] && FILES+=("$extra") || echo "  (no $extra: skipped)"
 done
 if [ "$WITH_IMAGES" = 1 ] && [ -d "$IMAGES" ]; then FILES+=("$IMAGES"); fi
@@ -88,8 +89,27 @@ print(f'  {len(rows)} answers, all one letter, worst {worst:.1f} s')
 PY"
 
 step "Tutor"
+# The solver's model on port 8081 is fine-tuned to write Python, so it cannot coach.
+# The tutor gets its own copy of the stock model on port 8084 when the file is on the board.
+COACH=/home/arduino/models/Qwen_Qwen3.5-0.8B-Q8_0.gguf
+LLAMA="$(adb shell '. ~/qp/config.env; echo ${LLAMA_CPP_DIR/#\~/$HOME}/build/bin/llama-server' | tr -d '\r\n')"
+if [ -z "${TUTOR_FLAGS:-}" ]; then
+  if [ "$(basename "${LOADED:-x}")" = "$(basename "$COACH")" ] && [ "$WANTED" = "$(basename "$COACH")" ]; then
+    TUTOR_FLAGS=""
+  elif adb shell "[ -f $COACH ] && [ -x $LLAMA ]" 2>/dev/null; then
+    adb shell "pkill -f 'llama-server.*--port 8084' 2>/dev/null; nohup $LLAMA -m $COACH --host 127.0.0.1 --port 8084 --threads 4 --ctx-size 4096 --parallel 1 --cache-ram 0 --jinja --reasoning off --reasoning-budget 0 > $BOARD_DIR/coach.log 2>&1 &
+for i in \$(seq 60); do curl -sf -m 2 http://127.0.0.1:8084/health >/dev/null && break; sleep 2; done; curl -s -m 2 http://127.0.0.1:8084/health; echo; free -m | awk 'NR==2 {print \"  RAM available: \" \$7 \" MB\"}'"
+    TUTOR_FLAGS="--llm http://127.0.0.1:8084/v1/chat/completions"
+  else
+    echo "  No stock model on the board for coaching: the tutor runs without model help."
+    TUTOR_FLAGS="--no-llm"
+  fi
+fi
+echo "  tutor flags: ${TUTOR_FLAGS:-(default, port 8081)}"
 adb shell "pkill -f 'tutor/server.py' 2>/dev/null; cd $BOARD_DIR && nohup python3 tutor/server.py --host 0.0.0.0 ${TUTOR_FLAGS:-} > tutor.log 2>&1 &
 sleep 4; head -4 $BOARD_DIR/tutor.log; curl -s -m 5 http://127.0.0.1:8000/api/matrix; echo"
+echo "  Stop the coaching model before the official predict.py run, so it has the whole board:"
+echo "    adb shell \"pkill -f 'llama-server.*--port 8084'\""
 
 step "LED matrix app"
 if [ -d applab/math-matrix ]; then

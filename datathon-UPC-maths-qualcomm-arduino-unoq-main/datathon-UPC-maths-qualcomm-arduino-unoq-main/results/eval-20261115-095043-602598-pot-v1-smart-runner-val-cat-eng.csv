@@ -1,0 +1,949 @@
+eval_id,evaluated_at,problem_id,language,level,has_options,selected_answer,correct_answer,is_correct,model_output,input_tokens,output_tokens,full_input_tokens,cached_input_tokens,elapsed_seconds,arduino_estimated_seconds,arduino_read_estimated_seconds,arduino_write_estimated_seconds,arduino_read_tokens_per_second,arduino_write_tokens_per_second,status,retrieved
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_12,eng,4,True,D,B,0,"nums = sorted(int("""".join(p)) for p in permutations(""2010""))
+print(nums[2] - nums[1])",110,93,,,5.07,26.61,10.0,16.61,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2016_19,cat,7,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2011_14,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2011_14,cat,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2022_27,eng,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2021_13,eng,3,True,D,A,0,print(2 * 26 * 4 - 3 * 28),73,57,,,3.23,16.82,6.64,10.18,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2023_27,cat,5,True,D,C,0,"a, b, c, d = 2, 0, 2, 3
+for i in range(2023):
+    x = min(n for n in range(-1, a + 1) if n != a)
+    a, b, c, d = x, min(n for n in range(-1, b + 1) if n != b), x, min(n for n in range(-1, c + 1) if n != c)
+print(a)",95,347,,,16.81,70.6,8.64,61.96,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2016_10,eng,2,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2007_14,cat,4,True,D,C,0,"for x in range(20):
+    if 6 - x == 8 - x == 4 - x:
+        print(x)",101,96,,,4.99,26.32,9.18,17.14,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2016_12,cat,3,True,A,A,1,"print(sum(1 for n in range(10, 100) if n // 10 > n % 10))",45,31,,,1.68,9.63,4.09,5.54,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2018_6,cat,2,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2022_16,cat,2,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2021_10,cat,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2022_28,cat,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2009_28,cat,6,True,D,A,0,"count = 0
+for path in product([""E"", ""S"", ""NE"", ""NW""], repeat=10):
+    if all((1 if p == ""E"" else 0) + (1 if p == ""S"" else 0) + (1 if p == ""NE"" else 0) + (1 if p == ""NW"" else 0) == 10):
+        count += 1
+print(count)",126,228,,,13.41,52.16,11.45,40.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2014_29,eng,7,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_8,cat,6,True,D,A,0,"options = [216, 144, 81, 64, 27]
+ans = [x for x in options if x != x ** 2 and x != x ** 3][0]
+print(ans)",31,187,,,10.04,36.21,2.82,33.39,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2022_28,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_5,cat,4,True,D,E,0,"nums = [n for n in range(1, 20) if n % 2 == 1]
+nums.remove(3)
+print(nums[4])",100,81,,,4.39,23.55,9.09,14.46,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2016_10,cat,2,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_21,eng,6,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2008_3,eng,7,True,D,D,1,print((21 - 7) * 33),84,42,,,2.49,15.14,7.64,7.5,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_26,eng,4,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2022_14,eng,7,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_13,cat,7,True,D,A,0,"count = 0
+for n in range(100, 1000):
+    t = n * 100 + (n % 10)
+    if t - n == 99:
+        count += 1
+print(count)",56,170,,,8.72,35.45,5.09,30.36,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2013_4,eng,5,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2009_29,cat,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2014_29,cat,7,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_28,cat,5,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2008_28,cat,5,True,D,B,0,"angles = list(product([10, 20, 30, 40, 50, 60, 70, 80, 90], repeat=9))
+best = 100
+for grid in product(*angles):
+    if all(abs(a - b) <= 1 for a, b in zip(grid, grid)):
+        best = min(best, len(grid))
+print(best)",111,274,,,19.58,59.02,10.09,48.93,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2020_27,cat,7,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_29,eng,6,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2021_7,cat,5,True,D,C,0,print(2021 // 3),87,33,,,2.55,13.8,7.91,5.89,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_25,eng,4,True,D,C,0,"for a, b, c, d in combinations(range(1, 30), 4):
+    if a * b * c * d == 15:
+        print(a + b + c + d)",79,144,,,7.23,32.89,7.18,25.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_4,cat,5,True,B,B,1,"for c in range(1, 100):
+    if 25 * (100 - c) == 25 * c:
+        print(25 * (100 // c))",76,48,,,2.64,15.48,6.91,8.57,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_28,cat,6,True,A,B,0,"best = 0
+for x in range(1, 200):
+    if 9 * (x - 1) < x:
+        best = x
+print(best)",64,42,,,2.4,13.32,5.82,7.5,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2022_23,cat,5,True,D,D,1,"games = 20 * 19 // 2
+wins = sum(3 for _ in range(games))
+draws = games - wins
+print(2 * draws + wins)",137,143,,,7.5,37.99,12.45,25.54,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_10,eng,0,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2016_1,eng,4,True,D,E,0,"count = 0
+for h in range(24):
+    for m in range(60):
+        s = f""{h:02d}:{m:02d}""
+        if sorted(s) == sorted(""2016""):
+            count += 1
+print(count)",81,174,,,8.77,38.43,7.36,31.07,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_17,eng,1,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2010_16,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_24,cat,2,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2010_16,cat,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_12,cat,4,True,D,B,0,"nums = sorted(int("""".join(p)) for p in permutations(""2011"") if p[0] != ""0"")
+print(nums[1000] - nums[999])",106,135,,,7.2,33.75,9.64,24.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2018_4,eng,6,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2021_30,eng,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2023_3,cat,6,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2022_16,eng,2,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2010_7,eng,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_17,cat,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2019_6,eng,4,True,D,C,0,"for a in range(1, 50):
+    for b in range(1, 50):
+        for c in range(1, 50):
+            for d in range(1, 50):
+                for e in range(1, 50):
+                    if a + b + c + d + e == a + b + c + d + e // 2:
+                        print(2 * a + b + c + d + e)",78,284,,,16.28,57.8,7.09,50.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2015_13,cat,5,True,D,A,0,"best = 0
+for sign in product([1, -1], repeat=2015):
+    if 2015 * sign[0] - 2015 * sign[1] - 2015 * sign[2] == 0:
+        best = max(best, sign[0])
+print(best)",84,209,,,17.95,44.96,7.64,37.32,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_7,cat,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2024_27,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2024_30,eng,2,True,D,D,1,"for n in range(100, 1000):
+    if n * 10 + 2024 % 10 == n:
+        print(n)",59,118,,,5.96,26.43,5.36,21.07,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_2,cat,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2011_13,eng,5,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2021_10,eng,4,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2007_2,cat,5,True,D,A,0,"width = 20 // 2
+print(width + 1)",99,16,,,1.23,11.86,9.0,2.86,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_9,cat,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_17,eng,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2008_22,cat,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2011_23,cat,6,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2018_28,cat,2,True,D,A,0,"best = 0
+for k in range(15):
+    if (14 - k) * 2 == k:
+        best = max(best, k)
+print(best)",100,122,,,6.47,30.88,9.09,21.79,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_5,cat,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2018_27,eng,3,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2017_5,eng,6,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2013_3,cat,6,True,D,C,0,print(4 * 20 // 6),91,43,,,2.69,15.95,8.27,7.68,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2018_23,eng,4,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_22,cat,6,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_29,eng,4,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2023_10,cat,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2021_25,cat,2,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2020_18,eng,5,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2010_19,eng,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2010_7,cat,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2017_19,cat,0,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2021_29,cat,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_21,cat,6,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2019_20,eng,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_1,cat,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2019_30,cat,7,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_28,cat,2,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_8,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2008_11,cat,4,True,D,D,1,"for n in range(3, 60):
+    if not all(n - a < b < 2 * n for a in range(n)):
+        ans = n
+        break
+print(ans)",29,126,,,6.23,25.14,2.64,22.5,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2017_27,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2022_5,eng,6,True,D,D,1,"for x in range(1, 20):
+    y = 77 // (x + 1)
+    if x > y:
+        print(x)",53,128,,,6.48,27.68,4.82,22.86,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2021_18,eng,5,True,D,D,1,"for p in [9, 15, 17, 19, 21]:
+    if (p + 3 * 3) % 2 == 1:
+        print(p)",96,178,,,9.32,40.52,8.73,31.79,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2022_27,cat,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_19,eng,4,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2016_20,cat,0,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2012_29,eng,5,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2022_24,cat,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_20,cat,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2018_24,cat,3,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2013_3,cat,7,True,D,E,0,print(2 * 2013),33,33,,,2.04,8.89,3.0,5.89,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2012_21,cat,7,True,D,E,0,"ans = 0
+for base in range(3, 180):
+    for x in range(180, base):
+        y = 180 - x - base
+        if isosceles([x, y, base]) and ans < x:
+            ans = x
+print(ans)",62,234,,,11.86,47.43,5.64,41.79,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_30,eng,4,True,D,D,1,print(sum(1 for i in range(4) for j in range(4) for k in range(4) if i != j and j != k and i != k)),91,39,,,2.39,15.23,8.27,6.96,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2016_29,cat,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2020_15,eng,2,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2019_6,cat,2,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2016_11,cat,1,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2009_21,cat,6,True,D,D,1,"for e in [""a"", ""d"", ""e""]:
+    for b in [""a"", ""d""]:
+        for c in [""b"", ""d""]:
+            for k in [""c"", ""d""]:
+                if all((int(x) + int(y)) % 2 == 1 for x, y in combinations(range(1, 21), 2)):
+                    print(e)",153,198,,,10.38,49.27,13.91,35.36,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2020_24,cat,2,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_21,cat,5,True,D,D,1,"options = [20, 19, 21, 18, 17]
+ans = None
+for q in options:
+    m = (q + 2) // 2
+    if q % 2 == 0 and m < 4:
+        ans = q
+        break
+print(ans)",155,209,,,10.89,51.41,14.09,37.32,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2024_12,eng,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_20,cat,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2008_1,cat,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2024_15,cat,6,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2018_7,cat,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_19,eng,7,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2012_6,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2022_20,cat,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2021_26,cat,4,True,D,C,0,print(27 + 25 - 1 + 22 - 1 + 17 - 1),162,97,,,6.09,32.05,14.73,17.32,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2010_19,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2020_26,eng,6,True,D,C,0,"ans = 0
+for k in range(1, 6):
+    for m in range(1, 6):
+        if 12 * k + 8 * m == 64:
+            ans = max(ans, 12 * k + 8 * m)
+print(ans)",64,167,,,8.5,35.64,5.82,29.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_1,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2009_14,eng,5,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2018_14,eng,7,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2022_29,eng,3,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2009_1,eng,6,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2019_30,eng,7,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_22,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2022_16,cat,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_13,cat,6,True,C,A,0,"for t in range(2, 20):
+    for i in range(2, 20):
+        for d in range(2, 20):
+            if 8 - i - d == 3:
+                print(t)",138,56,,,3.62,22.55,12.55,10.0,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2016_12,eng,1,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_26,eng,5,True,D,E,0,"a = [2, 3]
+for i in range(1, 2017):
+    a.append(a[-1] * a[-2])
+print(a[2016])",95,135,,,13.78,32.75,8.64,24.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2024_20,cat,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2016_29,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2011_23,eng,6,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2023_4,eng,7,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_26,cat,5,True,E,E,1,"pos = 0
+for n in range(2, 2018):
+    pos += n
+    if pos >= 2017:
+        break
+print(pos // n)",119,44,,,2.95,18.68,10.82,7.86,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2021_11,cat,2,True,D,B,0,"best = 10 ** 9
+for i in range(3):
+    for j in range(i + 1, 3):
+        best = min(best, sum(full[i * 3 : (i + 1) * 3] + full[j * 3 : (j + 1) * 3]))
+print(best)",86,207,,,11.2,44.78,7.82,36.96,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2024_1,eng,0,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2012_23,cat,5,True,D,B,0,"for h in range(1, 50):
+    w = 50 - h
+    if h % 2 == 1 and 3 * h == 4 * w:
+        print(3 * h // 2)",78,135,,,7.81,31.2,7.09,24.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2022_23,eng,5,True,D,D,1,"matches = comb(20, 2)
+print(sum(3 * w for w in range(21)) - sum(min(3 * w, 2 * w) for w in range(21)))",115,137,,,7.7,34.91,10.45,24.46,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_1,cat,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2019_22,eng,0,True,A,D,0,"cows = 8 // 2
+print(cows + 8 + cows)",60,19,,,1.2,8.84,5.45,3.39,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2024_30,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2023_21,cat,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_28,eng,5,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2021_16,eng,2,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2015_16,eng,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2023_28,eng,3,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2009_15,eng,7,True,D,E,0,print((12 * 12 * 10 + 1) * (100 + 2 * 2008 + 2 * 2009)),43,41,,,2.48,11.23,3.91,7.32,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2009_5,eng,5,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2023_27,eng,5,True,D,C,0,"a = [2, 0, 2, 3]
+for i in range(2023):
+    x = min(n for n in range(256) if n not in a[:i + 1])
+    a.append(x)
+print(a[2023])",78,193,,,10.45,41.55,7.09,34.46,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2017_2,eng,0,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_13,eng,6,True,A,A,1,"for t in range(9):
+    if 8 - t >= 2 and 7 - t >= 2 and 5 - t >= 0:
+        print(t)",109,40,,,2.5,17.05,9.91,7.14,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2024_20,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_20,eng,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2017_7,eng,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2021_18,cat,5,True,D,D,1,"d = [n for n in [9, 15, 17, 19, 21] if n % 2 == 0]
+ans = [d[i] * 3 for i in range(5)]
+print(ans[0])",122,167,,,8.64,40.91,11.09,29.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2009_15,cat,7,True,D,E,0,print(12 ** 22 + 2008 ** 2 + 2009 ** 2 % 10),45,96,,,5.11,21.23,4.09,17.14,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_26,eng,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2023_3,eng,6,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2012_11,cat,5,True,D,A,0,"best = 1234 + 2345
+for p in permutations([1, 2, 3, 4, 5, 6, 7, 8]):
+    best = min(best, 1000 * p[0] + 100 * p[1] + 10 * p[2] + p[3])
+print(best)",84,306,,,16.87,62.28,7.64,54.64,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2009_29,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2019_8,eng,1,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2023_28,cat,3,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_16,cat,4,True,B,B,1,print(372 // 31 * 301),104,16,,,1.25,12.31,9.45,2.86,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2023_10,eng,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2024_17,eng,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2020_26,cat,6,True,D,C,0,print(12 * 3 - 5 * 3),69,43,,,2.74,13.95,6.27,7.68,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2015_9,cat,7,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2015_26,eng,7,True,D,A,0,"print(sum(1 for n in range(100, 1000) if bin(n).count(""1"") == 9))",36,96,,,4.87,20.41,3.27,17.14,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2013_21,eng,7,True,D,B,0,"count = 0
+for x in range(1, 50):
+    for y in range(1, x):
+        if x * y == 5 * (x + y):
+            count += 1
+print(count)",47,160,,,7.84,32.84,4.27,28.57,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2010_19,cat,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_23,cat,0,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_8,cat,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2018_24,eng,3,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2009_17,cat,4,True,D,B,0,print(40 * 40 * 60 // (40 * 40)),55,63,,,3.58,16.25,5.0,11.25,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2013_12,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2018_20,cat,5,True,D,E,0,"options = [100, 50, 25, 75, 35]
+for n in options:
+    if n % 3 == 0 and n >= 3 + 3 * (n - 3):
+        print(None)
+    else:
+        pass
+else:
+    print(35)",100,213,,,11.95,47.13,9.09,38.04,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2008_24,eng,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2007_10,cat,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2016_20,eng,2,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2018_11,eng,3,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2010_25,eng,7,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2014_22,cat,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2023_3,cat,1,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2018_19,eng,7,True,D,B,0,"for a, b, c in combinations(range(3, 8), 3):
+    if any(a * x * y == p for p in [2, 3, 5, 7, 11, 13, 17, 19])):
+        print(a + b)",118,195,,,9.5,45.55,10.73,34.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_9,cat,1,True,D,A,0,"for n in range(1, 20):
+    if 10 * (n + 1) == 22:
+        print(n)",68,116,,,6.14,26.89,6.18,20.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_26,cat,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2023_28,cat,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_24,eng,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2022_29,eng,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2024_19,eng,2,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2008_27,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2022_11,cat,6,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2015_26,cat,7,True,D,A,0,"print(sum(1 for n in range(100, 1000) if sum(int(c * (2 ** i)) for c in str(n)) == 9))",49,136,,,6.81,28.74,4.45,24.29,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2024_30,eng,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_30,cat,4,True,B,D,0,"print(sum(1 for s in range(8) if any(a in [0, 4] for a in [0, 1])) + sum(1 for s in range(8) if any(b in [0, 4] for b in [0, 1])))",104,97,,,5.15,26.77,9.45,17.32,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_1,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2018_20,eng,5,True,D,E,0,"options = [20, 15, 25, 10, 18]
+for n in options:
+    if n % 3 != 0:
+        ans = n
+        break
+print(ans)",84,173,,,9.07,38.53,7.64,30.89,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2015_17,cat,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2019_22,cat,0,True,D,D,1,"for b in range(9, 20):
+    a = (b - 8) // 2
+    if b == a:
+        print(b + a)",77,113,,,5.9,27.18,7.0,20.18,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_29,cat,4,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2013_4,eng,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_19,cat,5,True,D,A,0,"options=[20,18,22,25,24]
+ans=None
+for n in range(1,20):
+    for a in range(1,n):
+        for c in range(1,a+1):
+            if n==1*a+2*c: ans=options[n-1]
+print(ans)",62,222,,,11.84,45.28,5.64,39.64,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2016_20,cat,2,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2022_27,eng,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2014_6,eng,4,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2021_26,eng,6,True,D,E,0,"options=[27,30,36,45,60]
+ans=[]
+for x in options:
+    y=x-1
+    d=int(sqrt(y))
+    if d*d==y and all(d%p for p in range(2,d)) and all(p%d for p in range(2,d)):
+        ans.append(x)
+print(ans)",44,209,,,12.2,41.32,4.0,37.32,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2024_30,eng,5,True,D,D,1,print(24 + 6),69,35,,,2.43,12.52,6.27,6.25,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2014_2,eng,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_4,eng,5,True,E,B,0,"for c in range(1, 100):
+    if 25 * (100 - c) == 25 * (100 - 25):
+        print(25 * 4)",66,143,,,7.35,31.54,6.0,25.54,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_26,cat,4,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_2,eng,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2009_17,eng,4,True,D,B,0,print(40 // 60 * 40 // 60 * 40 // 60),46,72,,,4.72,17.04,4.18,12.86,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2019_8,cat,1,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2022_6,cat,1,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_5,cat,4,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2016_12,eng,3,True,A,A,1,"print(sum(1 for n in range(10, 100) if n // 10 > n % 10))",30,31,,,1.89,8.27,2.73,5.54,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2020_8,cat,3,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2019_6,cat,4,True,D,C,0,"for p in range(1, 50):
+    if 5 * p == 2 * (5 - 1):
+        print(p)",106,102,,,5.96,27.85,9.64,18.21,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2008_5,cat,4,True,D,A,0,"count = 0
+for n in range(1000, 10000):
+    if all(int(str(n)[i + 1]) - int(str(n)[i]) == 2 for i in range(3)):
+        count += 1
+print(count)",71,177,,,8.72,38.06,6.45,31.61,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2012_29,eng,7,True,D,E,0,"for a in range(1, 27):
+    b = 26 - a
+    if a * b == sum(range(1, 26)):
+        print(abs(a - b))",66,140,,,7.07,31.0,6.0,25.0,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2018_7,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2007_11,cat,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_11,cat,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_8,cat,5,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_9,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_9,eng,1,True,D,A,0,"for c in range(12):
+    for r in range(10 - c):
+        if 5 * c + 4 * r == 22:
+            print(c + r)",56,135,,,6.76,29.2,5.09,24.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2020_8,eng,3,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2022_29,cat,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2014_13,eng,7,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_23,cat,1,True,D,C,0,print(36 + 13 + 4 + 6 - 36),81,60,,,3.37,18.07,7.36,10.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2022_6,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2009_28,cat,4,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2022_18,cat,4,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2018_19,cat,7,True,D,B,0,"for a, b, c in combinations(range(3, 8), 3):
+    if (a * b * c) % 2 == 1 and (b * c) % 2 == 1:
+        print(a + b + c)",144,219,,,10.82,52.2,13.09,39.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2019_21,eng,0,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2024_30,cat,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_4,eng,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_10,cat,0,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2024_30,cat,2,True,D,D,1,"for a in range(100):
+    for b in range(10):
+        for c in range(10):
+            if 100 * a + 10 * b + c + 2024 == 300 * d:
+                print(d)",82,198,,,9.69,42.81,7.45,35.36,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2023_30,cat,5,True,D,D,1,"count = 0
+for k in range(1, 20):
+    for b in range(1, 20):
+        if sum(1 for i in range(k) if i % 2 == 1) == 6 * (k - 1):
+            count += (k + 1) * (b + 1)
+print(count)",133,215,,,10.79,50.48,12.09,38.39,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2021_10,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_24,cat,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_7,cat,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2018_11,eng,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_4,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2022_15,eng,5,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2021_15,eng,3,True,C,C,1,"for c in range(20):
+    for d in range(20):
+        if all((c == a) != (d == b) for a, b in [(8, 6), (7, 4), (7, 7)]):
+            print(c + d)",116,65,,,3.56,22.16,10.55,11.61,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2017_7,cat,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_26,eng,4,True,D,E,0,"print(len(set(a + a + b + b for a in range(1, 52) for b in range(1, a)))",57,97,,,4.87,22.5,5.18,17.32,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2009_30,eng,6,True,C,D,0,"primes = [p for p in range(2, 500) if all(p % d for d in range(2, p))]
+count = 0
+for p in primes:
+    if p <= 9:
+        count += 1
+    else:
+        a, b = p // 10, p % 10
+        if p % 2 != 0 and all(a % d for d in range(2, a)) and all(b % d for d in range(2, b)):
+            count += 1
+print(count)",81,126,,,6.08,29.86,7.36,22.5,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2018_16,eng,5,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2017_8,eng,0,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2007_22,cat,7,True,A,A,1,"print(sum(1 for x in range(-3, 4) for y in range(-3, 4) for z in range(-3, 4) if x ** 2 + y ** 2 + z ** 2 == 9))",58,54,,,2.79,14.91,5.27,9.64,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_27,cat,4,True,B,D,0,print(4 - 2 + 2),77,27,,,1.94,11.82,7.0,4.82,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2021_15,cat,3,True,C,C,1,"for b in range(20):
+    for a in range(20):
+        if all((b == x) != (a == y) for x, y in [(8, 6), (7, 4), (7, 7)]):
+            print(a + b)",146,65,,,4.27,24.88,13.27,11.61,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2017_8,cat,0,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_18,eng,4,True,D,C,0,print(100 - 20),48,11,,,1.1,6.32,4.36,1.96,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2021_11,eng,2,True,D,B,0,"best = 10 ** 9
+for k in range(3, 10):
+    for a, b, c in combinations(range(1, 10000), k):
+        if a * 10 ** (k - 1) + b * 10 ** (k - 2) + c * 10 ** 0 <= 5021972970:
+            best = max(best, a + b + c)
+print(best)",73,304,,,39.96,60.93,6.64,54.29,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2022_21,eng,3,True,D,E,0,"for a, b, c in combinations(range(1, 12), 3):
+    if (a + b) / 2 == 11 and (b + c) / 2 == 12:
+        print(a)",74,177,,,9.01,38.34,6.73,31.61,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2014_2,cat,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2016_22,eng,2,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_22,eng,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2009_14,cat,5,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2021_13,cat,3,True,D,A,0,print(2 * 26 * 4 - 2 * 28 * 3),81,66,,,3.61,19.15,7.36,11.79,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2009_30,cat,6,True,C,D,0,"count = 0
+for n in range(2, 100000):
+    if isqrt(n) ** 2 != n:
+        count += isqrt(n)
+print(count)",118,46,,,2.84,18.94,10.73,8.21,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_29,cat,5,True,D,B,0,"for p in range(12, 100):
+    if 2 * p + 12 == 91:
+        print(2 * p + 12)",81,116,,,6.47,28.07,7.36,20.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_7,eng,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2009_28,eng,6,True,D,A,0,print(2 ** 10),91,27,,,2.28,13.09,8.27,4.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2007_22,eng,7,True,D,A,0,"print(sum(1 for x in range(-3, 4) for y in range(-3, 4) if x * x + y * y == 9))",48,111,,,6.47,24.18,4.36,19.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_29,eng,5,True,D,B,0,"for p in range(1, 60):
+    j = 2 * p
+    if p + j == 91:
+        print(j)",58,108,,,6.91,24.56,5.27,19.29,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2008_14,cat,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2022_11,eng,6,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2014_4,eng,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_18,cat,4,True,D,C,0,print(100 - 20 * 100 // 2),60,57,,,3.88,15.63,5.45,10.18,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2014_9,cat,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2012_6,eng,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_20,eng,2,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2009_1,cat,6,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2016_14,eng,1,True,B,B,1,"for a in range(16):
+    b = 15 - a
+    if b > 0 and a - b == 3:
+        print(a * b)",42,40,,,2.66,10.96,3.82,7.14,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2016_8,eng,0,True,D,C,0,print(11 + 1),68,27,,,2.49,11.0,6.18,4.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2014_4,cat,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2024_12,cat,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_28,eng,6,True,E,B,0,"nums = [n for n in range(-10, 11) if n != 0]
+for k in range(11):
+    for p in product(nums, repeat=k):
+        if all(p[i] == p[i + 1] for i in range(k - 1)):
+            print(k)
+            break",50,74,,,4.94,17.76,4.55,13.21,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_5,cat,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_19,cat,4,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2024_17,cat,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2010_23,cat,5,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2008_3,cat,7,True,D,D,1,"print(sum(1 for a in range(1, 22) for b in range(1, 34) if b % 2 == 1))",103,124,,,8.54,31.5,9.36,22.14,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2014_9,eng,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2018_28,eng,2,True,B,A,0,"best = 0
+for liars in range(15):
+    truthful = 14 - liars
+    if truthful * 2 == truthful + liars:
+        best = max(best, liars)
+print(best)",69,162,,,9.44,35.2,6.27,28.93,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2012_11,eng,5,True,D,A,0,"best = 100000
+for a in permutations([1, 2, 3, 4, 5, 6, 7, 8]):
+    b = [d for d in [1, 2, 3, 4, 5, 6, 7, 8] if d != a[i]]
+    if 1000 * a[0] + 100 * a[1] + 10 * a[2] + 9 * a[3] + 8 * a[4] + 7 * a[5] + 6 * a[6",71,298,,,15.8,59.66,6.45,53.21,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2016_9,cat,6,True,D,D,1,"n = 99
+while not fraction(n) == 1:
+    n = 10 * n - n
+print(n)",51,126,,,8.91,27.14,4.64,22.5,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_2,eng,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_1,cat,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2012_6,cat,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2019_2,cat,2,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2016_19,eng,7,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_1,eng,1,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2020_18,cat,5,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2013_4,cat,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2022_12,eng,0,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2019_20,cat,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_25,cat,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_7,eng,6,True,D,B,0,print(2 * sqrt(6 * 8)),60,35,,,4.38,11.7,5.45,6.25,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_17,cat,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_15,eng,5,True,A,A,1,print(round((1 - 1.4 / 2) * 100)),47,20,,,1.99,7.84,4.27,3.57,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2012_6,cat,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2019_4,cat,7,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2018_18,eng,1,True,D,B,0,"for n in range(1, 20):
+    if n + 3 - 1 == 13:
+        print(n)",85,32,,,4.02,13.44,7.73,5.71,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2018_18,cat,1,True,C,B,0,"for n in range(1, 20):
+    total = 0
+    for i in range(n):
+        total += 2 if i % 3 == 2 else 1
+    if total == 13:
+        print(n)",95,57,,,5.82,18.82,8.64,10.18,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2018_6,eng,2,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2014_6,cat,4,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2013_4,cat,5,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2023_10,cat,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2019_29,cat,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2010_23,eng,5,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2010_19,cat,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2022_6,eng,1,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_11,eng,5,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2020_7,eng,2,True,D,B,0,"for c in range(11):
+    if 10 * (10 - c) == 22:
+        print(c)",52,96,,,6.25,21.87,4.73,17.14,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2021_29,eng,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2013_8,eng,7,True,D,B,0,"others = 20 - 1 - 2 - 3
+print(others + 4)",70,71,,,4.67,19.04,6.36,12.68,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2022_24,eng,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2022_18,eng,4,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2018_4,cat,6,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2008_5,eng,4,True,A,A,1,"count = 0
+for n in range(1000, 10000):
+    a, b, c, d = n // 1000, n // 100 % 10, n // 10 % 10, n % 10
+    if a != -1 and b != -1 and c != -1 and d != -1 and a == b + 2 and c == b + 4 and d == b + 6:
+        count += 1
+print(count)",48,121,,,6.72,25.97,4.36,21.61,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2017_27,cat,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2022_2,cat,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_6,eng,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2022_20,eng,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2015_13,eng,5,True,D,A,0,"best = 100
+for s in product(""+−"", repeat=7):
+    if 2015 - 2015 * int(s) == 0:
+        best = min(best, s.count(""+""))
+print(best)",74,183,,,10.01,39.41,6.73,32.68,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2010_25,cat,7,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2015_17,eng,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_17,cat,6,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2020_7,cat,6,True,A,C,0,"for c in range(11):
+    for a in range(11):
+        if 13 * 4 - 2 * (a + c) == 42:
+            print(10 - a - c)",99,53,,,3.16,18.46,9.0,9.46,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2023_12,cat,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_4,cat,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2011_8,eng,5,True,A,A,1,"for a in range(1, 20):
+    for b in range(a, 20):
+        c = 12 - a - b
+        if c > 0 and c < a + b:
+            print(c)",68,132,,,7.13,29.75,6.18,23.57,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2017_2,cat,0,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2009_28,eng,4,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2013_3,eng,6,True,D,C,0,print(20 * 4 // 6),73,36,,,2.63,13.07,6.64,6.43,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2021_19,eng,2,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2016_5,eng,6,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_23,eng,1,True,D,C,0,print(36 + 13 + 4 + 6 - 36),73,60,,,3.8,17.35,6.64,10.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_26,eng,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2022_27,cat,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_11,cat,4,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2023_7,eng,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_6,cat,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2012_29,cat,7,True,D,E,0,"for a in range(1, 26):
+    b = 26 - a
+    if a * b == sum(range(1, 26)) // 2:
+        print(abs(a - b))",69,148,,,8.17,32.7,6.27,26.43,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_22,cat,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2019_4,eng,7,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2020_11,cat,2,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2021_23,cat,6,True,C,C,1,"n = int(""5"" + ""9"" * 224)
+print(sum(int(c) for c in str(n + 2021)))",71,35,,,2.3,12.7,6.45,6.25,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_19,cat,7,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_10,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2013_27,cat,5,True,D,B,0,"a = [1, -1]
+for i in range(2012):
+    a.append(a[i - 1] * a[i - 2])
+print(sum(a[:2013]))",79,151,,,9.49,34.14,7.18,26.96,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_7,cat,6,True,D,B,0,"sides = [6, 8]
+print((sides[0] + sides[1]) / 2 * 2)",67,84,,,5.93,21.09,6.09,15.0,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2016_9,eng,6,True,D,D,1,"n = 99
+while abs(10 - n) < 1:
+    n = 10 - n
+print(n)",40,118,,,9.34,24.71,3.64,21.07,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_20,cat,2,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2023_8,eng,7,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2019_29,eng,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_11,eng,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2022_20,eng,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2022_20,cat,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2023_5,cat,4,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2022_2,eng,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_22,cat,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2016_11,eng,1,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2015_16,cat,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2021_23,eng,6,True,C,C,1,"n = int(""5"" + ""9"" * 224)
+print(sum(int(c) for c in str(n + 2021)))",59,35,,,2.26,11.61,5.36,6.25,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2022_26,eng,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_9,eng,0,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2022_26,cat,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2007_10,eng,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_17,eng,6,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2010_3,cat,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2017_19,eng,0,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2023_8,cat,7,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2008_22,eng,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2012_29,cat,5,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2015_14,cat,0,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2023_14,eng,4,True,D,B,0,print(12 - 3),43,27,,,2.06,8.73,3.91,4.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2024_27,cat,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_17,cat,2,True,D,B,0,print(5 + 5 - 2),66,33,,,2.56,11.89,6.0,5.89,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_5,eng,4,True,D,E,0,"odd = [n for n in range(1, 20) if n % 2 == 1]
+odd = [n for n in odd if n != 3]
+print(odd[14])",86,191,,,11.04,41.93,7.82,34.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_28,cat,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2019_6,eng,2,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2010_19,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2008_8,cat,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2024_30,cat,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2022_29,cat,3,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2015_11,cat,5,True,D,B,0,"for n in range(1, 50):
+    if all(not (i + 1 <= n <= i + 7) for i in range(n - 1)) and all(not (m + 1 <= n <= m + 12) for m in range(n - 1)):
+        print(n)
+        break",103,183,,,9.99,42.04,9.36,32.68,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_1,cat,1,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2021_26,eng,4,True,A,C,0,print(27 + 25 - 2 + 22 + 17 - 2),113,78,,,4.73,24.2,10.27,13.93,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_5,eng,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2008_27,cat,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2021_10,cat,4,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2015_8,eng,6,True,D,A,0,"options = [216, 125, 8, 243, 16]
+for n in options:
+    if isqrt(n) ** 2 != n and isqrt(n + 1) ** 2 != n + 1:
+        print(n)",27,188,,,9.78,36.02,2.45,33.57,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2021_8,cat,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_17,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2015_14,eng,0,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2013_8,cat,7,True,B,B,1,print(5 + 1),97,8,,,1.03,10.25,8.82,1.43,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2015_9,eng,7,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2016_13,cat,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2022_21,cat,3,True,D,E,0,"for a, b, c in combinations(range(9, 20), 3):
+    if (a + b + c) / 3 == 10 and (a + b) / 2 == 11 and (a + c) / 2 == 12:
+        print(c)",101,207,,,11.64,46.14,9.18,36.96,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_10,eng,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2010_19,cat,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_20,cat,5,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2023_21,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2012_21,eng,7,True,D,E,0,"ans = 0
+for b in range(3, 180):
+    for x in range(b, 180):
+        if isosceles(180, x, b):
+            ans = min(ans, x)
+print(ans)",54,180,,,10.93,37.05,4.91,32.14,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2024_30,cat,5,True,D,D,1,print(24 + 6),93,27,,,2.6,13.27,8.45,4.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2024_22,cat,4,True,D,A,0,"for n in range(1, 10):
+    if any(a + b == 6 for a in [1,2,3,4,5] for b in [1,2,3,4,5] not in [a for a in [1,2,3,4,5]]):
+        if any(a - b == 5 for a in [1,2,3,4,5] for b in [1,2,3,4,5] not in [a for a in [1,2,3,4,5]]):
+            if any(p for p in [1,2,3,",182,364,,,24.85,81.55,16.55,65.0,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2011_20,cat,7,True,B,B,1,"for n in range(1, 30):
+    if (n - 5) % 2 == 0 and n >= 6 and any(4 <= 6 - m for m in range(n)) and any(4 <= 5 - m for m in range(n)):
+        print(n)
+        break",104,120,,,6.81,30.88,9.45,21.43,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_17,cat,1,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2021_8,eng,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_16,cat,6,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2016_20,eng,0,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2008_1,eng,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2024_19,cat,2,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2017_3,cat,7,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2018_24,eng,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_10,cat,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_5,eng,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_6,eng,4,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2023_18,cat,7,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2012_23,eng,5,True,D,B,0,"for m in range(1, 50):
+    w = 50 - m
+    if m % 2 == 1 and 4 * (m - 1) == 5 * (w - 1):
+        print(2 * m + w)",73,171,,,9.71,37.18,6.64,30.54,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_4,cat,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2020_27,eng,7,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2010_3,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2014_22,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2015_11,eng,5,True,D,B,0,print(26 + 2),80,27,,,2.13,12.09,7.27,4.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2016_22,cat,2,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2020_10,cat,1,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_21,cat,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2007_23,cat,6,True,D,D,1,"for n in range(1, 500):
+    if n * 10 isqrt(n * 10) * n * 10 isqrt(n * 10) and n * 6 isqrt(n * 6) * n * 6 isqrt(n * 6) * n * 6 isqrt(n * 6):
+        print(len([d for d in range(1, n if d < n else n)]))",62,222,,,13.14,45.28,5.64,39.64,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2015_17,cat,7,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_26,cat,4,True,D,E,0,"print(len(set(52 // n for n in range(1, 53))))",69,60,,,4.16,16.98,6.27,10.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2021_30,cat,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2023_16,cat,1,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2011_20,eng,7,True,D,B,0,"for n in range(1, 60):
+    if (n - 5) % 2 == 0 and all((a + b) % 6 != 0 for a in range(n) for b in range(n - a)):
+        print(n)
+        break",80,192,,,11.33,41.56,7.27,34.29,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_20,eng,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2013_19,cat,4,True,D,D,1,print(21 + 27 + 32 - 6 * 3),115,48,,,3.65,19.02,10.45,8.57,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2011_29,cat,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2015_7,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2011_29,eng,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2023_7,cat,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2016_30,cat,3,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2024_22,eng,4,True,D,A,0,"for nums in product(range(1, 10), repeat=9):
+    if all((a+b+c+d)==6 and (a-b)==5 and a*b*c==18 and a%2==1 and b%2==1) for a, b in combinations(nums, 2):
+        print(nums[3])",136,263,,,17.44,59.32,12.36,46.96,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2008_28,eng,5,True,D,B,0,"best = 100
+for k in range(1, 20):
+    for angles in combinations(range(10, 200), k):
+        if all(abs(a - b) <= 5 for a, b in combinations(angles, 2)):
+            best = min(best, k)
+print(best)",84,211,,,17.7,45.32,7.64,37.68,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2023_30,eng,5,True,D,D,1,"count = 0
+for a, b, c in combinations(range(2, 10), 3):
+    if a != b and b != c and c != a:
+        if any(len(s) == 6 for s in product(a, repeat=6) if all((s[i], s[i + 1]) == (1, 1) for i in range(6))):
+            count += 1
+print(count)",97,247,,,14.29,52.93,8.82,44.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2023_24,cat,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_25,eng,7,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2016_30,eng,3,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2023_3,eng,1,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2018_11,cat,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_20,eng,5,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2017_5,cat,6,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2013_12,cat,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_5,eng,4,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_1,eng,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2021_26,cat,6,True,D,E,0,"for a in range(1, 500):
+    b = a - 2
+    if isqrt(b) ** 2 == b and all(n * n == b for n in range(1, isqrt(b) + 2)):
+        print(b)
+        break",51,187,,,11.5,38.03,4.64,33.39,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2022_5,cat,6,True,C,D,0,"for x in range(1, 100):
+    y = int(77 / x)
+    if x < y and x * (x + 1) <= 77 * y * (y + 1):
+        print(x)",57,148,,,9.19,31.61,5.18,26.43,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2018_14,cat,7,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2016_5,cat,6,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2009_5,cat,5,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2020_7,cat,2,True,D,B,0,"for n in range(1, 10):
+    if 10 * n // 5 == 22:
+        print(n)",64,103,,,8.43,24.21,5.82,18.39,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2022_13,eng,0,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2017_30,eng,3,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2013_19,eng,4,True,D,D,1,"for a in range(22):
+    for b in range(28):
+        for c in range(33):
+            if a + b < 27 and a + c < 32 and b + c < 32:
+                print(a + b + c)",95,110,,,10.02,28.28,8.64,19.64,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2007_14,eng,4,True,D,C,0,"for b in range(61):
+    if 60 - 6 - 8 - 4 == 3 * b:
+        print(b)",91,105,,,6.2,27.02,8.27,18.75,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2012_17,cat,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2019_21,cat,0,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2013_12,cat,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2021_25,eng,2,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_9,cat,0,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2009_21,eng,6,True,D,D,1,"for p in product([2, 3, 5], repeat=20):
+    if all(p[i] + p[i + 1] == p[i + 2] for i in range(19)):
+        print(p[10])",132,168,,,15.69,42.0,12.0,30.0,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2008_8,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_28,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2008_24,cat,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_11,cat,5,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2021_16,cat,2,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2008_14,eng,5,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2017_3,eng,7,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_19,eng,5,True,D,A,0,"options=[2013,2012,2011,2010,2009]
+ans=0
+for x in options:
+    if x>0 and x<=6*2 and 2*x>=x+2:
+        ans=x
+print(ans)",51,185,,,10.27,37.68,4.64,33.04,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2023_12,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2018_11,cat,3,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2014_13,cat,7,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2018_23,cat,4,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2013_21,cat,7,True,D,B,0,"count = 0
+for x in range(1, 50):
+    for y in range(1, x):
+        if x * y == 5 * (x + y):
+            count += 1
+print(count)",54,160,,,11.11,33.48,4.91,28.57,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2023_10,eng,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2022_16,eng,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2023_5,eng,4,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_24,eng,2,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2013_3,eng,7,True,C,E,0,print(2 * (2013 - 2)),31,14,,,1.02,5.32,2.82,2.5,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2013_27,eng,5,True,B,B,1,"a = [1, -1]
+for i in range(2, 2013):
+    a.append(a[-1] * a[-2])
+print(sum(a[:2013]))",72,46,,,3.14,14.76,6.55,8.21,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2024_1,cat,0,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_21,eng,5,True,E,D,0,"options = [20, 21, 22, 25, 29]
+ans = None
+for n in options:
+    if n % 2 == 0 and n // 2 >= 4:
+        ans = n
+print(ans)",114,61,,,4.42,21.25,10.36,10.89,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_1,eng,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2024_15,eng,6,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_5,eng,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2017_30,cat,3,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2017_8,eng,5,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2020_24,eng,2,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_16,eng,4,True,B,B,1,print(372 // 31 * 301),76,16,,,1.32,9.77,6.91,2.86,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_27,eng,4,True,D,D,1,print(4 * 3),55,24,,,1.97,9.29,5.0,4.29,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_17,eng,2,True,D,B,0,print(3 + 3 + 3 - 2),63,42,,,3.35,13.23,5.73,7.5,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2011_26,cat,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_16,eng,6,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2016_17,eng,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_27,cat,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2023_4,cat,7,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_5,cat,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2020_11,eng,2,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2022_14,cat,7,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2016_6,eng,2,True,D,B,0,"for a, b, c, d, e in combinations(range(2, 9), 5):
+    if a == 2 * b and c == 3 * d:
+        print(e)",101,135,,,8.31,33.29,9.18,24.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2011_13,cat,5,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_27,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2016_14,cat,1,True,B,B,1,"for a in range(1, 16):
+    b = 15 - a
+    if b > 0 and a - b == 3:
+        print(a * b)",46,43,,,2.69,11.86,4.18,7.68,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2023_16,eng,1,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2012_6,cat,4,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2022_15,cat,5,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2011_8,cat,5,True,A,A,1,"for a in range(13):
+    for b in range(a + 1, 13):
+        c = 12 - a - b
+        if a < c < b:
+            print(c)",80,49,,,3.23,16.02,7.27,8.75,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2016_6,cat,2,True,C,B,0,"for a in range(9):
+    for b in range(5):
+        for c in range(13):
+            for d in range(17):
+                if 2 * b == 3 * c == 2 * d:
+                    print(d + 1)",150,63,,,4.14,24.89,13.64,11.25,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2007_23,eng,6,True,D,D,1,"for n in range(1, 1000):
+    if all((n * 10) % k == 0 and isqrt((n * 10) ** 2 // n) ** 2 == (n * 10) // n for k in range(6, 100) and all((n * 6) % m == 0 and isqrt((n * 6) ** 3 // n) ** 3 == (n * 6) // n for m in range(1, 100)):
+        ans = n
+        break
+print(sigma(ans))",56,332,,,18.43,64.38,5.09,59.29,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2023_24,eng,2,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2022_6,cat,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-1_2016_12,cat,1,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2023_14,cat,4,True,D,B,0,print(12 - 0),54,27,,,2.03,9.73,4.91,4.82,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_15,cat,5,True,D,A,0,print(100 // (100 - 40)),60,54,,,4.48,15.09,5.45,9.64,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2021_7,eng,5,True,D,C,0,print(2021 // 2),74,33,,,2.64,12.62,6.73,5.89,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2019_2,eng,2,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2008_14,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2018_5,cat,2,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2023_28,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2018_16,cat,5,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2016_1,cat,4,True,D,E,0,"count = 0
+for a, b, c, d in combinations(range(10), 4):
+    if a * 10 + b == 2016 and c * 10 + d == 2016:
+        count += 1
+print(count)",101,196,,,11.91,44.18,9.18,35.0,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2007_11,eng,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2021_13,eng,7,True,D,A,0,"count = 0
+for n in range(100, 1000):
+    if n * 10 + n % 10 - n == 99:
+        count += 1
+print(count)",43,174,,,15.66,34.98,3.91,31.07,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2019_1,cat,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2023_18,eng,7,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2008_11,eng,4,True,D,D,1,"for n in range(3, 20):
+    possible = True
+    for a in range(2, n):
+        if a + n > b and a + b > n and b + n > a:
+            possible = False
+    if possible:
+        break
+print(2 * n - 5)",29,211,,,12.14,40.32,2.64,37.68,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2016_8,cat,0,True,D,C,0,print((10 + 8 + 11) // 3),72,51,,,3.53,15.66,6.55,9.11,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2008_14,cat,5,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2020_7,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_11,eng,4,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_22,eng,6,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2013_12,eng,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_23,eng,0,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-7_2015_17,eng,7,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2018_24,cat,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2016_13,eng,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2018_5,eng,2,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2022_12,cat,0,False,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2022_13,cat,0,False,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-6_2014_29,cat,6,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2017_28,eng,2,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2020_15,cat,2,False,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-3_2018_27,cat,3,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2017_2,cat,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-4_2020_25,cat,4,True,D,C,0,"for a, b, c, d in combinations(range(1, 16), 4):
+    if a * b + c * d == 15:
+        print(a + b + c + d)",95,144,,,8.57,34.35,8.64,25.71,11.0,5.6,pot_fallback,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-5_2007_2,eng,5,True,C,A,0,"path = 20 // 2
+print(path + 2)",80,16,,,1.67,10.13,7.27,2.86,11.0,5.6,pot_match,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-0_2020_21,eng,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-095043-602598-pot-v1-smart-runner-val-cat-eng,2026-11-15T09:50:43.602598+01:00,lvl-2_2021_19,cat,2,False,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,

@@ -1,0 +1,323 @@
+eval_id,evaluated_at,problem_id,language,level,has_options,selected_answer,correct_answer,is_correct,model_output,input_tokens,output_tokens,full_input_tokens,cached_input_tokens,elapsed_seconds,arduino_estimated_seconds,arduino_read_estimated_seconds,arduino_write_estimated_seconds,arduino_read_tokens_per_second,arduino_write_tokens_per_second,status,retrieved
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-2_2017_17,eng,2,True,B,B,1,"for n in range(1, 100):
+    if n - 2 == 3:
+        print(n)",82,29,,,7.91,12.63,7.45,5.18,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2012_7,eng,6,True,D,B,0,"legs = 6, 8
+mid = (legs + 1) // 2
+ans = 2 * mid
+print(ans)",60,75,,,5.09,18.84,5.45,13.39,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2016_9,eng,6,True,D,D,1,"best = 0
+for n in range(1, 100):
+    if n % 2 == 1:
+        best = max(best, n + 1)
+print(best)",40,149,,,7.63,30.25,3.64,26.61,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2021_7,eng,5,True,D,C,0,"ans = 0
+for n in range(1, 100):
+    for k in range(1, n + 1):
+        for q in combinations(range(n + 1), k):
+            if sum(q) == 2021:
+                ans = n
+print(ans)",74,209,,,12.0,44.05,6.73,37.32,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2017_26,eng,5,True,D,E,0,"a = 2
+b = 3
+for n in range(2, 2018):
+    a, b = b, a * b
+print(b % 1000000007)",95,134,,,11.9,32.57,8.64,23.93,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-3_2021_13,eng,3,True,D,A,0,"for c in range(1, 200):
+    if 3 * (28 + c) == 4 * 26:
+        print(c)",73,117,,,5.48,27.53,6.64,20.89,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2014_9,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2011_20,eng,7,True,A,B,0,"for n in range(1, 100):
+    if sum(1 for x in range(n) if x % 6 == 0 and x % 4 == 0) + 5 == n:
+        print(n)",80,183,,,8.34,39.95,7.27,32.68,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2020_7,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2024_30,eng,5,True,D,D,1,"best = 0
+for p in combinations(range(1, 7), 24):
+    if sum(p) == 24 and all(a in p for a in range(1, 7)) and sum(p) > best:
+        best = sum(p)
+print(best)",69,266,,,11.1,53.77,6.27,47.5,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2022_23,eng,5,True,D,D,1,"best = 0
+for p in product(range(21), repeat=20):
+    if sum(p) - sum(p) == 0:
+        best = max(best, sum(p))
+print(best - min(best))",115,226,,,10.64,50.81,10.45,40.36,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2007_11,eng,4,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2011_27,eng,4,True,D,D,1,"ans = 0
+for a in range(1, 10):
+    for b in range(a + 1, 10):
+        for c in range(b + 1, 10):
+            for d in range(c + 1, 10):
+                ans = max(ans, a + b + c + d - 2)
+print(ans)",55,221,,,9.67,44.46,5.0,39.46,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2009_28,eng,6,True,D,A,0,"steps = 10
+east = steps % 2
+south = steps % 2
+ans = 2 * (steps - 1) + 2 if steps % 2 == 1 else 2 * (steps - 1)
+print(ans)",91,105,,,4.59,27.02,8.27,18.75,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2012_7,eng,4,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2024_22,eng,4,True,D,A,0,"for a, b, c, d in combinations(range(1, 10), 4):
+    if a + b == 6 and b - a == 5 and a * c == 18 and a % 2 == 0 and d % 2 == 0 and a != 2 * d:
+        print(9 - a - b - c - d)",136,243,,,10.65,55.75,12.36,43.39,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2017_4,eng,5,True,B,B,1,"for x in range(1, 1000):
+    if 0.25 * x + 0.25 * (x - 25) == 25 * (1 - 0.25):
+        print(x)
+        break",66,166,,,7.42,35.64,6.0,29.64,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2013_8,eng,7,True,D,B,0,"for k in range(1, 21):
+    if sum(range(1, k+1)) <= 20 and sum(range(k, 20)) >= 20:
+        print(k)
+        break",70,239,,,10.11,49.04,6.36,42.68,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2016_29,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2020_26,eng,6,True,D,C,0,"n=64
+ans=max(1+sum(1 for i in range(n)) for i in range(n-1))
+print(ans)",64,96,,,4.58,22.96,5.82,17.14,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2012_6,eng,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2016_21,eng,5,True,D,D,1,"for a in range(1, 20):
+    for b in range(1, 20):
+        for c in range(1, 20):
+            if a == b and c != a and a + c == 2 * b:
+                print(2 * a + c)",114,199,,,8.68,45.9,10.36,35.54,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2017_1,eng,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2023_27,eng,5,True,D,C,0,"prev = [2, 0, 2, 3]
+for i in range(1, 2023):
+    prev.append(prev[-1] + 1)
+ans = prev[2022]
+print(ans)",78,180,,,9.98,39.23,7.09,32.14,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2015_4,eng,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2021_13,eng,7,True,A,A,1,"ans = sum(1 for a in range(1, 10) for b in range(10) for c in range(10) if 100*a + 10*b + c + 99 == 100*c + 10*b + a)
+print(ans)",43,68,,,3.04,16.05,3.91,12.14,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-1_2020_9,eng,1,True,D,A,0,"for x in range(1, 10):
+    if 5 * x == 22:
+        print(x)",56,109,,,4.94,24.55,5.09,19.46,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-0_2017_7,eng,0,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2015_8,eng,6,True,D,A,0,"nums = [n for n in range(1, 1000) if n % 3 == 0]
+for n in nums:
+    is_cube = all(n ** k == n for k in range(3))
+    is_square = all(n ** k == n for k in range(2))
+    if not is_cube and not is_square:
+        print(n)
+        break",27,252,,,9.83,47.45,2.45,45.0,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2008_14,eng,5,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2009_17,eng,4,True,B,B,1,"side = 60
+ans = sum(1 for s in range(1, side + 1) if side % s == 0)
+print(ans)",46,54,,,2.68,13.82,4.18,9.64,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2012_21,eng,7,True,D,E,0,"ans = 0
+for a in range(1, 180):
+    for b in range(a, 180):
+        if isosceles(a, b, a) and isosceles(b, a, b) and isosceles(a, b, c): ans = min(ans, a)
+print(ans)",54,219,,,9.5,44.02,4.91,39.11,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2012_23,eng,5,True,D,B,0,"for m in range(51):
+    for w in range(51 - m):
+        if 3 * m == 4 * (51 - m - w):
+            print(3 * m + w)",73,153,,,7.41,33.96,6.64,27.32,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2009_1,eng,6,False,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2015_17,eng,6,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2008_28,eng,5,True,D,B,0,"angles = [10, 20, 30, 40, 50, 60, 70, 80, 90]
+ans = len(angles) + 1
+print(ans)",84,197,,,8.74,42.82,7.64,35.18,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2018_7,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2015_22,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2013_19,eng,4,True,C,D,0,"total = 66
+rejected = 21
+passed = 32
+ans = total - rejected - passed
+print(ans)",95,98,,,4.75,26.14,8.64,17.5,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2019_29,eng,5,True,D,B,0,"for p in range(1, 100):
+    if 2 * p + 91 == 2 * p:
+        print(2 * p)",58,108,,,5.56,24.56,5.27,19.29,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2017_26,eng,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2007_22,eng,7,True,A,A,1,"ans = sum(1 for x in range(-3, 4) for y in range(-3, 4) for z in range(-3, 4) if x*x + y*y + z*z == 9)
+print(ans)",48,53,,,2.41,13.82,4.36,9.46,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2020_18,eng,4,True,D,C,0,"ans = round((100 - 20) * 100 // (100 - 20))
+print(ans)",48,96,,,6.38,21.5,4.36,17.14,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2010_19,eng,5,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2016_19,eng,5,True,D,A,0,"ans = [n for n in range(1, 100) if n % 2 == 1 and 2 * n % 3 == 1][0]
+print(ans)",51,133,,,7.62,28.39,4.64,23.75,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2007_23,eng,6,True,D,D,1,"for a in range(1, 1000):
+    if isqrt(10 * a) ** 2 == 10 * a and isqrt(6 * a) ** 3 == 6 * a:
+        print(sum(1 for d in range(1, 100) if a % d == 0))",56,240,,,10.46,47.95,5.09,42.86,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2007_14,eng,4,True,D,C,0,"for b in range(61):
+    if 60 - 6 - 8 - 4 == 3 * (b // 3):
+        print(b)",91,112,,,6.86,28.27,8.27,20.0,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2015_11,eng,5,True,D,B,0,"ans = factorial(12)
+print(ans)",80,100,,,5.18,25.13,7.27,17.86,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2018_20,eng,5,True,D,E,0,"for n in range(1, 20):
+    if n % 3 == 0 and n % 2 == 1:
+        print(n)
+        break",84,108,,,5.61,26.93,7.64,19.29,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2008_11,eng,4,True,D,D,1,"ans = 0
+for a in range(1, 100):
+    for b in range(a + 1, 100):
+        for c in range(b + 1, 100):
+            if a + b > c and a + c > b and b + c > a:
+                ans += 1
+print(ans)",29,235,,,13.32,44.6,2.64,41.96,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2019_6,eng,4,True,D,C,0,"for a in range(1, 20):
+    for b in range(1, 20):
+        for c in range(1, 20):
+            for d in range(1, 20):
+                for e in range(1, 20):
+                    if 2 * (a + b + c + d + e) == a + b + c + d + e:
+                        print(a + b + c + d + e)",78,339,,,21.36,67.63,7.09,60.54,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2021_26,eng,6,True,D,E,0,"primes = [p for p in range(2, 100) if isqrt(p) * isqrt(p) - p < 1000]
+ans = [b for b in range(1, 100) if any(a for a in range(1, b + 1) if b - a in primes)][0]
+print(ans[0])",44,226,,,10.94,44.36,4.0,40.36,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2013_21,eng,7,True,D,B,0,"ans = 0
+for x in range(1, 100):
+    for y in range(x, 100):
+        if x * y == 5 * (x + y):
+            ans += 1
+print(ans)",47,146,,,6.13,30.34,4.27,26.07,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2021_23,eng,6,True,D,C,0,"target = 2021
+ones = target // 9
+zeros = target % 9
+ans = 9 * ones + (zeros + 1)
+print(ans)",59,150,,,8.1,32.15,5.36,26.79,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-1_2020_23,eng,1,True,D,C,0,"for t in range(1, 100):
+    if 13 + t > 36 + 6 + 2:
+        print(36 - t)",73,135,,,6.48,30.75,6.64,24.11,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2015_13,eng,5,True,D,A,0,"for signs in product([+,-], repeat=10):
+    if 2015 - 2015 - 2015 + sum(signs) == 0:
+        print(sum(signs))
+        break",74,154,,,8.21,34.23,6.73,27.5,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2012_1,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2021_29,eng,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-3_2022_21,eng,3,True,D,E,0,"for a, b, c in combinations(range(1, 12), 3):
+    if (a + b + c) / 3 == 10 and (a + b) / 2 == 11 or (a + c) / 2 == 12 or (b + c) / 2 == 12:
+        print(max(a, b, c))",74,194,,,9.89,41.37,6.73,34.64,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2007_2,eng,5,True,E,A,0,"ans = 0
+for n in range(1, 21):
+    if 2 * n <= 20:
+        ans = n
+print(ans)",80,38,,,1.52,14.06,7.27,6.79,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2018_19,eng,7,True,D,B,0,"for a in range(1, 7):
+    for b in range(a + 1, 7):
+        for c in range(b + 1, 7):
+            if sum(a * b) + sum(c * d) in [p for p in range(2, 20) if all(p % d for d in [a, b, c, d])]:
+                print(a + b + c)",118,193,,,8.14,45.19,10.73,34.46,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2020_25,eng,4,True,D,C,0,"for a, b, c, d in combinations(range(1, 16), 4):
+    if a * b + c * d == 15:
+        print(a + b + c + d)",79,144,,,5.59,32.89,7.18,25.71,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-0_2019_22,eng,0,True,D,D,1,"for c in range(9):
+    s = c + 8
+    if s % 2 == 0 and s == 2 * c:
+        print(c + s)",60,41,,,2.13,12.77,5.45,7.32,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-2_2016_6,eng,2,True,E,B,0,"for a in range(9):
+    for b in range(9):
+        for c in range(9):
+            for d in range(9):
+                if 2 * a == b and 3 * c == d:
+                    print(8 - a - b - c - d)",101,66,,,2.48,20.97,9.18,11.79,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2008_22,eng,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2023_14,eng,4,True,D,B,0,"edges = 12
+for k in range(1, edges + 1):
+    if edges - k >= 3:
+        print(k)
+        break",43,138,,,5.83,28.55,3.91,24.64,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2016_1,eng,4,True,D,E,0,"count = 0
+for h in range(24):
+    for m in range(60):
+        s = f""{h:02d}{m:02d}""
+        if sorted(s) == sorted(s[::-1]):
+            count += 1
+print(count)",81,218,,,9.33,46.29,7.36,38.93,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-2_2018_28,eng,2,True,C,A,0,"n = 14
+ans = n
+for k in range(n, 0, -1):
+    if n - k + 1 == 2 * k - 1:
+        ans = k
+print(ans)",69,94,,,4.27,23.06,6.27,16.79,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2021_10,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-3_2020_8,eng,3,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2019_1,eng,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2014_9,eng,5,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-1_2018_18,eng,1,True,D,B,0,"for n in range(1, 200):
+    if n - 3 + 1 == n:
+        print(n)
+        break",85,103,,,6.18,26.12,7.73,18.39,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2012_8,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2021_26,eng,4,True,A,C,0,"ans = 0
+for g in range(1, 27):
+    for r in range(1, 25):
+        for b in range(1, 22):
+            for y in range(1, 17):
+                ans = max(ans, g + r + b + y)
+print(ans)",113,75,,,5.65,23.66,10.27,13.39,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2022_29,eng,4,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-2_2021_11,eng,2,True,D,B,0,"n = 5021972970
+best = 10**9
+for a in range(1, n):
+    for b in range(a, n):
+        c = n - a - b
+        if c > 0:
+            best = min(best, a + b + c)
+print(best)",73,236,,,15.8,48.78,6.64,42.14,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2024_27,eng,4,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2022_6,eng,6,True,D,B,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2012_29,eng,7,True,D,E,0,"for a in range(1, 27):
+    for b in range(a, 27):
+        if a * b == sum(range(a, 27)) - a * b:
+            print(abs(a - b))",66,159,,,6.99,34.39,6.0,28.39,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2011_14,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2022_5,eng,6,True,D,D,1,"for x in range(1, 100):
+    for y in range(1, x):
+        if (x + 1) * (y + 1) == 77:
+            print(x)
+            break",53,53,,,2.15,14.28,4.82,9.46,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-3_2023_28,eng,3,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2013_3,eng,6,True,D,C,0,"total = 4 * 20
+free = total // 6
+ans = total - free
+print(ans)",73,78,,,4.14,20.57,6.64,13.93,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2020_26,eng,4,True,D,E,0,"ans = sum(1 for a in range(1, 53) if 52 * (a + 1) // 2 <= 52)
+print(ans)",57,111,,,4.76,25.0,5.18,19.82,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2008_3,eng,7,True,D,D,1,"cols = list(range(1, 22))
+rows = list(range(1, 34))
+cols = [c for c in cols if c % 3 == 0]
+rows = [r for r in rows if r % 2 == 0]
+ans = len(cols) * len(rows)
+print(ans)",84,223,,,9.22,47.46,7.64,39.82,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2007_10,eng,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-0_2016_8,eng,0,True,D,C,0,"ans = 11 + 1 + 1
+print(ans)",68,55,,,2.75,16.0,6.18,9.82,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2014_29,eng,7,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2009_15,eng,7,True,D,E,0,"n = 12 ** 22 + 2008 ** 2 + 2009 ** 2
+print(n % 10)",43,108,,,4.49,23.2,3.91,19.29,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2013_27,eng,5,True,B,B,1,"a = [1, -1]
+for i in range(1, 2013):
+    a.append(a[-1] * a[-2])
+print(sum(a[:2013]))",72,46,,,2.38,14.76,6.55,8.21,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2013_3,eng,7,True,D,E,0,"faces = 2013
+ans = 2 * faces - 1
+print(ans)",31,60,,,3.0,13.53,2.82,10.71,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2011_8,eng,5,True,A,A,1,"for a in range(1, 13):
+    for b in range(a, 13):
+        c = 12 - a - b
+        if a + b > c and a + b > c and c < a + b:
+            print(c)",68,61,,,2.37,17.07,6.18,10.89,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2010_19,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2014_28,eng,6,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2009_30,eng,6,True,D,D,1,"primes = [p for p in range(2, 100000) if isqrt(p) * isqrt(p) <= p <= p + 9]
+ans = sum(1 for p in primes if p % 2 == 1 and isqrt(p - 1) * isqrt(p - 1) <= p - 1 <= p + 9)
+print(ans)",81,88,,,3.98,23.07,7.36,15.71,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2015_13,eng,6,True,D,A,0,"for t in range(1, 20):
+    if 8 - t >= 2 and 7 - t >= 2 and 5 - t >= 2:
+        print(t)",109,137,,,4.98,34.37,9.91,24.46,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2008_5,eng,4,True,D,A,0,"ans = 0
+for n in range(1000, 10000):
+    a, b, c, d = n // 1000, n // 100 % 10, n % 100 % 10, n % 10
+    if a > b + 1 and b > c + 1 and c > d + 1:
+        ans += 1
+print(ans)",48,134,,,5.73,28.29,4.36,23.93,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2021_18,eng,5,True,C,D,0,"for p in combinations(range(1, 22), 5):
+    if sum(p) % 3 == 0:
+        print(sum(p))",96,143,,,6.7,34.27,8.73,25.54,11.0,5.6,pot_match,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-6_2023_3,eng,6,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2023_30,eng,5,True,D,D,1,"ans = sum(1 for b in combinations(range(6), 3) if all(b[i] + b[i + 1] != 1 for i in range(3)) for w in combinations(range(6), 6) if all(w[i] + w[i + 1] >= 2 for i in range(6)))
+print(ans)",97,179,,,7.89,40.78,8.82,31.96,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-5_2017_11,eng,5,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2011_2,eng,4,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-4_2011_12,eng,4,True,D,B,0,"nums = [n for n in range(1000, 10001) if all(int(c) in {0, 1, 2} for c in str(n)) and n != 2011]
+print(max(nums) - min(nums))",91,142,,,5.99,33.63,8.27,25.36,11.0,5.6,pot_fallback,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2009_29,eng,7,True,D,A,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-152993-pot-v4-e1-val-eng-text-only-vulkan,2026-11-15T11:17:23.152993+01:00,lvl-7_2015_26,eng,7,True,D,A,0,"ans = sum(1 for a in range(1, 10) for b in range(10) for c in range(10) if 2**a + 2**b + 2**c <= 1000)
+print(ans)",36,280,,,17.51,53.27,3.27,50.0,11.0,5.6,pot_fallback,
