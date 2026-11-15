@@ -6,7 +6,7 @@ Run commands from the directory containing `predict.py`, `eval.py`, and `config.
 
 The original README and `board/` scripts describe the setup. `00_check_board.sh` checks the environment, `01_install_packages.sh` prepares Debian, and `02_build_llama_cpp.sh` builds the version of `llama.cpp` pinned in `config.env`. The board setup uses commit `2cbe0ec429b849a88664e0f62388fc92a5abd699`. Once set up, the model and input are read from local disk. [Deployment map](SOURCES.md#code-and-deployment)
 
-The `LLM_FILE` shipped in `config.env` points to the **base** weights. To reproduce the V4 results, start the server with **`Qwen3.5-0.8B-M3Kang-PoT-v4-e1-Q8_0.gguf`**. When using `systemd`, check the effective unit’s `-m` argument with `systemctl cat math-llm` after configuring or regenerating the unit. Setting `LLM_FILE` in the Python process changes the configuration it reads. `llama-server` selects the loaded file when it starts.
+`config.env` pins two language models. `LLM_*` is the **base** Qwen3.5-0.8B, which the tutor uses. `POT_*` is the fine-tuned **`Qwen3.5-0.8B-M3Kang-PoT-v4-e1-Q8_0.gguf`**, published on Hugging Face as [Rigau/Qwen3.5-0.8B-M3Kang-PoT-GGUF](https://huggingface.co/Rigau/Qwen3.5-0.8B-M3Kang-PoT-GGUF) (repository and revision in `POT_REPO` and `POT_REVISION`). `board/03_download_models.sh` downloads and checks both, and `board/04_install_services.sh` makes the `math-llm` service on port 8081 serve the V4 file whenever it is on disk. Check the effective unit’s `-m` argument with `systemctl cat math-llm`. `POT_STYLE=auto` picks the zero-shot prompt from the file `llama-server` has loaded.
 
 Verify the artifact used in the V4 runs with these values.
 

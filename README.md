@@ -35,7 +35,7 @@ Start a compatible local `llama-server` on port 8081 and set `LLM_PORT=8081`. Th
 python3 predict.py --input data/sample_problems.jsonl --output results/predictions.csv
 ```
 
-On Windows, use `py` instead of `python3`. To reproduce the V4 evaluation, load the V4-e1 GGUF and use the documented PoT settings. [Start the model and reproduce the predictor](docs/predictor/RUN.md)
+On Windows, use `py` instead of `python3`. To reproduce the V4 evaluation, load the V4-e1 GGUF and use the documented PoT settings. The fine-tuned V4-e1 weights are published on Hugging Face as [Rigau/Qwen3.5-0.8B-M3Kang-PoT-GGUF](https://huggingface.co/Rigau/Qwen3.5-0.8B-M3Kang-PoT-GGUF) (non-commercial research use, because of the M3Kang license) and pinned in `config.env` (`POT_*`), so the board scripts download them. [Start the model and reproduce the predictor](docs/predictor/RUN.md)
 
 ### Pista Tutor
 

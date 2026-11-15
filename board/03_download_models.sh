@@ -25,10 +25,16 @@ download() {
   fi
 }
 
+need=1.2; size="0.9"
+[ -n "${POT_REPO:-}" ] && { need=2.1; size="1.7"; }
 gb=$(free_gb "$MODELS_DIR")
-awk "BEGIN {exit !($gb >= 1.2)}" || die "only ${gb} GB free in $MODELS_DIR; the models need about 0.9 GB."
+awk "BEGIN {exit !($gb >= $need)}" || die "only ${gb} GB free in $MODELS_DIR; the models need about $size GB."
 
 download "$LLM_REPO" "$LLM_REVISION" "$LLM_FILE" "$LLM_SHA256"
 download "$EMBED_REPO" "$EMBED_REVISION" "$EMBED_FILE" "$EMBED_SHA256"
+# The fine-tuned solver model, if config.env names where to get it
+if [ -n "${POT_REPO:-}" ]; then
+  download "$POT_REPO" "${POT_REVISION:-main}" "$POT_FILE" "$POT_SHA256"
+fi
 
 ok "Next: ./board/04_install_services.sh"

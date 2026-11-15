@@ -35,6 +35,7 @@ Code and result paths are relative to the repository root. The [organizers’ pr
 | [PoT fine-tuning and SmartRunner](../experiments/POT_FINETUNING_I_RUNNER.md) | PoT evolution, synthetic generation, V1/V2 settings, and SmartRunner ablations on the practice set. |
 | `finetune/build_synthetic_dataset.py` · `finetune/build_pairs.py` | Offline preparation for inference, two-stage verification, and the construction of training pairs. |
 | `finetune/00_gate_conversion.ipynb` · `finetune/01_train_pot_lora.ipynb` · `finetune/build_notebooks.py` | Reference conversion and the fine-tuning recipe with loss computed on output tokens. |
+| `finetune/build_pot_v3.py` · `finetune/gen_synth_lowlevel.py` · `finetune/02_train_ft4_epochs.ipynb` · `finetune/MODEL_CARD.md` | V4 training data (v3 pairs plus synthetic level 0–3 problems), the per-epoch training and selection notebook, and the published model's card. |
 | [Practice-set findings](../experiments/FINAL_TEST_FINDINGS.md) | Context for the new test, dataset shift, and historical solver results. |
 | [Experiments](../experiments/EXPERIMENTS.md) · [Text-only routes](../experiments/TEXT_ONLY.md) · [Model-only benchmark](../experiments/EVAL_MODEL_ONLY.md) | Model experiments, RAG, text alternatives, figure experiments, and cohort methodology. |
 | [Evaluation options](../experiments/EVALUACIO.md) · [Results viewer](../../results-viewer/README.md) | Result fields, filters, and run inspection. |
@@ -44,6 +45,7 @@ Code and result paths are relative to the repository root. The [organizers’ pr
 | Result | Manifest or local source |
 | --- | --- |
 | V4 practice | `results/pot-v4-e1-demo/eval-20261115-105958-184892-pot-v4-e1-smart-runner-demo.json` |
+| V4 practice, second run with other OCR options (41/100) | `eval-20261115-110654-819345-demo-pot-v4.json`, in the `results/` folder of the `abdullah/final` branch (before the reorganization) |
 | V1 practice | `results/eval-20261115-094216-937240-pot-v1-smart-runner-demo.json` |
 | Earlier hybrid practice result | `results/datathon-qualcomm-demo/eval-20261115-011634-910547-all-rows-100.json` |
 | Base PoT and V2 practice | [Historical ablation table](../experiments/POT_FINETUNING_I_RUNNER.md) and [practice-set findings](../experiments/FINAL_TEST_FINDINGS.md). |

@@ -1232,6 +1232,7 @@ The [`publish-project`](../../.skills/publish-project/SKILL.md) skill can check 
 | --- | --- | --- |
 | `LLAMA_CPP_REF` | `2cbe0ec…` | llama.cpp commit to build |
 | `LLM_REPO`, `LLM_REVISION`, `LLM_FILE`, `LLM_SHA256` | Qwen3.5 0.8B Q8_0 | Language model download |
+| `POT_REPO`, `POT_REVISION`, `POT_FILE`, `POT_SHA256` | MathQ V4-e1 Q8_0 | Fine-tuned solver model; `math-llm` serves it when downloaded. Empty `POT_REPO`: stock model only |
 | `LLM_CTX` | 4096 | Context length, in tokens |
 | `LLM_THREADS`, `EMBED_THREADS` | 4 | CPU threads (the board has 4 cores) |
 | `EMBED_CTX` | 512 | Embedding context; bge-small was trained on 512 tokens |

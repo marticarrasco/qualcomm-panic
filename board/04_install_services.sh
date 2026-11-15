@@ -19,7 +19,7 @@ done
 render() {
   sed -e "s|@USER@|$USER|g" \
       -e "s|@LLAMA_SERVER@|$LLAMA_SERVER|g" \
-      -e "s|@LLM_PATH@|$LLM_PATH|g" -e "s|@LLM_PORT@|$LLM_PORT|g" \
+      -e "s|@LLM_PATH@|$SOLVER_PATH|g" -e "s|@LLM_PORT@|$LLM_PORT|g" \
       -e "s|@LLM_THREADS@|$LLM_THREADS|g" -e "s|@LLM_CTX@|$LLM_CTX|g" -e "s|@LLM_ALIAS@|$LLM_ALIAS|g" \
       -e "s|@EMBED_PATH@|$EMBED_PATH|g" -e "s|@EMBED_PORT@|$EMBED_PORT|g" \
       -e "s|@EMBED_THREADS@|$EMBED_THREADS|g" -e "s|@EMBED_CTX@|$EMBED_CTX|g" \
@@ -27,6 +27,7 @@ render() {
 }
 
 step "Installing math-llm.service and math-embed.service"
+echo "  math-llm will serve $(basename "$SOLVER_PATH")"
 for unit in math-llm.service math-embed.service; do
   render "$unit" | sudo tee "/etc/systemd/system/$unit" >/dev/null
 done

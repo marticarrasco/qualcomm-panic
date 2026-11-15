@@ -17,8 +17,16 @@ The practice set contains **50 distinct problems in two languages**, with 80 tex
 | PoT V2 and SmartRunner, one attempt | 41/100 | Historical test recorded in the technical notes. |
 | PoT V2 and SmartRunner, up to three attempts | 42/100 | Historical test recorded in the technical notes. |
 | **PoT V4-e1 and SmartRunner, up to three attempts** | **43/100** | Saved run verified against the row-level labels. |
+| PoT V4-e1 and SmartRunner, second run with other OCR options | 41/100 | Saved run on the same 100 rows; see below. |
 
 The table compares complete configurations. Weights, prompts, and execution changed over the course of the project. The difference between **42 and 43** is one row, and the underlying records differ in detail. The team also used the practice set to identify code patterns that the runner could handle better. The scores describe development on this set. [Training notes and historical ablations](SOURCES.md#design-decisions-and-experiments)
+
+**Why V4 appears as both 43/100 and 41/100.** Two saved runs of the same V4-e1 model on the same 100 rows, with the same labels, give these two scores. The practice set has no option field: the options are inside the problem image, and each run used its own OCR of them. The solver asks the model only when a row is text-only and has five numeric options; otherwise it answers `D` without the model. The 43/100 run had usable options for 76 rows and the 41/100 run for 68. On the 68 rows that both runs sent to the model, the scores are **30 and 31**: the model performs the same. The gap comes from 8 rows that the second run answered with `D` without asking the model; the first run asked the model on them and got 3 right. About half of the shared rows also got different code, from a different machine and `llama.cpp` build, which evened out. The score on the final test will depend on how the options arrive in the organizers' JSONL.
+
+| Run | Input | Code | Rows sent to the model | Correct |
+| --- | --- | --- | ---: | ---: |
+| `eval-20261115-105958-184892-pot-v4-e1-smart-runner-demo` | `data/datathon-demo-eval/train.jsonl` | `b5dd54d` | 76 | **43/100** |
+| `eval-20261115-110654-819345-demo-pot-v4` | `data/demo/train.jsonl` | `dc78547` | 68 | 41/100 |
 
 The historical V2 comparison with SmartRunner shows the cost of retries. The single-attempt run got 41 answers right with an estimated mean of 11 s. Allowing up to three attempts raised the score to 42 with an estimated mean of 18.6 s. The wall-clock retry threshold lets the same code adjust the amount of work to actual latency. [Retry ablations](SOURCES.md#design-decisions-and-experiments)
 

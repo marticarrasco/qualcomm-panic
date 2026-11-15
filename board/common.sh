@@ -10,6 +10,9 @@ MODELS_DIR="${MODELS_DIR/#\~/$HOME}"
 LLAMA_SERVER="$LLAMA_CPP_DIR/build/bin/llama-server"
 LLM_PATH="$MODELS_DIR/$LLM_FILE"
 EMBED_PATH="$MODELS_DIR/$EMBED_FILE"
+# The solver's server (math-llm) runs the fine-tuned model when it is on disk, else the stock one
+POT_PATH="$MODELS_DIR/${POT_FILE:-}"
+if [ -n "${POT_FILE:-}" ] && [ -f "$POT_PATH" ]; then SOLVER_PATH="$POT_PATH"; else SOLVER_PATH="$LLM_PATH"; fi
 
 if [ -t 1 ]; then
   GREEN=$'\e[32m'; YELLOW=$'\e[33m'; RED=$'\e[31m'; BOLD=$'\e[1m'; RESET=$'\e[0m'

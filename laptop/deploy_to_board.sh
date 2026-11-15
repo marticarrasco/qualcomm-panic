@@ -5,8 +5,9 @@
 #     bash laptop/deploy_to_board.sh            # code, data, tutor bank and images
 #     bash laptop/deploy_to_board.sh --no-images # skip the 145 MB of images (already on the board)
 #
-# The fine-tuned model is not in git (794 MB). Put the file in ~/models on the laptop,
-# or point POT_GGUF at it, and this script copies it to the board, checks its SHA-256
+# The fine-tuned model is not in git (794 MB). On a board set up with board/03 and 04 it is
+# already downloaded and served. Otherwise put the file in ~/models on the laptop, or point
+# POT_GGUF at it, and this script copies it to the board, checks its SHA-256
 # and switches the math-llm service to it. Without the file the board keeps the stock
 # model and the solver uses the few-shot prompt (POT_STYLE=auto picks the prompt).
 #
@@ -56,9 +57,7 @@ if [ -f "$POT_GGUF" ]; then
     [ "$BOARD_SHA" = "$POT_SHA" ] || { echo "  The copy on the board is damaged. Run the script again."; exit 1; }
   fi
   echo "  $POT_FILE is on the board, SHA-256 checked"
-  # Only the board's copy of config.env names the fine-tuned file: the repo keeps the stock one,
-  # which board/03_download_models.sh can download.
-  adb shell "cd $BOARD_DIR && sed -i -e 's|^LLM_FILE=.*|LLM_FILE=$POT_FILE|' -e 's|^LLM_SHA256=.*|LLM_SHA256=$POT_SHA|' config.env"
+  # config.env names it as POT_FILE, so board/04_install_services.sh serves it too.
 else
   echo "  No $POT_GGUF on this laptop: the board keeps the model it has."
 fi

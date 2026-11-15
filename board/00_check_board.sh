@@ -52,7 +52,9 @@ else warn "can't reach huggingface.co. You need internet for scripts 01 to 03.";
 step "What's installed"
 if [ -x "$LLAMA_SERVER" ]; then ok "llama-server: $("$LLAMA_SERVER" --version 2>&1 | grep -m1 version)"
 else echo "  -     llama.cpp is not built yet (run ./board/02_build_llama_cpp.sh)"; fi
-for f in "$LLM_PATH" "$EMBED_PATH"; do
+models=("$LLM_PATH" "$EMBED_PATH")
+[ -n "${POT_REPO:-}" ] && models+=("$POT_PATH")
+for f in "${models[@]}"; do
   if [ -f "$f" ]; then ok "model: $(basename "$f") ($(du -h "$f" | cut -f1))"
   else echo "  -     model not downloaded yet: $(basename "$f") (run ./board/03_download_models.sh)"; fi
 done
