@@ -152,12 +152,13 @@ def _locked(method):
 
 class Tutor:
     def __init__(self, bank="data/tutor.db", students="data/tutor_students.db", llm_url=None, seed=0,
-                 questions="data/tutor_questions.db"):
+                 questions="data/tutor_questions.db", inline_problems=False):
         """llm_url: the chat completions URL for the optional rung 4, or None to leave that rung out.
         questions: the guiding questions written ahead of time by tutor/write_questions.py
         (shown on rung 1); if the file is missing, rung 1 is the topic tip alone."""
         self.llm_url = llm_url
         self.questions_path = questions
+        self.inline_problems = inline_problems
         self._questions = None
         self.seed = seed
         self.lock = threading.RLock()
@@ -213,7 +214,8 @@ class Tutor:
     def info(self):
         counts = {topic: [len(self.pool.get((topic, level), ())) for level in range(MAX_LEVEL + 1)] for topic in TOPICS}
         return {"problems": len(self.problems), "levels": list(range(MAX_LEVEL + 1)),
-                "topics": [{"key": t, "names": NAMES[t], "count": sum(counts[t]), "per_level": counts[t]} for t in TOPICS],
+                "topics": [{"key": t, "names": NAMES[t], "count": sum(counts[t]), "per_level": counts[t]}
+                           for t in TOPICS if sum(counts[t]) or not self.inline_problems],
                 "nudge": bool(self.llm_url)}
 
     # ---------- small helpers ----------
@@ -287,7 +289,7 @@ class Tutor:
         name = student["name"]
         topic = student["topic_choice"] or self._mixed_topic(name, last)
         anchor, kind = None, "same_level"
-        if last and last["topic"] == topic and last["outcome"]:
+        if last and last["topic"] == topic and last["outcome"] and last["problem_id"] in self.vectors:
             anchor = last["problem_id"]
             kind = {"down": "easier", "up": "harder"}.get(last["outcome"], "same_level")
         # Small topics run dry near a level. Then a problem of another topic at the
@@ -370,7 +372,7 @@ class Tutor:
                     hint["question"], hint["question_model"] = question
             elif kind == "example":
                 other = self.problems[row["example_id"]]
-                hint.update(image=f"/image/{other['id']}_{language}.png", level=other["level"],
+                hint.update(self._material(other["id"], language), level=other["level"],
                             easier=other["level"] < row["level"],
                             answer=other["label"] if row["example_shown"] else None)
             elif kind == "eliminate":
@@ -382,6 +384,11 @@ class Tutor:
             out.append(hint)
         return out
 
+    def _material(self, problem_id, language):
+        if self.inline_problems:
+            return {"text": self.texts[(problem_id, language)], "options": self.options[(problem_id, language)]}
+        return {"image": f"/image/{problem_id}_{language}.png"}
+
     def _public(self, row, language):
         """One problem as the browser may see it. The label is only included
         once the student has solved it or asked to see the answer."""
@@ -389,7 +396,7 @@ class Tutor:
             return None
         problem = self.problems[row["problem_id"]]
         shown = {
-            "id": problem["id"], "image": f"/image/{problem['id']}_{language}.png",
+            "id": problem["id"], **self._material(problem["id"], language),
             "topic": row["topic"], "topic_name": NAMES[row["topic"]][language], "level": row["level"],
             "text_only": problem["text_only"], "status": row["status"], "closed": row["status"] != "open",
             "tries": row["wrong_tries"], "tried": list(row["tried"]), "eliminated": list(row["eliminated"]),
@@ -399,6 +406,26 @@ class Tutor:
         if row["status"] in ("solved", "revealed"):
             shown["label"] = problem["label"]
         return shown
+
+    @_locked
+    def chat_context(self, name, problem_id):
+        student = self._student(name)
+        row = self._current(name)
+        if not row or row["problem_id"] != problem_id or row["status"] != "open":
+            raise TutorError("no open problem for this message")
+        stat = self.db.execute("SELECT attempts, correct FROM topic_state WHERE name = ? AND topic = ?",
+                               (name, row["topic"])).fetchone()
+        language = student["language"]
+        options = self.options.get((problem_id, language)) or self.options.get((problem_id, "eng")) or {}
+        tried = row["tried"]
+        return {
+            "problem": problem_id, "topic": row["topic"], "language": language,
+            "exercise": clean(self.texts.get((problem_id, language)) or self.texts.get((problem_id, "eng"), "")),
+            "correct_value": options.get(self.problems[problem_id]["label"]),
+            "last_wrong": options.get(tried[-1]) if tried else None,
+            "text_only": self.problems[problem_id]["text_only"],
+            "tried": tried, "support": bool(stat and stat["attempts"] >= 2 and stat["correct"] * 2 < stat["attempts"]),
+        }
 
     def _profile(self, name, language):
         rows = self.db.execute("SELECT * FROM topic_state WHERE name = ?", (name,)).fetchall()
@@ -436,7 +463,8 @@ class Tutor:
             self.db.execute("INSERT INTO students (name, language, topic_choice, start_level, created) "
                             "VALUES (?, ?, ?, ?, ?)", (name, language, topic, start_level, time.time()))
         current = self._current(name)
-        keep = current and current["status"] == "open" and (topic is None or current["topic"] == topic)
+        same_topic_choice = existing and existing["topic_choice"] == topic
+        keep = current and current["status"] == "open" and (topic is None or current["topic"] == topic or same_topic_choice)
         if not keep:
             if current and current["status"] == "open":
                 self._close(current, "skipped")
@@ -450,7 +478,7 @@ class Tutor:
         row = self._current(name)
         if not row or row["status"] != "open":
             raise TutorError("no open problem")
-        if choice not in LETTERS or choice in row["tried"] or choice in row["eliminated"]:
+        if len(choice) != 1 or choice not in LETTERS or choice in row["tried"] or choice in row["eliminated"]:
             raise TutorError("that letter cannot be chosen")
         label = self.problems[row["problem_id"]]["label"]
         result = {"correct": choice == label, "closed": False, "events": []}
@@ -601,6 +629,9 @@ class Tutor:
         closed = self.db.execute("SELECT * FROM history WHERE name = ? AND outcome IS NOT NULL ORDER BY n", (name,)).fetchall()
         attempts = sum(p["attempts"] for p in profile)
         correct = sum(p["correct"] for p in profile)
+        available = [p for p in profile if p["attempts"] >= 2 and
+                     self._pick(name, p["topic"], p["level"])]
+        weak, strong = self._practice_topics(available)
         recent = [{"id": r["problem_id"], "topic_name": NAMES[r["topic"]][language], "level": r["level"],
                    "status": r["status"], "wrong_tries": r["wrong_tries"],
                    "hints": len([x for x in r["rungs"].split(",") if x]), "outcome": r["outcome"],
@@ -610,30 +641,38 @@ class Tutor:
                            "accuracy": round(correct / attempts, 3) if attempts else None,
                            "hints": sum(p["hints"] for p in profile),
                            "streak": student["streak"], "best_streak": student["best_streak"]},
-                "practise_next": self._advice(profile, language), "recent": recent[::-1]}
+                "practise_next": self._advice(profile, language), "recent": recent[::-1],
+                "recommendations": [
+                    {"kind": kind, "topic": p["topic"], "topic_name": p["topic_name"], "level": p["level"]}
+                    for kind, p in (("review", weak), ("challenge", strong)) if p is not None
+                ]}
+
+    def _practice_topics(self, tried):
+        if not tried:
+            return None, None
+        weak = min(tried, key=lambda p: (p["accuracy"], -p["hints"] / p["attempts"]))
+        strong = max(tried, key=lambda p: (p["mastered"] if p["mastered"] is not None else -1, p["accuracy"]))
+        return weak, strong if strong is not weak and strong["accuracy"] >= 0.6 else None
 
     def _advice(self, profile, language):
         """One line for the teacher, worked out from the profile alone."""
-        tried = [p for p in profile if p["attempts"] >= 2]
+        weak, strong = self._practice_topics([p for p in profile if p["attempts"] >= 2])
         untried = [NAMES[t][language] for t in TOPICS if t not in {p["topic"] for p in profile}]
-        if not tried:
+        if not weak:
             return {"eng": "Not enough answers yet: do a few more problems first.",
                     "cat": "Encara no hi ha prou respostes: fes uns quants problemes més."}[language]
-        # Weakest: lowest accuracy, then most hints per problem
-        weak = min(tried, key=lambda p: (p["accuracy"], -p["hints"] / p["attempts"]))
-        strong = max(tried, key=lambda p: (p["mastered"] if p["mastered"] is not None else -1, p["accuracy"]))
         per = weak["hints"] / weak["attempts"]
         if language == "cat":
             line = (f"Practica «{weak['topic_name']}» al nivell {weak['level']}: {weak['correct']} de "
                     f"{weak['attempts']} resolts, {per:.1f} pistes per problema.")
-            if strong is not weak and strong["accuracy"] >= 0.6:
+            if strong:
                 line += f" Punt fort: «{strong['topic_name']}» (nivell {strong['level']})."
             if untried:
                 line += " Encara no provats: " + ", ".join(untried[:3]) + "."
         else:
             line = (f"Practise \"{weak['topic_name']}\" at level {weak['level']}: {weak['correct']} of "
                     f"{weak['attempts']} solved, {per:.1f} hints per problem.")
-            if strong is not weak and strong["accuracy"] >= 0.6:
+            if strong:
                 line += f" Strongest: \"{strong['topic_name']}\" (level {strong['level']})."
             if untried:
                 line += " Not tried yet: " + ", ".join(untried[:3]) + "."

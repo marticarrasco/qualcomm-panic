@@ -1,0 +1,71 @@
+eval_id,evaluated_at,problem_id,language,level,has_options,selected_answer,correct_answer,is_correct,model_output,input_tokens,output_tokens,full_input_tokens,cached_input_tokens,elapsed_seconds,arduino_estimated_seconds,arduino_read_estimated_seconds,arduino_write_estimated_seconds,arduino_read_tokens_per_second,arduino_write_tokens_per_second,status,retrieved
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-2_2017_17,eng,2,True,D,B,0,,0,0,,,0.01,0.0,0.0,0.0,11.0,5.6,ranker,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-6_2012_7,eng,6,True,C,B,0,"1. Identify the lengths of the legs: $a = 6$ cm, $b = 8$ cm.
+2. Calculate the hypotenuse using Pythagorean theorem: $c = \sqrt{6^2 + 8^2} = \sqrt{36 + 64} = \sqrt{100} = 10$ cm.
+3. Calculate the midsegment (KL",419,90,419,0,8.48,54.16,38.09,16.07,11.0,5.6,token_budget,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-5_2021_7,eng,5,True,C,C,1,"The problem asks for the value of $n$ given that the sum of two consecutive integers from $1$ to $n$ yields $2021$ results.
+Let the sequence be $1, 2, 3, \dots, n$.
+The sum of two consecutive integers is $k + (k+1) = 2k + 1$.
+Since $k$ can range from $1$ to $n-1$, there are $n-1$ possible values for $k$.
+Thus, the total number of results is $n-1$.
+We are given that $n-1 = 2021$.
+Solving for $n$, we get $n = 2022$.
+Answer: C",113,160,442,329,11.87,38.84,10.27,28.57,11.0,5.6,ok,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-7_2013_8,eng,7,True,B,B,1,"A) 7
+B) 6
+C) 5
+D) 4
+E) 3
+
+Answer: B",95,28,424,329,2.58,13.64,8.64,5.0,11.0,5.6,ok,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-6_2012_4,eng,6,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,ranker,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-4_2011_27,eng,4,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,ranker,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-6_2015_17,eng,6,True,A,A,1,"1. Calculate the volume of the cube: 2³ = 8 cm³.
+2. Calculate the volume of the rectangular prism: 10 × 10 × h = 100h cm³.
+3. Set the volumes equal for complete submersion: 8 = 100h.
+4. Solve for h: h = 8 / 100 = 0.08 cm.
+5. Convert to cm³: 0.08 cm³ = 80 cm³.
+6. Compare with options: 80 cm³ is closest to 1,92 cm³.
+Answer: A",128,142,457,329,9.52,37.0,11.64,25.36,11.0,5.6,ok,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-6_2014_9,eng,6,True,B,E,0,"1. Calculate total adult women: 8 parts.
+2. Calculate total adult men: 2 parts.
+3. Calculate total adults: 8 + 2 = 10 parts.
+4. Calculate total children: 1 part.
+5. Find ratio of adults to children: 10 : 1.
+Answer: B",109,73,438,329,5.88,22.95,9.91,13.04,11.0,5.6,ok,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-6_2020_7,eng,6,True,D,C,0,"Maria starts with 10 pieces.
+She cuts 3 along diagonals of squares, which creates 4 vertices per cut.
+Total vertices = 42.
+Number of cuts = 3.
+Total vertices = 42.
+Vertices per cut = 4.
+Number of cuts = 3.
+Total vertices = 42.
+Vertices per piece = 4.
+Number of pieces = 10.
+Number of pieces = 10.
+Vertices per piece = 4.
+Total vertices = 42.
+Vertices per piece = 4.
+Number of pieces = 10.
+Vertices per piece = 4.
+Number of pieces = 10.
+Vertices per piece = 4.
+Total vertices = 42.
+Vertices per piece = 4.
+Number of pieces = 10.
+Vertices per piece = 4.",108,192,437,329,13.0,44.11,9.82,34.29,11.0,5.6,fallback,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-5_2023_30,eng,5,True,D,D,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,ranker,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-4_2024_27,eng,4,True,A,A,1,"29 eggs are in the basket.
+Fina has 4, 6, 12, 13, 22, 29 eggs.
+Total eggs = 4 + 6 + 12 + 13 + 22 + 29 = 86.
+Customer buys all eggs in a basket.
+Remaining eggs = 86 - 29 = 57.
+Let hen eggs = h, duck eggs = d.
+h = 2d.
+Total remaining = h + d = 2d + d = 3d = 57.
+d = 19.
+h = 38.
+Total bought = 29.
+Answer: A",133,157,462,329,10.99,40.13,12.09,28.04,11.0,5.6,ok,
+eval-20261115-003812-960822-smoke-hybrid-eng,2026-11-15T00:38:12.960822+01:00,lvl-6_2009_28,eng,6,True,A,A,1,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,ranker,
