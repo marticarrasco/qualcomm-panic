@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#F5F8FD">
-<title>Pista · maths tutor</title>
+<title>Pista · Math Tutor</title>
 <style>
   /* Fonts ship with the tutor (tutor/static/fonts, SIL Open Font Licence): the page works offline on the board. */
   @font-face { font-family: "Bricolage"; src: url("/static/fonts/BricolageGrotesque-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
@@ -317,7 +317,7 @@
 <header class="top">
   <button class="brand" id="home" aria-label="Pista">
     <span class="mark" aria-hidden="true"><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
-    <b>Pista</b><small data-t="tagline"></small>
+    <b>Pista</b><small data-t="tagline" style="white-space:nowrap"></small>
   </button>
   <span id="who" class="who hidden"></span>
   <span class="seg" id="lang" role="group" aria-label="Language"><button data-lang="eng">EN</button><button data-lang="cat">CA</button></span>
@@ -435,7 +435,7 @@
 "use strict";
 const T = {
   eng: {
-    tagline: "maths tutor", teacher: "Teacher view",
+    tagline: "Math Tutor", teacher: "Teacher view",
     headline: 'Stuck? <span class="scrib">Good.</span> That is where the maths starts.',
     intro: "Read the problem, think, and choose A to E. If you are stuck, take a hint: each one helps a bit more, and none of them gives the answer away.",
     name: "Your name", topic: "What do you want to practise?", startLevel: "Where do you want to start?",
@@ -681,7 +681,7 @@ function drawLetters(p) {
     if (p.label === letter) cls = "right";
     else if (p.tried.includes(letter)) { cls = "wrong"; off = true; }
     else if (p.eliminated.includes(letter)) { cls = "out"; off = true; }
-    return `<button class="letter ${cls}" data-letter="${letter}" ${off ? "disabled" : ""}>${letter}<kbd>${letter}</kbd></button>`;
+    return `<button class="letter ${cls}" data-letter="${letter}" ${off ? "disabled" : ""}>${letter}</button>`;
   }).join("");
 }
 function drawNote(h, fresh) {
