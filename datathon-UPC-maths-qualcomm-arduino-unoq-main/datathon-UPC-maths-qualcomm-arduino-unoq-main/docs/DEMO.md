@@ -33,12 +33,12 @@ Open these links in two tabs before you start (replace the name each time):
 
 ## The numbers to say
 
-Fill in the two marked values from the latest run before the pitch (`results/` and `EXPERIMENTS.md`).
+From the laptop run of 15 November on the 281 English validation problems. Replace with the board run if it differs.
 
 - "The organizers' baseline is 22.5%, below always answering D."
 - "We measured first. The small model is at chance on these problems: one letter, bias correction, a bigger model, the picture. None of it helps. We tested eight models."
 - "So our solver does not trust it. A ranker fitted on M3Kang's training problems reads the options themselves, for example the right answer is rarely the smallest or the largest value, and the model is only asked when the ranker is unsure, with a hard 54-second budget."
-- "On validation problems the model never saw: **[X]%** against **[Y]%** for always-D, and no problem over 60 seconds."
+- "On validation problems the model never saw: **29.5%** against **23.1%** for always-D on every problem, and **35%** against **19.5%** on the text-only ones."
 - "In the tutor: across all 1,747 problems, a hint never eliminates the right answer and the answer never reaches the browser early. We checked every one in code."
 
 ## What we learned (pick two)

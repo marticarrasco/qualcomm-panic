@@ -150,6 +150,88 @@ About 5% of validation problems have an almost identical problem in train at ano
 - **A second attempt in the spare time** (`experiments/second_pass.py`): started, no conclusion.
 - **On the board**, the pipeline ran 80 problems of the old validation file before we stopped it: 26 right (32.5%), against 21 for always-D, mean about 18 s, worst 57.1 s.
 
+## 9. Error analysis of the current solver (15 November)
+
+Validation problems are held out by problem id, so none of them was used to fit anything. Run on a laptop with the same model file; board time is estimated from token counts with the speeds we measured on the board (11 tokens/s read, 5.6 written).
+
+| Set | Problems | Always D | Ours |
+| --- | --- | --- | --- |
+| English validation, every problem | 281 | 65 = 23.1% | **83 = 29.5%** (95% interval 24.5 to 35.1%) |
+| of which text-only | 123 | 19.5% | 43 = 35.0% |
+| of which need the picture | 158 | 25.9% | 40 = 25.3% |
+| Text-only with options, all languages (rows) | 2,961 | 682 = 23.0% | 1,176 = 39.7% |
+
+The organizers' baseline is 22.5% on 40 English text-only problems.
+
+Estimated board time on the English run: mean 13.4 s, 95th percentile 48.9 s. On the laptop 11 answers ran past what the board could write in 60 s; on the board the wall-clock deadline stops those and the ranker answers instead, so the board number can differ by a few problems. A timed run on the board is the last check before submission.
+
+The English validation run above (281 problems), broken down with `experiments/error_analysis.py`. "Always D" is the same rows scored with a constant answer, so a group that is easy to guess does not look like skill. Groups under about 30 problems are too small to rank.
+
+**By how the answer was produced**
+
+| Group | Problems | Right | Accuracy | 95% interval | Always D |
+| --- | --- | --- | --- | --- | --- |
+| prior | 95 | 28 | 29.5% | 21 to 39% | 27.4% |
+| ok | 83 | 18 | 21.7% | 14 to 32% | 19.3% |
+| ranker | 75 | 27 | 36.0% | 26 to 47% | 20.0% |
+| fallback | 23 | 5 | 21.7% | 10 to 42% | 30.4% |
+| train_match | 5 | 5 | 100.0% | 57 to 100% | 20.0% |
+
+`ranker` and `prior` use no model. `ok` is the model finishing its reasoning; `fallback` is the model running out of time. `train_match` is a near-identical training problem whose answer value is copied.
+
+**By level** (0 is the youngest)
+
+| Group | Problems | Right | Accuracy | 95% interval | Always D |
+| --- | --- | --- | --- | --- | --- |
+| 0 | 20 | 4 | 20.0% | 8 to 42% | 45.0% |
+| 1 | 17 | 8 | 47.1% | 26 to 69% | 35.3% |
+| 2 | 29 | 8 | 27.6% | 15 to 46% | 31.0% |
+| 3 | 12 | 2 | 16.7% | 5 to 45% | 25.0% |
+| 4 | 62 | 22 | 35.5% | 25 to 48% | 19.4% |
+| 5 | 53 | 14 | 26.4% | 16 to 40% | 18.9% |
+| 6 | 49 | 15 | 30.6% | 20 to 45% | 18.4% |
+| 7 | 39 | 10 | 25.6% | 15 to 41% | 17.9% |
+
+**By topic** (keyword rules, about 70% accurate on a hand check of 30)
+
+| Group | Problems | Right | Accuracy | 95% interval | Always D |
+| --- | --- | --- | --- | --- | --- |
+| Geometry: area, perimeter, angles | 83 | 15 | 18.1% | 11 to 28% | 24.1% |
+| Shapes, solids & spatial puzzles | 56 | 21 | 37.5% | 26 to 51% | 28.6% |
+| Arithmetic & word problems | 49 | 12 | 24.5% | 15 to 38% | 20.4% |
+| Number properties | 28 | 13 | 46.4% | 30 to 64% | 25.0% |
+| Counting & probability | 15 | 4 | 26.7% | 11 to 52% | 20.0% |
+| Logic & strategy | 14 | 7 | 50.0% | 27 to 73% | 21.4% |
+| Time, money & measures | 13 | 5 | 38.5% | 18 to 64% | 23.1% |
+| Fractions & percentages | 11 | 2 | 18.2% | 5 to 48% | 0.0% |
+| Algebra & functions | 7 | 3 | 42.9% | 16 to 75% | 28.6% |
+| Patterns & sequences | 5 | 1 | 20.0% | 4 to 62% | 20.0% |
+
+**By whether the problem needs its picture**
+
+| Group | Problems | Right | Accuracy | 95% interval | Always D |
+| --- | --- | --- | --- | --- | --- |
+| needs the picture | 158 | 40 | 25.3% | 19 to 33% | 25.9% |
+| text only | 123 | 43 | 35.0% | 27 to 44% | 19.5% |
+
+**By kind of options**
+
+| Group | Problems | Right | Accuracy | 95% interval | Always D |
+| --- | --- | --- | --- | --- | --- |
+| numbers, in order | 82 | 23 | 28.0% | 19 to 39% | 29.3% |
+| no options | 72 | 20 | 27.8% | 19 to 39% | 27.8% |
+| numbers, out of order | 64 | 27 | 42.2% | 31 to 54% | 15.6% |
+| text options | 63 | 13 | 20.6% | 12 to 32% | 17.5% |
+
+What the tables say:
+
+- The gain comes from the options, not from the model. Where the model finishes its reasoning it is right 21.7% of the time (18 of 83), close to always-D on the same rows; the ranker is right 36%.
+- Text-only problems gain 15 points over always-D. Problems that need the picture gain nothing: the solver cannot see the figure, and the vision model made things worse.
+- Numbers printed out of order are the best case (42% against 16%): there the position of the letter says nothing and the value says a lot.
+- Geometry with measurements is the weakest topic and is below always-D: those problems depend on the figure.
+- Levels 0 to 3 are below always-D on this sample. They have the most picture problems, and D happens to be common there.
+- By language we only have the text-only cohort so far (39.7% over 2,961 rows in many languages); a per-language table is still to do.
+
 ## What did not work
 
 - One-letter answers, with or without bias correction.
