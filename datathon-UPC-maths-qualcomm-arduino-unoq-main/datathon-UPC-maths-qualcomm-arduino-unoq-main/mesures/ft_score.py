@@ -97,7 +97,7 @@ def mcnemar(b, c):
 SETS = {"val": os.path.join(ROOT, "data", "val.jsonl"), "demo": os.path.join(ROOT, "data", "demo", "train.jsonl")}
 problems = {name: {(r["id"], r["language"]): r for r in load(path)} for name, path in SETS.items()}
 gen = {}
-for tag in ("stock", "ft1", "ft2", "ft3"):
+for tag in ("stock", "ft1", "ft2", "ft3", "ft4"):
     for name in SETS:
         path = os.path.join(HERE, f"ft-{tag}-{name}.jsonl")
         if os.path.exists(path):
@@ -121,7 +121,7 @@ print("GREEDY, ONE PROGRAM. Laptop, llama.cpp 9d25e00 (the board runs 2cbe0ec): 
 for name in SETS:
     allrows = problems[name]
     print(f"\n--- {name}: {len(allrows)} rows, {len({k[0] for k in allrows})} problems ---")
-    for tag in ("stock", "ft1", "ft2", "ft3"):
+    for tag in ("stock", "ft1", "ft2", "ft3", "ft4"):
         if (tag, name) not in gen:
             continue
         rows = gen[(tag, name)]
@@ -155,7 +155,7 @@ for name in SETS:
 print("\n" + "=" * 100)
 print("PAIRED, same rows, smart sandbox: rows only the first gets right / only the second (exact McNemar p)")
 for name in SETS:
-    for a, b in (("ft2", "ft3"), ("ft2", "ft1"), ("ft1", "ft3"), ("ft2", "stock"), ("ft3", "stock")):
+    for a, b in (("ft2", "ft3"), ("ft2", "ft1"), ("ft1", "ft3"), ("ft2", "stock"), ("ft3", "stock"), ("ft4", "ft1"), ("ft4", "ft2"), ("ft4", "ft3")):
         if (a, name, "smart") not in verdict or (b, name, "smart") not in verdict:
             continue
         va, vb = verdict[(a, name, "smart")], verdict[(b, name, "smart")]

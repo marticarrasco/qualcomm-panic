@@ -33,12 +33,33 @@ s'utilitza D com a resposta de reserva si el programa no coincideix amb cap opci
 | v1 | 15 / 8 | 32 % | 21 / 16 | 26.0 % | 65 % |
 | v2 | 21 / 12 | **39 %** | 8 / 20 | 23.8 % | 64 % |
 | v3 | 14 / 10 | 32 % | 17 / 27 | 24.6 % | 58 % |
-| v4 | **pendent de mesurar amb aquest script** (la tria d'epoch es va fer a Kaggle sobre val) | | | | |
+| **v4** | **24 / 8** | **42 %** | 16 / 6 | 25.3 % | **75 %** |
+
+Puntuació "esperada" del notebook de la v4 (`encerts - errors/4`, una resposta errònia costa més que no respondre):
+
+| Model | demo | val |
+|---|---|---|
+| v1 | 13.0 | **17.0** |
+| v2 | 18.0 | 3.0 |
+| v3 | 11.5 | 10.3 |
+| **v4** | **22.0** | 14.5 |
+
+Sobre la v4 (fitxers `APP/mesures/eval_{demo,val}_epoch1.jsonl`, generats a Kaggle i re-executats aquí amb el
+mateix sandbox com a `ft-ft4-*.jsonl`; Kaggle donava 25 encerts a demo, aquí 24):
+- **És la millor a demo**: 42 % amb D de reserva (v2: 39 %), 17 problemes de 50 resolts pel programa. Guanya la v3
+  de forma significativa (14 files contra 4, p = 0.03) i la v1 gairebé (13 contra 4, p = 0.05).
+- **Gairebé no s'equivoca quan respon**: a val, 6 errors contra 16 de la v1 i 27 de la v3, precisió 73 % (v1: 57 %).
+  A demo, precisió 75 %. Útil per a un copilot: quan diu una lletra, és fiable.
+- Puja a nivells alts a demo (nivell 7: 5 de 8 bé, 0 malament).
+- A val fa una mica menys encerts que la v1 (16 contra 21, diferència no significativa, p = 0.40).
+- Matís honest: l'epoch 1 es va triar mirant val, així que el val de la v4 és lleugerament optimista; demo no es va
+  fer servir per triar res.
+- Temps estimat a la placa: 14 s de mitjana a demo, pitjor cas 29 s.
 
 Lectures clau per a la presentació:
 - El fine-tuning fa que el model **intenti** molts més problemes (val: de 39 a 163 preguntes amb programa) i que,
   quan el programa coincideix amb una opció, encerti amb molta més freqüència (precisió ~60 % a demo).
-- v2 és la millor a demo però la pitjor a val; v1 és la més estable (val: v1 guanya v2 amb p = 0.01, McNemar).
+- Abans de la v4, v2 era la millor a demo però la pitjor a val; v1 era la més estable (val: v1 guanya v2 amb p = 0.01, McNemar).
   Demo només té 50 problemes: les diferències entre versions són petites i sorolloses.
 - La majoria de fallades són "el programa imprimeix un número que no és cap opció" (no errors de Python).
 - Combinar models (dos d'acord) dona encerts molt fiables: demo v1+v2+v3, quan dos coincideixen: 18 bé / 3 malament.
