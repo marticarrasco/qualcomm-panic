@@ -94,8 +94,8 @@ if [ -z "${TUTOR_FLAGS:-}" ]; then
     TUTOR_FLAGS=""
   elif [ -n "$COACH" ] && adb shell "[ -x $LLAMA ]" 2>/dev/null; then
     adb shell "pkill -f '[l]lama-server.*--port 8084'" >/dev/null 2>&1 || true  # its own call: the next one names the same command
-    adb shell "nohup $LLAMA -m $COACH --host 127.0.0.1 --port 8084 --threads 4 --ctx-size 4096 --parallel 1 --cache-ram 0 --jinja --reasoning off --reasoning-budget 0 > $BOARD_DIR/coach.log 2>&1 < /dev/null &
-for i in \$(seq 60); do curl -sf -m 2 http://127.0.0.1:8084/health >/dev/null && break; sleep 2; done; curl -s -m 2 http://127.0.0.1:8084/health; echo; free -m | awk 'NR==2 {print \"  RAM available: \" \$7 \" MB\"}'"
+    adb shell "nohup $LLAMA -m $COACH --host 127.0.0.1 --port 8084 --threads 4 --ctx-size 4096 --parallel 1 --cache-ram 0 --jinja --reasoning off --reasoning-budget 0 > $BOARD_DIR/coach.log 2>&1 < /dev/null" < /dev/null > /dev/null 2>&1 &  # adb stays attached to the server, so it runs in the background here
+    adb shell "for i in \$(seq 60); do curl -sf -m 2 http://127.0.0.1:8084/health >/dev/null && break; sleep 2; done; curl -s -m 2 http://127.0.0.1:8084/health; echo; free -m | awk 'NR==2 {print \"  RAM available: \" \$7 \" MB\"}'"
     TUTOR_FLAGS="--llm http://127.0.0.1:8084/v1/chat/completions"
   else
     echo "  No stock model on the board for coaching: the tutor runs without model help."
@@ -104,8 +104,8 @@ for i in \$(seq 60); do curl -sf -m 2 http://127.0.0.1:8084/health >/dev/null &&
 fi
 echo "  tutor flags: ${TUTOR_FLAGS:-(default, port 8081)}"
 adb shell "pkill -f '[t]utor/server.py'" >/dev/null 2>&1 || true
-adb shell "cd $BOARD_DIR && nohup python3 tutor/server.py --host 0.0.0.0 ${TUTOR_FLAGS:-} > tutor.log 2>&1 < /dev/null &
-sleep 4; head -4 $BOARD_DIR/tutor.log; curl -s -m 5 http://127.0.0.1:8000/api/matrix; echo"
+adb shell "cd $BOARD_DIR && nohup python3 tutor/server.py --host 0.0.0.0 ${TUTOR_FLAGS:-} > tutor.log 2>&1 < /dev/null" < /dev/null > /dev/null 2>&1 &
+adb shell "sleep 4; head -4 $BOARD_DIR/tutor.log; curl -s -m 5 http://127.0.0.1:8000/api/matrix; echo"
 echo "  Stop the coaching model before the official predict.py run, so it has the whole board:"
 echo "    adb shell \"pkill -f '[l]lama-server.*--port 8084'\""
 
@@ -116,7 +116,7 @@ if [ -d applab/math-matrix ]; then
   adb push applab/math-matrix/python/main.py /home/arduino/ArduinoApps/math-matrix/python/main.py >/dev/null
   adb push applab/math-matrix/sketch/sketch.ino /home/arduino/ArduinoApps/math-matrix/sketch/sketch.ino >/dev/null
   adb push applab/math-matrix/sketch/sketch.yaml /home/arduino/ArduinoApps/math-matrix/sketch/sketch.yaml >/dev/null
-  adb shell 'arduino-app-cli app restart user:math-matrix >/dev/null 2>&1 || arduino-app-cli app start user:math-matrix >/dev/null 2>&1; arduino-app-cli app ps 2>&1 | tail -1'
+  adb shell 'timeout 300 arduino-app-cli app restart user:math-matrix >/dev/null 2>&1 || timeout 300 arduino-app-cli app start user:math-matrix >/dev/null 2>&1; timeout 20 arduino-app-cli app ps 2>&1 | tail -1' < /dev/null
 fi
 
 step "Open the tutor on this laptop"
