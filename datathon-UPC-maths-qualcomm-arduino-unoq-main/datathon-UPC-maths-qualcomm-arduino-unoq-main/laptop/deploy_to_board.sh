@@ -62,18 +62,14 @@ if [ -f "$POT_GGUF" ]; then
 else
   echo "  No $POT_GGUF on this laptop: the board keeps the model it has."
 fi
-LOADED="$(adb shell "curl -s -m 5 http://127.0.0.1:8081/props | python3 -c 'import json,sys; print(json.load(sys.stdin).get(\"model_path\",\"\"))' 2>/dev/null" | tr -d '\r\n')"
-WANTED="$(adb shell "cd $BOARD_DIR && . ./config.env && echo \$LLM_FILE" | tr -d '\r\n')"
+# The service keeps its file name; that name becomes a link to the model we want. This needs
+# no sudo: llama-server runs as the arduino user, and systemd restarts it when it is killed.
+SERVICE_PATH="$(adb shell "curl -s -m 5 http://127.0.0.1:8081/props | python3 -c 'import json,sys; print(json.load(sys.stdin).get(\"model_path\",\"\"))' 2>/dev/null" | tr -d '\r\n')"
+LOADED="$(adb shell "readlink -f '$SERVICE_PATH' 2>/dev/null" | tr -d '\r\n')"
 echo "  math-llm has loaded: ${LOADED:-nothing}"
-if [ "$(basename "${LOADED:-x}")" != "$WANTED" ]; then
-  echo "  Switching math-llm to $WANTED"
-  if adb shell 'sudo -n true' >/dev/null 2>&1; then
-    adb shell "cd $BOARD_DIR && bash board/04_install_services.sh 2>&1 | tail -6"
-  else
-    echo "  sudo on the board asks for a password. Run this, then run this script again:"
-    echo "    adb shell -t 'cd $BOARD_DIR && bash board/04_install_services.sh'"
-    exit 1
-  fi
+if [ -f "$POT_GGUF" ] && [ -n "$SERVICE_PATH" ] && [ "$(basename "${LOADED:-x}")" != "$POT_FILE" ]; then
+  echo "  Switching math-llm to $POT_FILE"
+  adb shell "cd ~/models && if [ ! -L '$SERVICE_PATH' ]; then mv '$SERVICE_PATH' '$SERVICE_PATH.stock'; fi; ln -sfn /home/arduino/models/$POT_FILE '$SERVICE_PATH' && pkill -9 -f '[l]lama-server.*--port 8081'; for i in \$(seq 90); do sleep 2; curl -sf -m 2 http://127.0.0.1:8081/health >/dev/null && break; done; curl -s -m 2 http://127.0.0.1:8081/health; echo"
 fi
 adb shell "cd $BOARD_DIR && python3 -c 'from copilot.llm import pot_style; print(\"  prompt style:\", pot_style())'"
 
@@ -91,13 +87,14 @@ PY"
 step "Tutor"
 # The solver's model on port 8081 is fine-tuned to write Python, so it cannot coach.
 # The tutor gets its own copy of the stock model on port 8084 when the file is on the board.
-COACH=/home/arduino/models/Qwen_Qwen3.5-0.8B-Q8_0.gguf
+COACH="$(adb shell 'for f in ~/models/Qwen_Qwen3.5-0.8B-Q8_0.gguf*; do [ -f "$f" ] && [ ! -L "$f" ] && echo "$f" && break; done' | tr -d '\r\n')"
 LLAMA="$(adb shell '. ~/qp/config.env; echo ${LLAMA_CPP_DIR/#\~/$HOME}/build/bin/llama-server' | tr -d '\r\n')"
 if [ -z "${TUTOR_FLAGS:-}" ]; then
-  if [ "$(basename "${LOADED:-x}")" = "$(basename "$COACH")" ] && [ "$WANTED" = "$(basename "$COACH")" ]; then
+  if [ -n "$COACH" ] && [ "$LOADED" = "$COACH" ]; then
     TUTOR_FLAGS=""
-  elif adb shell "[ -f $COACH ] && [ -x $LLAMA ]" 2>/dev/null; then
-    adb shell "pkill -f 'llama-server.*--port 8084' 2>/dev/null; nohup $LLAMA -m $COACH --host 127.0.0.1 --port 8084 --threads 4 --ctx-size 4096 --parallel 1 --cache-ram 0 --jinja --reasoning off --reasoning-budget 0 > $BOARD_DIR/coach.log 2>&1 &
+  elif [ -n "$COACH" ] && adb shell "[ -x $LLAMA ]" 2>/dev/null; then
+    adb shell "pkill -f '[l]lama-server.*--port 8084'" >/dev/null 2>&1 || true  # its own call: the next one names the same command
+    adb shell "nohup $LLAMA -m $COACH --host 127.0.0.1 --port 8084 --threads 4 --ctx-size 4096 --parallel 1 --cache-ram 0 --jinja --reasoning off --reasoning-budget 0 > $BOARD_DIR/coach.log 2>&1 < /dev/null &
 for i in \$(seq 60); do curl -sf -m 2 http://127.0.0.1:8084/health >/dev/null && break; sleep 2; done; curl -s -m 2 http://127.0.0.1:8084/health; echo; free -m | awk 'NR==2 {print \"  RAM available: \" \$7 \" MB\"}'"
     TUTOR_FLAGS="--llm http://127.0.0.1:8084/v1/chat/completions"
   else
@@ -106,10 +103,11 @@ for i in \$(seq 60); do curl -sf -m 2 http://127.0.0.1:8084/health >/dev/null &&
   fi
 fi
 echo "  tutor flags: ${TUTOR_FLAGS:-(default, port 8081)}"
-adb shell "pkill -f 'tutor/server.py' 2>/dev/null; cd $BOARD_DIR && nohup python3 tutor/server.py --host 0.0.0.0 ${TUTOR_FLAGS:-} > tutor.log 2>&1 &
+adb shell "pkill -f '[t]utor/server.py'" >/dev/null 2>&1 || true
+adb shell "cd $BOARD_DIR && nohup python3 tutor/server.py --host 0.0.0.0 ${TUTOR_FLAGS:-} > tutor.log 2>&1 < /dev/null &
 sleep 4; head -4 $BOARD_DIR/tutor.log; curl -s -m 5 http://127.0.0.1:8000/api/matrix; echo"
 echo "  Stop the coaching model before the official predict.py run, so it has the whole board:"
-echo "    adb shell \"pkill -f 'llama-server.*--port 8084'\""
+echo "    adb shell \"pkill -f '[l]lama-server.*--port 8084'\""
 
 step "LED matrix app"
 if [ -d applab/math-matrix ]; then

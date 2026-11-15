@@ -237,6 +237,9 @@ def pot_style(url=URL):
             import urllib.request
             with urllib.request.urlopen(url.split("/v1/")[0] + "/props", timeout=5) as response:
                 name = json.load(response).get("model_path") or name
+            # On the board the service's file name can be a link to the fine-tuned model.
+            import os
+            name = os.path.realpath(name) if os.path.exists(name) else name
         except Exception:
             pass  # server too old or not reachable: trust config.env
         _POT_STYLE[url] = "finetuned" if "m3kang-pot" in name.lower() else "fewshot"
