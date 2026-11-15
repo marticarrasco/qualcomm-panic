@@ -20,6 +20,29 @@ from copilot.config import CONFIG
 from copilot.pipeline import batch_solver
 
 
+def wait_for_model(seconds=180):
+    """After a reboot the model takes a while to load. Starting before it is ready would
+    turn the first answers into fallbacks, so wait here, outside the per-problem time."""
+    import time
+    import urllib.request
+    url = f"http://127.0.0.1:{CONFIG['LLM_PORT']}/health"
+    deadline = time.monotonic() + seconds
+    told = False
+    while time.monotonic() < deadline:
+        try:
+            with urllib.request.urlopen(url, timeout=3) as response:
+                if response.status == 200:
+                    return True
+        except OSError:
+            pass
+        if not told:
+            print("Waiting for the model server to be ready...", file=sys.stderr)
+            told = True
+        time.sleep(2)
+    print("The model server did not answer: continuing, problems will get the fallback answer.", file=sys.stderr)
+    return False
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--input", required=True)
@@ -35,6 +58,8 @@ def main():
         from copilot.rag import Index
         index = Index(args.index)
 
+    wait_for_model()
+    os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
     with open(args.input, encoding="utf-8-sig") as f:
         problems = [json.loads(line) for line in f if line.strip()]
     solve = batch_solver(problems)
