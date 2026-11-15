@@ -8,3 +8,6 @@ time,name,commit,input,languages,n,rag_k,accuracy,mean_s,worst_s,over_limit
 20261114-192233-452410,mac-budget-prior-fullval,f8426a9,data/val.jsonl,all,275,0,29.1,5.4,25.2,0
 20261114-202718-332527,val-text-only-300 [interrupted],e5d3ea5,data/eval_sets/val_300.jsonl,all,35,0,17.1,6.2,8.1,0
 20261114-203146-318438,budget-newval-eng,9432a0e,data/val.jsonl,eng,281,0,28.8,3.8,16.4,0
+20261115-003812-960822,smoke-hybrid-eng [text-only],cccb9ed,data/eval_sets/val_text_only_all.jsonl,eng,12,0,58.3,5.2,13.0,0
+20261115-003923-743355,eng-text-only-hybrid-default [text-only],cccb9ed,data/eval_sets/val_text_only_all.jsonl,eng,121,0,36.4,3.2,15.3,0
+20261115-004604-263195,eng-text-only-ranker-only [text-only],cccb9ed,data/eval_sets/val_text_only_all.jsonl,eng,121,0,33.1,0.0,0.0,0

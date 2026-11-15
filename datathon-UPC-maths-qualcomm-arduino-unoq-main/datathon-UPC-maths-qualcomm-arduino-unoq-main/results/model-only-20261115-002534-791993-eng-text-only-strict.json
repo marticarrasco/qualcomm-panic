@@ -1,0 +1,101 @@
+{
+  "eval_id": "model-only-20261115-002534-791993-eng-text-only-strict",
+  "name": "eng-text-only-strict",
+  "status": "completed",
+  "started_at": "2026-11-15T00:25:34.791993+01:00",
+  "finished_at": "2026-11-15T00:34:08.618740+01:00",
+  "input": "data/eval_sets/val_text_only_all.jsonl",
+  "languages": [
+    "eng"
+  ],
+  "text_only": true,
+  "limit": 0,
+  "offset": 0,
+  "max_tokens": 128,
+  "prompt": "strict",
+  "grammar": null,
+  "prompt_suffix": "\n\nOne sentence of reasoning (max 25 words), then 'Answer: X'.",
+  "served_models": "qwen3.5-0.8b",
+  "llm_port": 8081,
+  "planned_problems": 121,
+  "completed_problems": 121,
+  "system_prompt": "You answer multiple-choice math competition questions. For each question: write ONE short sentence of reasoning (maximum 25 words), then a new line exactly 'Answer: X' where X is the correct option letter A, B, C, D or E. Never write more than one sentence. Never repeat the question. No other text.\n\nExample 1:\n7 pens cost $21. How much do 5 pens cost? A) 10 B) 15 C) 20 D) 25 E) 30\nOne pen costs $3, so five pens cost $15, option B.\nAnswer: B\n\nExample 2:\nA square has perimeter 36. What is its area? A) 18 B) 36 C) 72 D) 81 E) 144\nThe side is 36/4=9, so the area is 9*9=81, option D.\nAnswer: D",
+  "summary": {
+    "correct": 37,
+    "total": 121,
+    "accuracy_percent": 30.58,
+    "mean_elapsed_seconds": 4.24,
+    "mean_prompt_tokens": 122.6,
+    "mean_output_tokens": 57.4,
+    "total_output_tokens": 6942,
+    "status": {
+      "ok": 114,
+      "no_answer": 7
+    },
+    "sentences": {
+      "2": 33,
+      "3": 18,
+      "1": 56,
+      "4": 8,
+      "5": 3,
+      "0": 3
+    },
+    "predicted_letters": {
+      "C": 29,
+      "D": 23,
+      "B": 13,
+      "A": 42,
+      "": 7,
+      "E": 7
+    },
+    "true_letters": {
+      "C": 18,
+      "D": 24,
+      "B": 27,
+      "A": 28,
+      "E": 24
+    },
+    "by_level": {
+      "0": {
+        "correct": 2,
+        "total": 4,
+        "accuracy_percent": 50.0
+      },
+      "1": {
+        "correct": 2,
+        "total": 4,
+        "accuracy_percent": 50.0
+      },
+      "2": {
+        "correct": 0,
+        "total": 6,
+        "accuracy_percent": 0.0
+      },
+      "3": {
+        "correct": 2,
+        "total": 6,
+        "accuracy_percent": 33.33
+      },
+      "4": {
+        "correct": 8,
+        "total": 28,
+        "accuracy_percent": 28.57
+      },
+      "5": {
+        "correct": 10,
+        "total": 30,
+        "accuracy_percent": 33.33
+      },
+      "6": {
+        "correct": 5,
+        "total": 26,
+        "accuracy_percent": 19.23
+      },
+      "7": {
+        "correct": 8,
+        "total": 17,
+        "accuracy_percent": 47.06
+      }
+    }
+  }
+}

@@ -11,6 +11,9 @@ and every teaching decision is a plain rule you can read in `tutor.py`.
 
 ## Run it
 
+For a self-contained bilingual demo with one fictional profile, run
+`python3 tutor/server.py --demo`. [Architecture and demo script in Catalan](DEMO.md).
+
 From the project folder:
 
 ```bash
@@ -23,7 +26,7 @@ python3 tutor/simulate.py              # simulated students and safety checks
 ```
 
 - `build_bank.py --check 30` also prints 30 random problems with their topic and the keywords that fired.
-- `server.py --no-llm` leaves out the optional model sentence (rung 4). Everything else works without any model server.
+- `server.py --no-llm` uses fallback hints for the chat and the first hint button.
 - `server.py --students PATH` chooses where student profiles are kept (default `data/tutor_students.db`).
 - A link such as `/?name=Aina&lang=cat&topic=counting&level=2` starts a session directly.
 - Keyboard: `A`–`E` answer, `H` hint, `N` next problem, `Esc` closes the enlarged picture.
@@ -42,9 +45,8 @@ Licence, shipped in `static/fonts` so the page works offline on the board.
 - **Problem first.** The problem picture spans the full width so its text stays
   readable. On a phone, tapping it opens it full screen, turned sideways so the
   wide strip uses the long side of the screen.
-- **The hint ladder** is drawn as a ladder: each rung unlocks in order and its hint
-  appears on the rung, so the student sees how much help they have used. Rung 4 is
-  crossed out when it cannot exist (picture problem, or the model is off).
+- **The hint ladder** shows help in order. The first hint also launches a new
+  model-written hint in the chat panel.
 - **The warm-up problem** (rung 2) appears full width under the student's problem,
   not squeezed into the ladder.
 - **The board's LED matrix, mirrored.** A live 8x13 copy of what the LED app draws
@@ -94,19 +96,16 @@ Each student has one level (0–7) per topic. No model is involved.
 
 Each rung reveals more than the one before. Only the last one shows the answer.
 
-1. **A question to start.** A guiding question about this problem, written by the AI
-   (Qwen3.5 2B, the model file that also runs on the board), followed by a method tip for
-   the topic, written by hand. The questions are written ahead of time by
-   `write_questions.py`, because the board writes about 2.5 tokens a second with the 2B model,
-   too slow to wait for. Each one must pass `check_question()`: one short question, no answer
-   words, no option letter, not the correct option's value, no number that is not in the
-   problem, not a copy of the problem's own question, nothing borrowed from the prompt's
-   examples. Up to three tries per problem; if none passes, the rung shows the tip alone.
-   The page labels the question as written by the AI and says it may not always fit.
+1. **A question to start.** The tutor shows a method tip immediately and asks
+   the local model to draft a short hint for the current exercise. The chat also
+   accepts follow-up questions. The model receives the exercise with numeric
+   values masked and the previous hint when available. The tutor checks the
+   generated text for answer markers, values and repetitions, and shows a
+   labelled fallback when the model call or the checks fail. A bank may also
+   include a guiding question prepared with `write_questions.py`.
 2. **A similar problem.** The closest easier problem of the same topic from the bank, shown as an image, with "solve this one first; the same idea works". Its answer appears only on a click. (At level 0 there is no easier one, so it is a similar problem of the same level.)
 3. **Rule two out.** Two letters that are not correct, chosen from the label by a fixed rule. Never the right letter, never one already tried, and at least two letters always stay open.
-4. **A first step (optional).** One sentence from the small model about how to start. It is written in a background thread when the student takes the first hint, stored in the student database, and shown only if it passes a code check: one short sentence, no "answer", no option letter ("A)", "option C"), not the correct option's value when the OCR options are known, and no number that is not already in the problem. For picture problems the model cannot see the figure, so this rung does not exist. If the model is off, slow or fails the check, the rung is simply absent; the page never waits.
-5. **The answer.** Only after "Show me the answer" and a confirmation. Counted as not solved, and the next problem is easier.
+4. **The answer.** Only after "Show me the answer" and a confirmation. Counted as not solved, and the next problem is easier.
 
 After a wrong answer the page says it is not right, crosses out that letter and offers the next hint. It never shows the answer.
 
@@ -174,7 +173,7 @@ On the development Mac (Python 3.14), 14 November 2026. Not yet measured on the 
 - "On topic" below 100% is the bank running dry: Counting has 25 problems at levels 0–2 and Number properties 24, fewer than a 30-problem session.
 - Rung 3: 19,217 cases over all 1,747 problems, the right letter was never crossed out.
 - API: one simulated student walked through 1,221 different problems over HTTP (the others were used as rung-2 examples or are near-duplicates), 8,245 replies, none contained the answer letter before the problem was solved or the answer was asked for.
-- Rung 4 on six text problems with the real model: five sentences passed the filter and one was rejected (it stated a result); about 1 s each on the Mac.
+- The earlier prototype's optional model sentence passed the filter on five of six text problems at about 1 s each on the Mac.
 
 **Rung-1 questions, checked by hand** (30 random problems, both languages, seed 7):
 
@@ -191,7 +190,7 @@ the total length around the outside?".
 
 ## Limitations
 
-- **Not run on the board yet.** The timings above are from a laptop. The model sentence will take roughly 20–30 s on the board; it is generated in the background and skipped if it is not ready.
+- **Not run on the board yet.** The timings above are from a laptop. Live hints are generated in the background and fall back if the model call times out.
 - **About one AI question in five points the wrong way**, and some only repeat the problem.
   The filter stops leaks, not bad advice. The page says so next to every question, and the
   hand-written method tip is always shown below it.
@@ -200,9 +199,9 @@ the total length around the outside?".
 - **Topics are keyword guesses**, about 70% right on a hand check. A wrong topic means the method tip may not fit and the "similar problem" stays within the wrong topic.
 - **Small topics run dry.** Patterns (34 problems), Algebra (49, none below level 4) and Fractions (74) cannot fill a long session at one level; the tutor then serves another topic.
 - **The similar problem is similar in wording**, found with text embeddings. For picture problems with a short question ("Which piece is missing?") it may share little with the figure.
-- **The model sentence can be unhelpful or wrong.** The filter stops it from giving away an answer; it cannot check that the advice is good. The page labels it as a suggestion from the small model. Use `--no-llm` to switch it off.
+- **A generated hint can be unhelpful or wrong.** Text checks catch common ways of revealing an answer. Use `--no-llm` to use the fallback hints.
 - **Rung 3 does not explain why** the two letters are wrong; it only names them.
 - **The level estimate is a simple staircase**: one lucky or unlucky answer moves it by one level.
 - **Students are identified by name only**, with no password. Two students who type the same name share a profile.
-- **The OCR options are used only inside the rung-4 filter**, never shown, because they are missing for about 40% of problems and may contain errors.
+- **The OCR options help check generated hints.** The original image is the source for the options shown to students in the M3Kang bank.
 - **Licence.** M3Kang is for research use only. Problem text exists only in `data/tutor.db`, never in the source files.

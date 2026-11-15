@@ -45,20 +45,11 @@ THINK = ("Solve the math problem. Work it out using as few tokens as possible. "
          "After your working, write exactly Answer: X with the correct option letter.")
 THINK_PICK = ("Solve this math contest problem. Reason briefly, then output the letter "
               "of the correct option with no other visible text.")
-RETRIEVED = ("You solve multiple-choice math competition problems for school students. "
-             "If solved examples are shown, use one only when its mathematical method applies; "
-             "never copy its letter. Solve the new problem: write one short calculation or "
-             "deduction, then finish with exactly 'Answer: X' using the correct option letter A–E.")
 CALC_FIRST = """Solve the math problem. Reply with Calc: followed by one arithmetic expression that gives the answer in the units of the options. Use + - * / **, parentheses and optionally gcd, lcm, comb, perm or factorial. For problems that cannot be expressed that way, reply Answer: followed by the correct choice.
 Equal split of 87 sweets among 3 children: Calc: 87/3
 Maximum area of a rectangle with perimeter 24: Calc: (24/4)**2
 Ways to select a team of 3 from 7: Calc: comb(7,3)
 Which option is a square? A) triangle B) circle C) square: Answer: C"""
-def retrieved_grammar(max_chars=240):
-    """One bounded work line, then a forced A-E answer."""
-    max_chars = max(0, min(2000, int(max_chars)))
-    return (f'root ::= work "Answer: " [A-E]\n'
-            f'work ::= [^\\n]{{0,{max_chars}}} "\\n"\n')
 CALC_GRAMMAR = r'''
 root ::= "Calc: " expr | "Answer: " [A-E]
 expr ::= term (space ("**" | [-+*/]) space term){0,20}
@@ -77,27 +68,12 @@ Answer: E
 Continue with calculations or brief deductions, then Answer: X. Work in any language."""
 PROMPTS = {"shots": reasoner.SYSTEM, "short": SHORT, "formula": FORMULA, "value": VALUE,
            "brief": BRIEF, "pick": PICK, "think": THINK, "calc": CALC_FIRST,
-           "compact": COMPACT, "think-pick": THINK_PICK, "retrieved": RETRIEVED}
+           "compact": COMPACT, "think-pick": THINK_PICK}
 FINAL = re.compile(
     r"(?im)^\s*(?:\*{1,2})?(?:final answer|answer|resposta|respuesta|réponse|antwort)"
     r"(?:\*{1,2})?\s*[:：]\s*(?:\*{1,2})?\(?([A-E])\b"
 )
 CALC = re.compile(r"(?im)^\s*Calc\s*[:：]\s*([^\r\n]{1,160})(?:\r?\n|\Z)")
-
-
-def format_example(example, max_chars=0):
-    """A retrieved example, optionally shortened so it fits the board budget."""
-    if not max_chars:
-        return f"{format_problem(example)}\nAnswer: {example['label']}"
-    text = " ".join(str(example.get("text", "")).split())
-    if len(text) > max_chars:
-        text = text[:max_chars].rsplit(" ", 1)[0].rstrip() + " …"
-    lines = [text]
-    for letter in "ABCDE":
-        if letter in (example.get("options") or {}):
-            lines.append(f"{letter}) {example['options'][letter]}")
-    lines.append(f"Answer: {example['label']}")
-    return "\n".join(lines)
 
 
 def decode(output, options, final_chunk=False):
@@ -119,7 +95,7 @@ def decode(output, options, final_chunk=False):
 
 
 def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=(),
-          board_budget=None, example_max_chars=0):
+          board_budget=None):
     system = PROMPTS[profile]
     user = format_problem(problem)
     if profile == "compact":
@@ -127,27 +103,10 @@ def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=
                 "Give one line of work, then Answer: X.")
     messages = [{"role": "system", "content": system}]
     if examples:
-        if profile == "retrieved":
-            for example in examples:
-                options = example.get("options") or {}
-                value = options.get(example.get("label"), example.get("label", ""))
-                question = " ".join(str(example.get("text") or "").split())
-                if example_max_chars and len(question) > example_max_chars:
-                    question = question[:example_max_chars].rsplit(" ", 1)[0].rstrip() + " …"
-                choices = " ".join(f"{letter}) {options[letter]}"
-                                    for letter in "ABCDE" if letter in options)
-                content = "Question: " + question
-                if choices:
-                    content += "\nOptions: " + choices
-                messages.extend([
-                    {"role": "user", "content": content},
-                    {"role": "assistant", "content": f"Work: {value}\nAnswer: {example['label']}"},
-                ])
-        else:
-            # Keep the fixed system prefix cached; examples are charged on each question.
-            demos = "\n\n".join(format_example(example, example_max_chars)
-                                for example in examples)
-            user = f"Examples of different problems:\n{demos}\n\nSolve this problem:\n{user}"
+        # Keep the fixed system prefix cached; examples are charged on each question.
+        demos = "\n\n".join(f"{format_problem(example)}\nAnswer: {example['label']}"
+                            for example in examples)
+        user = f"Examples of different problems:\n{demos}\n\nSolve this problem:\n{user}"
     messages.append({"role": "user", "content": user})
     payload = {"messages": messages,
                "max_tokens": max_tokens, "temperature": 0, "seed": int(CONFIG["SEED"]),
@@ -166,8 +125,6 @@ def infer(problem, deadline, url=URL, profile="short", max_tokens=128, examples=
     if profile == "calc":
         payload["grammar"] = CALC_GRAMMAR
         payload["max_tokens"] = min(max_tokens, 48)
-    if profile == "retrieved" and CONFIG.get("TEXT_RAG_GRAMMAR", "1") == "1":
-        payload["grammar"] = retrieved_grammar(CONFIG.get("TEXT_RAG_WORK_CHARS", "240"))
     output, timings, finish = "", {}, None
     options = numeric_options(problem) if profile in {"formula", "value", "calc"} else None
     try:

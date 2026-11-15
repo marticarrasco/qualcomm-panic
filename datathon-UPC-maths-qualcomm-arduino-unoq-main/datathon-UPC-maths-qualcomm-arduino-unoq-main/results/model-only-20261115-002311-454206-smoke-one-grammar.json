@@ -1,0 +1,70 @@
+{
+  "eval_id": "model-only-20261115-002311-454206-smoke-one-grammar",
+  "name": "smoke-one-grammar",
+  "status": "completed",
+  "started_at": "2026-11-15T00:23:11.454206+01:00",
+  "finished_at": "2026-11-15T00:24:06.247249+01:00",
+  "input": "data/eval_sets/val_text_only_all.jsonl",
+  "languages": [
+    "eng"
+  ],
+  "text_only": true,
+  "limit": 12,
+  "offset": 0,
+  "max_tokens": 128,
+  "prompt": "one",
+  "grammar": "root ::= work \"Answer: \" [A-E]\nwork ::= [^\\n]{0,240} \"\\n\"\n",
+  "served_models": "qwen3.5-0.8b",
+  "llm_port": 8081,
+  "planned_problems": 12,
+  "completed_problems": 12,
+  "system_prompt": "You solve multiple-choice math competition problems. Reason in one short sentence giving the key calculation or deduction. Then write a final line exactly 'Answer: X', where X is the letter A, B, C, D or E of the correct option. Do not restate the question and do not add any other text.\n\nExample:\n7 pens cost $21. How much do 5 pens cost? A) 10 B) 15 C) 20 D) 25 E) 30\nEach pen costs $3, so 5 pens cost $15, which is option B.\nAnswer: B",
+  "summary": {
+    "correct": 3,
+    "total": 12,
+    "accuracy_percent": 25.0,
+    "mean_elapsed_seconds": 4.56,
+    "mean_prompt_tokens": 95.2,
+    "mean_output_tokens": 64.3,
+    "total_output_tokens": 772,
+    "status": {
+      "ok": 12
+    },
+    "sentences": {
+      "1": 5,
+      "2": 3,
+      "3": 2,
+      "4": 1,
+      "0": 1
+    },
+    "predicted_letters": {
+      "B": 4,
+      "C": 4,
+      "A": 3,
+      "D": 1
+    },
+    "true_letters": {
+      "C": 2,
+      "D": 3,
+      "B": 5,
+      "A": 2
+    },
+    "by_level": {
+      "0": {
+        "correct": 0,
+        "total": 4,
+        "accuracy_percent": 0.0
+      },
+      "1": {
+        "correct": 2,
+        "total": 4,
+        "accuracy_percent": 50.0
+      },
+      "2": {
+        "correct": 1,
+        "total": 4,
+        "accuracy_percent": 25.0
+      }
+    }
+  }
+}

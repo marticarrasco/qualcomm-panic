@@ -119,22 +119,17 @@ As a sanity check on Python overhead, the fast process in WSL loaded the
 1,000 inputs and train index in 1.23 s, used about 43 MiB peak RSS, and then
 answered the entire cohort in 0.39 s before CSV I/O. This is a laptop measure.
 
-## Retrieved few-shot experiment
+## Retrieved few-shot experiment (removed)
 
-`TEXT_PROFILE=retrieved` replaces the fixed examples with up to three same-language
-examples found by BGE in the text-only, complete-option train set. The search runs
-locally, but retrieved question text is sent to Qwen and costs input tokens. Build
-the index with `python build_index.py --text-only --db data/index-text.db`; the
-profile defaults to `TEXT_RAG_K=3` and `TEXT_RAG_INDEX=data/index-text.db`.
-`build_index.py --batch` can increase the embedding batch size on a laptop.
-
-On the same 100 distinct validation problems, retrieved few-shot scored **31/100**
-against **40/100** for `shots`. It won 4 rows, lost 13 and tied 83. Its mean projected
-UNO Q time was **34.7 s**, p95 **54.3 s**, and worst **65.6 s**; 53 rows exceeded the
-54-second target and one exceeded the 60-second contest limit. The prompt budget
-was hit on 55 rows. Retrieved prompting used 29,666 input tokens across the cohort,
-compared with 8,046 for `shots`. The default therefore remains `shots`; the retrieved
-profile stays available for further prompt and retrieval experiments.
+I tested replacing the three fixed examples with up to three same-language train
+examples. Searching was local; sending the retrieved examples to Qwen increased
+prompt length. The full 100-question prototype scored **31/100** against **40/100**
+for `shots`; it won 4 rows, lost 13 and tied 83. Its projected UNO Q time was **34.7 s**
+mean, **54.3 s** p95 and **65.6 s** worst. It exceeded the 54-second target on 53 rows
+and hit the prompt budget on 55. The exact latest prompt variant showed no gain in
+a paired 37-row pilot: **13/37** against **14/37** for `shots`. The auto-retrieved
+few-shot profile and its configuration have been removed. The default predictor
+continues to use the fixed, cacheable examples.
 
 ## Ranker-first default with uncertain model routing
 

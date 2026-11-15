@@ -1,0 +1,73 @@
+{
+  "eval_id": "model-only-20261115-002434-144722-smoke-strict",
+  "name": "smoke-strict",
+  "status": "completed",
+  "started_at": "2026-11-15T00:24:34.144722+01:00",
+  "finished_at": "2026-11-15T00:25:27.104487+01:00",
+  "input": "data/eval_sets/val_text_only_all.jsonl",
+  "languages": [
+    "eng"
+  ],
+  "text_only": true,
+  "limit": 12,
+  "offset": 0,
+  "max_tokens": 128,
+  "prompt": "strict",
+  "grammar": null,
+  "prompt_suffix": "\n\nOne sentence of reasoning (max 25 words), then 'Answer: X'.",
+  "served_models": "qwen3.5-0.8b",
+  "llm_port": 8081,
+  "planned_problems": 12,
+  "completed_problems": 12,
+  "system_prompt": "You answer multiple-choice math competition questions. For each question: write ONE short sentence of reasoning (maximum 25 words), then a new line exactly 'Answer: X' where X is the correct option letter A, B, C, D or E. Never write more than one sentence. Never repeat the question. No other text.\n\nExample 1:\n7 pens cost $21. How much do 5 pens cost? A) 10 B) 15 C) 20 D) 25 E) 30\nOne pen costs $3, so five pens cost $15, option B.\nAnswer: B\n\nExample 2:\nA square has perimeter 36. What is its area? A) 18 B) 36 C) 72 D) 81 E) 144\nThe side is 36/4=9, so the area is 9*9=81, option D.\nAnswer: D",
+  "summary": {
+    "correct": 4,
+    "total": 12,
+    "accuracy_percent": 33.33,
+    "mean_elapsed_seconds": 4.41,
+    "mean_prompt_tokens": 131.2,
+    "mean_output_tokens": 57,
+    "total_output_tokens": 684,
+    "status": {
+      "ok": 11,
+      "no_answer": 1
+    },
+    "sentences": {
+      "2": 3,
+      "3": 3,
+      "1": 4,
+      "4": 1,
+      "5": 1
+    },
+    "predicted_letters": {
+      "C": 7,
+      "D": 2,
+      "B": 1,
+      "A": 1,
+      "": 1
+    },
+    "true_letters": {
+      "C": 2,
+      "D": 3,
+      "B": 5,
+      "A": 2
+    },
+    "by_level": {
+      "0": {
+        "correct": 2,
+        "total": 4,
+        "accuracy_percent": 50.0
+      },
+      "1": {
+        "correct": 2,
+        "total": 4,
+        "accuracy_percent": 50.0
+      },
+      "2": {
+        "correct": 0,
+        "total": 4,
+        "accuracy_percent": 0.0
+      }
+    }
+  }
+}
