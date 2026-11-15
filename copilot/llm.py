@@ -221,10 +221,33 @@ def match_option(printed, options, problem_text=""):
     return _match_single_option(printed, options, problem_text)
 
 
-def build_pot_messages(problem):
-    import os
-    style = CONFIG.get("POT_STYLE") or os.environ.get("POT_STYLE") or ""
-    if style == "finetuned" or (not style and "m3kang-pot" in CONFIG.get("LLM_FILE", "").lower()):
+_POT_STYLE = {}
+
+
+def pot_style(url=URL):
+    """"finetuned" or "fewshot". POT_STYLE=auto asks the server which model it has loaded,
+    so the prompt always matches the model that is really running on the board."""
+    style = (CONFIG.get("POT_STYLE") or "auto").strip().lower()
+    if style in ("finetuned", "fewshot"):
+        return style
+    if url not in _POT_STYLE:
+        name = CONFIG.get("LLM_FILE", "")
+        try:
+            import json
+            import urllib.request
+            with urllib.request.urlopen(url.split("/v1/")[0] + "/props", timeout=5) as response:
+                name = json.load(response).get("model_path") or name
+            # On the board the service's file name can be a link to the fine-tuned model.
+            import os
+            name = os.path.realpath(name) if os.path.exists(name) else name
+        except Exception:
+            pass  # server too old or not reachable: trust config.env
+        _POT_STYLE[url] = "finetuned" if "m3kang-pot" in name.lower() else "fewshot"
+    return _POT_STYLE[url]
+
+
+def build_pot_messages(problem, url=URL):
+    if pot_style(url) == "finetuned":
         from .pot import build_messages as build_ft_messages
         return build_ft_messages(problem, style="finetuned")
     messages = [{"role": "system", "content": POT_SYSTEM}]
@@ -243,7 +266,7 @@ def solve_pot(problem, timeout=60, url=URL):
     """
     import time
     t0 = time.perf_counter()
-    messages = build_pot_messages(problem)
+    messages = build_pot_messages(problem, url)
     base_seed = int(CONFIG["SEED"])
     options = problem.get("options") or {}
     prob_text = problem.get("text", "")
@@ -268,7 +291,8 @@ def solve_pot(problem, timeout=60, url=URL):
         }
         if temp > 0:
             payload["top_p"] = 0.9
-        response = post(url, payload, timeout=max(remaining, 1.0))
+        # Leave room for running the program (up to 2 s) inside the caller's budget.
+        response = post(url, payload, timeout=max(remaining - 2.5, 1.0))
         reply = response["choices"][0]["message"]["content"]
         timings = response.get("timings", {})
         if attempt == 1:

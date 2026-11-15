@@ -16,7 +16,31 @@ import json
 import os
 import sys
 
+from copilot.config import CONFIG
 from copilot.pipeline import batch_solver
+
+
+def wait_for_model(seconds=180):
+    """After a reboot the model takes a while to load. Starting before it is ready would
+    turn the first answers into fallbacks, so wait here, outside the per-problem time."""
+    import time
+    import urllib.request
+    url = f"http://127.0.0.1:{CONFIG['LLM_PORT']}/health"
+    deadline = time.monotonic() + seconds
+    told = False
+    while time.monotonic() < deadline:
+        try:
+            with urllib.request.urlopen(url, timeout=3) as response:
+                if response.status == 200:
+                    return True
+        except OSError:
+            pass
+        if not told:
+            print("Waiting for the model server to be ready...", file=sys.stderr)
+            told = True
+        time.sleep(2)
+    print("The model server did not answer: continuing, problems will get the fallback answer.", file=sys.stderr)
+    return False
 
 
 def main():
@@ -34,6 +58,8 @@ def main():
         from copilot.rag import Index
         index = Index(args.index)
 
+    wait_for_model()
+    os.makedirs(os.path.dirname(os.path.abspath(args.output)), exist_ok=True)
     with open(args.input, encoding="utf-8-sig") as f:
         problems = [json.loads(line) for line in f if line.strip()]
     solve = batch_solver(problems)
@@ -42,11 +68,17 @@ def main():
         writer = csv.writer(out)
         writer.writerow(["id", "language", "answer", "seconds", "status"])
         for n, problem in enumerate(problems, 1):
-            result = solve(problem, index=index, k=args.rag)
-            writer.writerow([problem["id"], problem.get("language", ""), result["answer"],
+            try:
+                result = solve(problem, index=index, k=args.rag)
+            except Exception as error:  # one odd row must never stop the run: answer and go on
+                result = {"answer": CONFIG["FALLBACK_ANSWER"], "seconds": 0.0,
+                          "status": f"error: {type(error).__name__}"}
+            if result.get("answer") not in ("A", "B", "C", "D", "E"):
+                result["answer"] = CONFIG["FALLBACK_ANSWER"]
+            writer.writerow([problem.get("id", n), problem.get("language", ""), result["answer"],
                              result["seconds"], result["status"]])
             out.flush()
-            print(f"[{n}/{len(problems)}] {problem['id']} -> {result['answer']} "
+            print(f"[{n}/{len(problems)}] {problem.get('id', n)} -> {result['answer']} "
                   f"in {result['seconds']:.1f} s ({result['status']})", file=sys.stderr)
 
 
