@@ -9,7 +9,7 @@ from pathlib import Path
 from . import reasoner, text_solver
 from .arithmetic import complete_options, numeric_options
 from .config import CONFIG, ROOT
-from .llm import URL, answer_letter
+from .llm import URL, answer_letter, has_numeric_options, solve_pot
 from .priors import guess, median_choice
 
 TIME_LIMIT = float(CONFIG["TIME_LIMIT_SECONDS"])
@@ -128,6 +128,7 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
     """
     budget_mode = ANSWER_MODE == "budget" and image_b64 is None
     text_mode = ANSWER_MODE == "text" and image_b64 is None
+    pot_mode = ANSWER_MODE == "pot" and image_b64 is None
     start = time.perf_counter()
     result = {"answer": FALLBACK, "status": "ok", "prompt_tokens": None,
               "completion_tokens": None, "model_output": None, "retrieved": "", "examples": []}
@@ -159,7 +160,22 @@ def solve(problem, index=None, k=0, exclude_id=None, image_b64=None, llm_url=URL
         return []
 
     try:
-        if text_mode:
+        if pot_mode:
+            flag = problem.get("text_only", True)
+            is_text_only = not (flag is not None and str(flag).strip().casefold() in {"false", "0", "no"})
+            remaining = time_limit - (time.perf_counter() - start) - MARGIN
+            if remaining <= 1.0:
+                raise TimeoutError
+            if is_text_only and has_numeric_options(problem):
+                matched, timings, meta = solve_pot(problem, timeout=remaining, url=llm_url)
+                letter = matched if matched in ("A", "B", "C", "D", "E") else FALLBACK
+                model_output = meta.get("code", "")
+                result["pot"] = meta
+                result["status"] = "pot_match" if matched in ("A", "B", "C", "D", "E") else "pot_fallback"
+            else:
+                letter, timings, model_output = FALLBACK, {"prompt_n": 0, "predicted_n": 0}, ""
+                result["status"] = "prior"
+        elif text_mode:
             letter, result["status"], model_output, timings = _solve_text(
                 problem, start + time_limit - MARGIN, llm_url, exclude_id, retrieve,
                 text_rag=use_text_rag)
