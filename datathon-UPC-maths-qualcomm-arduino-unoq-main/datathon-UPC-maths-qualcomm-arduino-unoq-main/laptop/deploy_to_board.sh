@@ -19,8 +19,8 @@ BOARD_DIR=/home/arduino/qp
 IMAGES=data/full_noocr/images
 WITH_IMAGES=1
 [ "${1:-}" = "--no-images" ] && WITH_IMAGES=0
-POT_FILE=Qwen3.5-0.8B-M3Kang-PoT-v2-Q8_0.gguf
-POT_SHA=fe09ae5f83c845fbe9b49af5cfbbd049976c04c19ebf55249cec84881723102e
+POT_FILE=Qwen3.5-0.8B-M3Kang-PoT-v4-e1-Q8_0.gguf
+POT_SHA=7c90dbbc3518241fd9b1661887abe1131a07d9d9f637c86a1a8a897b7a19cbb3
 POT_GGUF="${POT_GGUF:-$HOME/models/$POT_FILE}"
 
 step() { echo; echo "==> $*"; }

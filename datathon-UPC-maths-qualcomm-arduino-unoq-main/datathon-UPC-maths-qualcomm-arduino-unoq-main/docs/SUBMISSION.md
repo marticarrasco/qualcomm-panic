@@ -8,7 +8,7 @@ safety changes. Nothing here is on `main` yet: merging is a team decision.
 | Part | Choice | Why |
 | --- | --- | --- |
 | Solver | Jordi's program-of-thought route (`ANSWER_MODE=pot`): the model writes a short Python program, the board runs it in a sandbox and matches the printed number to an option | The only route above chance on the organizers' practice set. Rerun independently on a second laptop with the stock model: 38 of 100 (always D: 20). Jordi reports 41 with his fine-tuned model |
-| Model | Jordi's fine-tuned `Qwen3.5-0.8B-M3Kang-PoT-v2-Q8_0.gguf` if it is on the board, else the stock `Qwen3.5-0.8B-Q8_0` | Same size and speed, more programs that run. Not in git (794 MB) |
+| Model | Jordi's fine-tuned `Qwen3.5-0.8B-M3Kang-PoT-v4-e1-Q8_0.gguf` if it is on the board, else the stock `Qwen3.5-0.8B-Q8_0` | Same size and speed, more programs that run. Not in git (794 MB) |
 | Fallback | D, as in Jordi's branch | Two alternatives were tested on the practice set and neither helped (below) |
 | Entry point, evaluation, OCR, services | Martí's `predict.py`, `eval.py`, `board/` | Unchanged |
 | Tutor and LED matrix | `tutor/`, `applab/math-matrix/` | Unchanged |
@@ -45,7 +45,7 @@ The older routes (`text`, `budget`, `direct`, the option ranker) stay in the cod
 
 ## Checklist for the board
 
-1. Get `Qwen3.5-0.8B-M3Kang-PoT-v2-Q8_0.gguf` from Jordi into `~/models/` on the laptop.
+1. Get `Qwen3.5-0.8B-M3Kang-PoT-v4-e1-Q8_0.gguf` from Jordi into `~/models/` on the laptop.
 2. Plug the board in and run `bash laptop/deploy_to_board.sh`. It must print `prompt style: finetuned`
    and finish the five sample problems.
 3. Timed run on the practice set (about 20 minutes):

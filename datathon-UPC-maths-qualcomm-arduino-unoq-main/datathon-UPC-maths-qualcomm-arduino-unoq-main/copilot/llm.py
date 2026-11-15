@@ -1,19 +1,25 @@
-"""Ask the small language model to solve a problem via cached bilingual Program-of-Thought (PoT)
-or direct 1-token letter selection."""
+"""Ask the small language model to solve a problem via Program-of-Thought (PoT)
+or direct/reasoned letter selection."""
 import re
 import subprocess
 import sys
 
 from .config import CONFIG
 from .client import post
+from .pot import RUNNER
 
 URL = f"http://127.0.0.1:{CONFIG['LLM_PORT']}/v1/chat/completions"
 
-# Legacy 1-token system prompt kept for backward compatibility with explorer/server.py
+# Legacy reasoning system prompt kept for backward compatibility with ANSWER_MODE=direct/text
 SYSTEM = ("You solve multiple-choice math competition problems for school students. "
-          "Read the problem and the options, then reply with the letter of the correct option.")
+          "Work out the problem before choosing an option. Reply in at most two short lines: "
+          "first give the key calculation or reason, then finish with exactly 'Answer: X', "
+          "where X is the letter of the correct option (A, B, C, D, or E). "
+          "Do not choose an option just because of its letter.")
 
-# Cached bilingual Program-of-Thought (PoT) prompt.
+ANSWER_RE = re.compile(r"(?:answer|resposta)\s*[:：]\s*([A-E])\b", re.IGNORECASE)
+
+# Cached bilingual Program-of-Thought (PoT) prompt for stock models.
 # CRITICAL: Keep POT_SYSTEM + POT_SHOTS strictly under 512 tokens (currently 496 tokens)
 # so llama-server's default ubatch=512 saves the Gated DeltaNet checkpoint at the end of
 # the few-shot prefix and reuses cache_n=496 tokens on every problem.
@@ -42,172 +48,14 @@ POT_SHOTS = [
     ),
 ]
 
-RUNNER = r'''
-import ast, sys, math, itertools, fractions
-if hasattr(sys, "set_int_max_str_digits"):
-    sys.set_int_max_str_digits(0)
-src = sys.stdin.read()
-try:
-    tree = ast.parse(src)
-except SyntaxError:
-    lines = src.splitlines()
-    tree = None
-    while lines:
-        lines.pop()
-        try:
-            tree = ast.parse("\n".join(lines))
-            break
-        except SyntaxError:
-            continue
-    if tree is None or not lines:
-        sys.exit("SyntaxError")
-BAD_NODES = (ast.Import, ast.ImportFrom, ast.Global, ast.Nonlocal, ast.With, ast.AsyncWith,
-             ast.AsyncFunctionDef, ast.Await, ast.Delete)
-ALLOWED = {"range", "len", "sum", "min", "max", "abs", "int", "float", "str", "set", "list", "tuple", "dict",
-           "sorted", "reversed", "enumerate", "zip", "map", "filter", "any", "all", "pow", "divmod", "round",
-           "print", "bool", "math", "itertools", "Fraction", "True", "False", "None", "ord", "chr", "frozenset",
-           "permutations", "combinations", "product", "prod", "gcd", "factorial", "sqrt", "comb", "isqrt", "lcm",
-           "__name__", "Exception", "ValueError", "ZeroDivisionError", "isinstance", "self", "object",
-           "combinations_with_replacement", "floor", "ceil", "pi"}
-defined = set()
-for node in ast.walk(tree):
-    if isinstance(node, BAD_NODES):
-        sys.exit("blocked: " + type(node).__name__)
-    if isinstance(node, ast.Attribute) and node.attr.startswith("_") and node.attr != "__init__":
-        sys.exit("blocked: dunder attribute")
-    if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
-        defined.add(node.name)
-    if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
-        defined.add(node.id)
-    if isinstance(node, ast.arg):
-        defined.add(node.arg)
-    if isinstance(node, ast.ExceptHandler) and node.name:
-        defined.add(node.name)
-for node in ast.walk(tree):
-    if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load) and node.id not in ALLOWED and node.id not in defined:
-        sys.exit("blocked: name " + node.id)
-import builtins
-real_sum = builtins.sum
-real_int = builtins.int
-real_str = builtins.str
-def smart_sum(iterable, start=0):
-    items = [real_int(x) if isinstance(x, str) and x.strip().lstrip("-").isdigit() else x for x in iterable]
-    return real_sum(items, start)
-class _SmartStr(str):
-    def __contains__(self, x):
-        return super().__contains__(real_str(x) if isinstance(x, int) else x)
-    def __getitem__(self, k):
-        return _SmartStr(super().__getitem__(k))
-    def __sub__(self, o):
-        if isinstance(o, str) and self.lstrip("-").isdigit() and o.lstrip("-").isdigit():
-            return real_int(self) - real_int(o)
-        return NotImplemented
-def smart_str(x=""):
-    return _SmartStr(real_str(x))
-class _PermTuple(tuple):
-    def _num(self):
-        if self and all(isinstance(x, int) and not isinstance(x, bool) and 0 <= x <= 9 for x in self):
-            return real_int("".join(real_str(x) for x in self))
-        if self and all(isinstance(x, str) and x.isdigit() for x in self):
-            return real_int("".join(self))
-        return None
-    def __lt__(self, other):
-        if isinstance(other, int):
-            v = self._num()
-            return v < other if v is not None else False
-        return super().__lt__(other)
-    def __le__(self, other):
-        if isinstance(other, int):
-            v = self._num()
-            return v <= other if v is not None else False
-        return super().__le__(other)
-    def __gt__(self, other):
-        if isinstance(other, int):
-            v = self._num()
-            return v > other if v is not None else False
-        return super().__gt__(other)
-    def __ge__(self, other):
-        if isinstance(other, int):
-            v = self._num()
-            return v >= other if v is not None else False
-        return super().__ge__(other)
-    def __mod__(self, other):
-        if isinstance(other, int):
-            v = self._num()
-            if v is not None:
-                return v % other
-        return NotImplemented
-    def __eq__(self, other):
-        if isinstance(other, int):
-            v = self._num()
-            return v == other if v is not None else False
-        return super().__eq__(other)
-    def __ne__(self, other):
-        if isinstance(other, int):
-            v = self._num()
-            return v != other if v is not None else True
-        return super().__ne__(other)
-    def __hash__(self):
-        return super().__hash__()
-def smart_int(x=0, *args):
-    if not args and isinstance(x, (tuple, list)):
-        v = _PermTuple(x)._num()
-        if v is not None:
-            return v
-    return real_int(x, *args)
-def _wrap_iter(fn):
-    def _wrapped(*a, **kw):
-        for t in fn(*a, **kw):
-            yield _PermTuple(t)
-    return _wrapped
-class _SmartIntProd(int):
-    def __new__(cls, val, items):
-        obj = super().__new__(cls, val)
-        obj._items = items
-        return obj
-    def __iter__(self):
-        for x in self._items:
-            yield _PermTuple((x,))
-def smart_product(*args, **kwargs):
-    if len(args) == 1 and not kwargs:
-        items = list(args[0])
-        if all(isinstance(x, int) and not isinstance(x, bool) for x in items):
-            return _SmartIntProd(math.prod(items), items)
-        if all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in items):
-            return math.prod(items)
-        return _wrap_iter(itertools.product)(items)
-    return _wrap_iter(itertools.product)(*args, **kwargs)
-safe = {k: getattr(builtins, k) for k in ("range", "len", "min", "max", "abs", "float",
-        "set", "list", "tuple", "dict", "sorted", "reversed", "enumerate", "zip", "map", "filter", "any", "all",
-        "pow", "divmod", "round", "print", "bool", "ord", "chr", "frozenset", "Exception", "ValueError",
-        "ZeroDivisionError", "isinstance", "object", "__build_class__")}
-safe["sum"] = smart_sum
-safe["int"] = smart_int
-safe["str"] = smart_str
-env = {"__builtins__": safe, "__name__": "__main__", "math": math, "itertools": itertools,
-       "Fraction": fractions.Fraction, "permutations": _wrap_iter(itertools.permutations),
-       "combinations": _wrap_iter(itertools.combinations), "product": smart_product, "prod": math.prod,
-       "combinations_with_replacement": _wrap_iter(itertools.combinations_with_replacement),
-       "gcd": math.gcd, "factorial": math.factorial, "sqrt": math.sqrt, "comb": math.comb, "isqrt": math.isqrt,
-       "lcm": math.lcm, "floor": math.floor, "ceil": math.ceil, "pi": math.pi}
-printed = []
-real_print = print
-def capture(*args, **kwargs):
-    printed.append(" ".join(real_str(a) for a in args))
-safe["print"] = capture
-last = tree.body[-1] if tree.body else None
-if isinstance(last, ast.Expr) and not (isinstance(last.value, ast.Call) and getattr(last.value.func, "id", "") == "print"):
-    tree.body[-1] = ast.Assign(targets=[ast.Name(id="_last_value", ctx=ast.Store())], value=last.value)
-    ast.fix_missing_locations(tree)
-exec(compile(tree, "<model>", "exec"), env)
-if printed:
-    if len(printed) > 1 and printed[0] != printed[-1]:
-        real_print(printed[0] + "\t" + printed[-1])
-    else:
-        real_print(printed[-1])
-elif env.get("_last_value") is not None:
-    real_print(env["_last_value"])
-'''
+
+class InvalidAnswerError(ValueError):
+    """An unparseable model answer, with any token usage the server reported."""
+
+    def __init__(self, message, timings=None, output=None):
+        super().__init__(message)
+        self.timings = timings or {}
+        self.output = output
 
 
 def format_problem(problem, sees_image=False):
@@ -226,8 +74,8 @@ def build_messages(problem, examples=(), image_b64=None):
     """image_b64 is a PNG as base64 text. Only a server started with --mmproj can see it."""
     messages = [{"role": "system", "content": SYSTEM}]
     for ex in examples:  # solved problems retrieved with RAG, if any
-        messages.append({"role": "user", "content": format_problem(ex) + "\nAnswer:"})
-        messages.append({"role": "assistant", "content": ex["label"]})
+        messages.append({"role": "user", "content": format_problem(ex)})
+        messages.append({"role": "assistant", "content": f"Answer: {ex['label']}"})
     text = format_problem(problem, sees_image=bool(image_b64)) + "\nAnswer:"
     if image_b64:
         content = [{"type": "image_url", "image_url": {"url": "data:image/png;base64," + image_b64}},
@@ -239,17 +87,25 @@ def build_messages(problem, examples=(), image_b64=None):
 
 
 def answer_letter(problem, examples=(), timeout=60, image_b64=None, url=URL):
-    """Return (letter, timings). The grammar makes any other output impossible."""
+    """Return the final answer letter and timings, or raise ValueError if it is missing."""
     response = post(url, {
         "messages": build_messages(problem, examples, image_b64),
-        "grammar": "root ::= [A-E]",
-        "max_tokens": 1,
+        "max_tokens": 128,
         "temperature": 0,
         "seed": int(CONFIG["SEED"]),
         "cache_prompt": True,
     }, timeout=timeout)
-    letter = response["choices"][0]["message"]["content"].strip()
-    return letter, response.get("timings", {})
+    raw_content = response["choices"][0]["message"]["content"]
+    content = raw_content.strip()
+    matches = ANSWER_RE.findall(content)
+    if matches:
+        letter = matches[-1].upper()
+    elif re.fullmatch(r"[A-E][.!]?", content, re.IGNORECASE):
+        letter = content[0].upper()
+    else:
+        raise InvalidAnswerError("model did not return an answer in the expected format",
+                                 response.get("timings", {}), raw_content)
+    return letter, response.get("timings", {}), raw_content
 
 
 def parse_num(val):
@@ -414,6 +270,7 @@ def solve_pot(problem, timeout=60, url=URL):
 
     matched = None
     total_prompt_n = 0
+    total_predicted_n = 0
     first_printed = None
     pending_one_letter = None
     last_meta = {"code": "", "printed": None, "run_status": "none", "tries": 0}
@@ -437,6 +294,7 @@ def solve_pot(problem, timeout=60, url=URL):
         timings = response.get("timings", {})
         if attempt == 1:
             total_prompt_n = timings.get("prompt_n", 0)
+        total_predicted_n += timings.get("predicted_n", 0)
         code = extract_code(reply)
         printed, run_status = run_code(code, timeout=2.0)
         cand = match_option(printed, options, prob_text)
@@ -454,4 +312,4 @@ def solve_pot(problem, timeout=60, url=URL):
             matched = cand
             break
 
-    return matched, {"prompt_n": total_prompt_n}, last_meta
+    return matched, {"prompt_n": total_prompt_n, "predicted_n": total_predicted_n}, last_meta
