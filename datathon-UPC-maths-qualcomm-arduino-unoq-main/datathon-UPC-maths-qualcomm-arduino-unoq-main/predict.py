@@ -16,6 +16,7 @@ import json
 import os
 import sys
 
+from copilot.config import CONFIG
 from copilot.pipeline import batch_solver
 
 
@@ -42,11 +43,17 @@ def main():
         writer = csv.writer(out)
         writer.writerow(["id", "language", "answer", "seconds", "status"])
         for n, problem in enumerate(problems, 1):
-            result = solve(problem, index=index, k=args.rag)
-            writer.writerow([problem["id"], problem.get("language", ""), result["answer"],
+            try:
+                result = solve(problem, index=index, k=args.rag)
+            except Exception as error:  # one odd row must never stop the run: answer and go on
+                result = {"answer": CONFIG["FALLBACK_ANSWER"], "seconds": 0.0,
+                          "status": f"error: {type(error).__name__}"}
+            if result.get("answer") not in ("A", "B", "C", "D", "E"):
+                result["answer"] = CONFIG["FALLBACK_ANSWER"]
+            writer.writerow([problem.get("id", n), problem.get("language", ""), result["answer"],
                              result["seconds"], result["status"]])
             out.flush()
-            print(f"[{n}/{len(problems)}] {problem['id']} -> {result['answer']} "
+            print(f"[{n}/{len(problems)}] {problem.get('id', n)} -> {result['answer']} "
                   f"in {result['seconds']:.1f} s ({result['status']})", file=sys.stderr)
 
 
