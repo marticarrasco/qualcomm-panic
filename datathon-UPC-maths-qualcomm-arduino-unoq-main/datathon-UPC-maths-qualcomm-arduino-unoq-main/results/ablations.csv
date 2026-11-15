@@ -14,3 +14,4 @@ time,name,commit,input,languages,n,rag_k,accuracy,mean_s,worst_s,over_limit
 20261115-013445-898965,demo-model-only,a1056cc,data/demo/train.jsonl,all,100,0,21.0,2.9,4.1,0
 20261115-013932-169462,demo-budget,a1056cc,data/demo/train.jsonl,all,100,0,22.0,4.3,8.3,0
 20261115-014643-480170,demo-direct,a1056cc,data/demo/train.jsonl,all,100,0,15.0,2.5,2.8,0
+20261115-090422-109974,demo-pot-fewshot-stock,b5dd54d,data/demo/train.jsonl,all,100,0,38.0,2.1,7.7,0

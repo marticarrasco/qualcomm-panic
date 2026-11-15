@@ -47,7 +47,15 @@ No route is distinguishable from chance on 100 rows. The differences inside the 
 - **Unfinished answers are the loss**: they fall back to D, which is right 20% of the time by construction. Typical failures on easy problems are endless enumeration ("3 + 1 = 4, 4 + 3 = 7, …" for 400 tokens) and algebra that never concludes.
 - **Levels 0 and 1 are not easier for the model** (8 of 32 in budget mode). These are trick questions, not arithmetic.
 
-## What we suggest
+## Independent rerun of the program-of-thought route
+
+On a second laptop, with the stock model and the few-shot prompt (`POT_STYLE=fewshot`), the same code gets
+38 of 100 (`results/eval-20261115-090422-109974-demo-pot-fewshot-stock.csv`): 18 right of the 29 answers
+where a program matched an option, and 20 of 71 on fallback D. So the gain does not depend on one machine
+or on the fine-tuned model. The suggestions below were written before this route existed and are superseded
+by it; the final checklist is in [SUBMISSION.md](SUBMISSION.md).
+
+## What we suggested before the program-of-thought route
 
 1. **Do not let the ranker answer on the final test.** Use a model-first route (`TEXT_ROUTE=model`, or `ANSWER_MODE=budget`) with the full 60 s budget. Expected gain is small (about one problem in 20) but it is the only route with any signal on this kind of problem.
 2. **Balance the fallback letters.** If the final 20 are balanced like the practice set (4 of each letter), an unfinished answer should get the letter we have used least so far, not always D. Simulated on 4,000 random balanced 20-problem tests drawn from the practice set: English 5.2 right with D against 6.1 with balancing (budget mode), Catalan 3.6 against 3.8. If the final is not balanced, this costs nothing. It makes the answers depend on the order of the file, which is still deterministic.
