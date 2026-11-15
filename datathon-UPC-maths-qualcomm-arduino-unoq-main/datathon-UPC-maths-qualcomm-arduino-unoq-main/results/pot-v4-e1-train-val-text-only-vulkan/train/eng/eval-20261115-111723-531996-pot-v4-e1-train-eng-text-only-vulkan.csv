@@ -292,3 +292,60 @@ eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:1
     d = str(y)
     if len(set(int(c) for c in d)) == 4 and int(d[-1]) > sum(int(c) for c in d[:-1]):
         print(y - 2014)",53,210,,,8.69,42.32,4.82,37.5,11.0,5.6,pot_fallback,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-3_2017_22,eng,3,True,C,E,0,"best = 0
+for a, b, c in combinations(range(1, 21), 3):
+    if a + b + c == 20:
+        best = max(best, a)
+print(best)",85,51,,,2.35,16.84,7.73,9.11,11.0,5.6,pot_match,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-1_2017_9,eng,1,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-2_2024_27,eng,2,True,D,C,0,"for g in range(1, 200):
+    if g % 20 == 0 and g - 20 <= 12:
+        print(g)",89,123,,,5.35,30.05,8.09,21.96,11.0,5.6,pot_fallback,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-5_2013_25,eng,5,True,D,B,0,"for a in range(1, 200):
+    for d in range(a + 1, 200):
+        if a + 1 + 2 * a == a + 1.5 * d and a + 1 + 2 * a == d + 1.5 * (a - 1):
+            print(a + d)",87,192,,,8.29,42.2,7.91,34.29,11.0,5.6,pot_fallback,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-5_2014_25,eng,5,True,D,C,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-4_2014_17,eng,4,True,A,A,1,"for a in range(17):
+    for b in range(17 - a):
+        c = 16 - a - b
+        if 3 * a + 4 * b == 36 and 3 * a + 4 * b + 6 * c == 72:
+            print(a)",91,154,,,6.83,35.77,8.27,27.5,11.0,5.6,pot_match,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-6_2021_29,eng,6,True,D,A,0,"best = 10**9
+for a in range(1, 100):
+    for b in range(a + 1, 100):
+        for c in range(b + 1, 100):
+            for d in range(c + 1, 100):
+                for e in range(d + 1, 100):
+                    for f in range(e + 1, 100):
+                        for g in range(f + 1, 100):
+                            for h in range(g + 1, 100):
+                                if 2 * (a",75,282,,,15.27,57.18,6.82,50.36,11.0,5.6,pot_fallback,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-4_2011_8,eng,4,True,D,A,0,"ans = 0
+for d in range(1, 31):
+    for m in range(1, 13):
+        for y in range(2000, 2100):
+            if m + 2 == 3:
+                ans += 1
+print(ans)",94,263,,,11.25,55.51,8.55,46.96,11.0,5.6,pot_fallback,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-2_2018_8,eng,2,True,D,D,1,"faces = 6
+rolls = 1
+while True:
+    rolls += 1
+    roll = random.randint(1, faces)
+    if roll in range(rolls, faces):
+        break
+print(rolls)",48,154,,,9.04,31.86,4.36,27.5,11.0,5.6,pot_fallback,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-7_2018_22,eng,7,True,D,D,1,"a=1
+b=-1
+c=-2018
+root1=(b+sqrt(b*b-4*a*c))/(2*a)
+root2=(b-sqrt(b*b-4*a*c))/(2*a)
+ans=root1+root2
+print(ans)",50,148,,,7.73,30.98,4.55,26.43,11.0,5.6,pot_fallback,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-7_2007_21,eng,7,True,D,D,1,"ans = None
+for n in range(1, 1000):
+    if n != 0 and all(n - k * k == (n - k * k) ** 2 for k in range(1, n)):
+        ans = n
+print(ans)",38,150,,,8.1,30.24,3.45,26.79,11.0,5.6,pot_fallback,
+eval-20261115-111723-531996-pot-v4-e1-train-eng-text-only-vulkan,2026-11-15T11:17:23.531996+01:00,lvl-1_2021_16,eng,1,True,D,E,0,,0,0,,,0.0,0.0,0.0,0.0,11.0,5.6,prior,
