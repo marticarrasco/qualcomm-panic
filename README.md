@@ -9,6 +9,10 @@ MathQ was built for the Datathon FME 2026 Qualcomm challenge. It uses a compact 
 | **MathQ Predictor** | [`predict.py`](predict.py) outputs one letter per question under the 60-second challenge budget. The Program-of-Thought route asks the model for a short program, executes it with SmartRunner, and checks the result against the answer options. [Predictor guide](docs/predictor/README.md) |
 | **Pista Tutor** | Pupils practise in Catalan or English, get progressive hints, and try related problems. The teacher view records first-try follow-up results, and the board’s LED matrix shows practice feedback. [Pista guide](docs/tutor/README.md) |
 
+| Pista: choosing a topic and level | Teacher view |
+| --- | --- |
+| ![Pista start screen with topics, levels and the LED matrix preview](docs/tutor/assets/pista-start.jpg) | ![Pista teacher view with progress by topic](docs/tutor/assets/pista-teacher-view.jpg) |
+
 ## Results
 
 | Check | Result |

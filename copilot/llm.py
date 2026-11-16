@@ -35,7 +35,7 @@ POT_SHOTS = [
         "```python\nans = sum(1 for n in range(10, 100) if sum(int(d) for d in str(n)) == 9)\nprint(ans)\n```",
     ),
     (
-        "En Marc té 9 caramels i en Tomàs en té 17. Quants caramels ha de donar en Tomàs a en Marc perquè tots dos en tinguin la mateixa quantitat?" + POT_SUFFIX,
+        "La Júlia té 9 cromos i en Pol en té 17. Quants cromos li ha de donar en Pol a la Júlia perquè tots dos en tinguin el mateix nombre?" + POT_SUFFIX,
         "```python\ntotal = 9 + 17\nans = total // 2 - 9\nprint(ans)\n```",
     ),
     (
